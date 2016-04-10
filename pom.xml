@@ -9,6 +9,43 @@
 
 	<packaging>jar</packaging>
 
+	<name>EasyJsonApi</name>
+
+	<description></description>
+
+	<inceptionYear>2016</inceptionYear>
+
+	<organization>
+		<name>EasyJsonApi</name>
+		<url>https://github.com/easyJsonApi/easyJsonApi/wiki</url>
+	</organization>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<developers>
+		<developer>
+			<name>Nuno Bento</name>
+			<email>nbento.neves@gmail.com</email>
+			<roles>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<distributionManagement>
+		<site>
+			<id>github</id>
+			<name>EasyJsonApi</name>
+			<url>https://github.com/easyJsonApi/easyJsonApi.git</url>
+		</site>
+	</distributionManagement>
+
 	<properties>
 
 		<!-- Generic properties -->
@@ -43,6 +80,11 @@
 		<maven.compile.plugin.version>3.5.1</maven.compile.plugin.version>
 		<jacoco.plugin.version>0.7.6.201602180812</jacoco.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
+		<license.plugin.verion>1.8</license.plugin.verion>
+		
+		<!-- License -->
+		<license.licenseName>apache_v2</license.licenseName>
+		<license.addJavaLicenseAfterPackage>false</license.addJavaLicenseAfterPackage>
 
 	</properties>
 
@@ -140,6 +182,25 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<version>${maven.compile.plugin.version}</version>
 				</plugin>
+
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>${surefire.plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.jacoco</groupId>
+					<artifactId>jacoco-maven-plugin</artifactId>
+					<version>${jacoco.plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>${license.plugin.verion}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -176,7 +237,6 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${surefire.plugin.version}</version>
 				<configuration>
 					<!-- Sets the VM argument line used when unit tests are run. -->
 					<argLine>${surefireArgLine}</argLine>
@@ -193,7 +253,6 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
-				<version>${jacoco.plugin.version}</version>
 				<executions>
 					<!-- Prepares the property pointing to the JaCoCo runtime agent which 
 						is passed as VM argument when Maven the Surefire plugin is executed. -->
@@ -223,6 +282,34 @@
 							<dataFile>${project.build.directory}/coverage-reports/jacoco-ut.exec</dataFile>
 							<!-- Sets the output directory for the code coverage report. -->
 							<outputDirectory>${project.reporting.outputDirectory}/jacoco-ut</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- License plugin -->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>license-maven-plugin</artifactId>
+				<configuration>
+					<verbose>false</verbose>
+					<includes>
+						<includes>**/*.java</includes>
+					</includes>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>generate-license-headers</id>
+						<goals>
+							<goal>update-file-header</goal>
+						</goals>
+						<phase>process-sources</phase>
+						<configuration>
+							<roots>
+								<root>src/main/java</root>
+								<root>src/test/java</root>
+							</roots>
 						</configuration>
 					</execution>
 				</executions>
