@@ -152,8 +152,9 @@ public class EasyJsonApi {
      * 
      * @param jsonApi the json api object
      * @return the string with json api format
+     * @throws EasyJsonApiMalformedJsonException
      */
-    public String convertJsonApiToString(JsonApi json) {
+    public String convertJsonApiToString(JsonApi json) throws EasyJsonApiMalformedJsonException {
         return convertJsonApiToString(json, new Class[0]);
     }
 
@@ -164,8 +165,9 @@ public class EasyJsonApi {
      * @param json the json api object
      * @param classes the classes utilized inside the object
      * @return the string with json api format
+     * @throws EasyJsonApiMalformedJsonException
      */
-    public String convertJsonApiToString(JsonApi json, Class<?>... classes) {
+    public String convertJsonApiToString(JsonApi json, Class<?>... classes) throws EasyJsonApiMalformedJsonException {
 
         if (Assert.isNull(json)) {
             return null;
@@ -183,7 +185,13 @@ public class EasyJsonApi {
 
         builder.registerTypeAdapter(JsonApi.class, this.serializerJsonApi);
 
-        String jsonApi = builder.create().toJson(json);
+        String jsonApi = null;
+
+        try {
+            jsonApi = builder.create().toJson(json);
+        } catch (JsonSyntaxException ex) {
+            throw new EasyJsonApiMalformedJsonException("Problem with json sended!", ex);
+        }
 
         return jsonApi;
     }

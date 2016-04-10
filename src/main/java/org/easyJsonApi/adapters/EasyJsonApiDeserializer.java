@@ -47,7 +47,9 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
         JsonApi request = new JsonApi();
 
-        if (this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_ATTR)) {
+        // FIXME: Find solution for this validation
+        if (this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_ATTR) || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_RELS)
+                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_META)) {
 
             // Parse the attribute data
             JsonArray jsonArrayData = jsonElem.getAsJsonObject().get("data").getAsJsonArray();

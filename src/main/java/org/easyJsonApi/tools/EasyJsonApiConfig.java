@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.easyJsonApi.adapters.EasyJsonApiTypeToken;
 import org.easyJsonApi.annotations.Attributes;
+import org.easyJsonApi.annotations.Meta;
+import org.easyJsonApi.annotations.Relationships;
 import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
 
@@ -60,7 +62,7 @@ public class EasyJsonApiConfig {
 
                 List<Class<?>> attrClasses = new ArrayList<>();
                 List<Class<?>> relsClasses = new ArrayList<>();
-                List<Class<?>> linksClasses = new ArrayList<>();
+                List<Class<?>> metaClasses = new ArrayList<>();
 
                 for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClasses(packageToSearch)) {
 
@@ -68,13 +70,16 @@ public class EasyJsonApiConfig {
 
                     if (Assert.notNull(clazz.getAnnotation(Attributes.class))) {
                         attrClasses.add(clazz);
+                    } else if (Assert.notNull(clazz.getAnnotation(Relationships.class))) {
+                        relsClasses.add(clazz);
+                    } else if (Assert.notNull(clazz.getAnnotation(Meta.class))) {
+                        metaClasses.add(clazz);
                     }
-                    // TODO: Make the users annotations
                 }
 
                 this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_ATTR, attrClasses);
                 this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_RELS, relsClasses);
-                this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_LINKS, linksClasses);
+                this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_META, metaClasses);
 
             } catch (IOException ex) {
                 throw new EasyJsonApiInvalidPackageException("Invalid packages inserted!", ex);
