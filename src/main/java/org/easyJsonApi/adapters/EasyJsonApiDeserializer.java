@@ -52,9 +52,9 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
             if (!existJsonFormat) {
                 if (Assert.notNull(jsonElem.getAsJsonObject().get("data"))) {
-                    request = genericDeserializer(jsonElem, jsonContext);
+                    request = deserializerGeneric(jsonElem, jsonContext);
                 } else if (Assert.notNull(jsonElem.getAsJsonObject().get("errors"))) {
-                    request = errorDeserializer(jsonElem, jsonContext);
+                    request = deserializerError(jsonElem, jsonContext);
                 }
             }
         }
@@ -62,7 +62,44 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
         return request;
     }
 
-    private JsonApi genericDeserializer(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
+    private JsonApi deserializerError(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
+
+        JsonApi request = new JsonApi();
+
+        // Parse the attribute data
+        JsonArray jsonArrayErrors = jsonElem.getAsJsonObject().get("errors").getAsJsonArray();
+
+        // Iterate the data list
+        for (int index = 0; index < jsonArrayErrors.size(); index++) {
+            Error jsonApiError = new Error();
+
+            JsonObject jsonError = jsonArrayErrors.get(index).getAsJsonObject();
+
+            jsonApiError.setDetail(Assert.isNull(jsonError.get("detail")) ? null : jsonError.get("detail").getAsString());
+            jsonApiError.setCode(Assert.isNull(jsonError.get("code")) ? null : jsonError.get("code").getAsString());
+            jsonApiError.setTitle(Assert.isNull(jsonError.get("title")) ? null : jsonError.get("title").getAsString());
+            jsonApiError.setId(Assert.isNull(jsonError.get("id")) ? null : jsonError.get("id").getAsString());
+
+            // Get the source json
+            if (Assert.notNull(jsonError.get("source"))) {
+                JsonObject jsonErrorSource = jsonError.get("source").getAsJsonObject();
+                Source objSource = jsonContext.deserialize(jsonErrorSource, Source.class);
+                jsonApiError.setSource(objSource);
+            }
+
+            // Get the links json
+            // if (Assert.notNull(jsonError.get("links"))) {
+            // JsonObject jsonAttr = jsonError.get("links").getAsJsonObject();
+            // Link objAttr = jsonContext.deserialize(jsonAttr, Link.class);
+            // }
+
+            request.getErrors().add(jsonApiError);
+        }
+
+        return request;
+    }
+
+    private JsonApi deserializerGeneric(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
 
         JsonApi request = new JsonApi();
 
@@ -105,43 +142,6 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
                 request.getData().add(jsonApiData);
             }
-        }
-
-        return request;
-    }
-
-    private JsonApi errorDeserializer(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
-
-        JsonApi request = new JsonApi();
-
-        // Parse the attribute data
-        JsonArray jsonArrayErrors = jsonElem.getAsJsonObject().get("errors").getAsJsonArray();
-
-        // Iterate the data list
-        for (int index = 0; index < jsonArrayErrors.size(); index++) {
-            Error jsonApiError = new Error();
-
-            JsonObject jsonError = jsonArrayErrors.get(index).getAsJsonObject();
-
-            jsonApiError.setDetail(Assert.isNull(jsonError.get("detail")) ? null : jsonError.get("detail").getAsString());
-            jsonApiError.setCode(Assert.isNull(jsonError.get("code")) ? null : jsonError.get("code").getAsString());
-            jsonApiError.setTitle(Assert.isNull(jsonError.get("title")) ? null : jsonError.get("title").getAsString());
-            jsonApiError.setId(Assert.isNull(jsonError.get("id")) ? null : jsonError.get("id").getAsString());
-
-            // Get the source json
-            if (Assert.notNull(jsonError.get("source"))) {
-                JsonObject jsonErrorSource = jsonError.get("source").getAsJsonObject();
-                Source objSource = jsonContext.deserialize(jsonErrorSource, Source.class);
-                jsonApiError.setSource(objSource);
-            }
-
-            // Get the links json
-            // if (Assert.notNull(jsonError.get("links"))) {
-            // JsonObject jsonAttr = jsonError.get("links").getAsJsonObject();
-            // Link objAttr = jsonContext.deserialize(jsonAttr, Link.class);
-            // }
-
-            request.getErrors().add(jsonApiError);
         }
 
         return request;

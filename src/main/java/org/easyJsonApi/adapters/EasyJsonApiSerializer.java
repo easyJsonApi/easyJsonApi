@@ -23,6 +23,7 @@ import java.lang.reflect.Type;
 
 import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.entities.Data;
+import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.JsonApi;
 
 import com.google.gson.JsonArray;
@@ -35,6 +36,75 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
     @Override
     public JsonElement serialize(JsonApi request, Type typeOfSrc, JsonSerializationContext context) {
+
+        JsonObject jsonElem = new JsonObject();
+
+        if (Assert.notNull(request)) {
+            if (!request.getData().isEmpty() && !request.getErrors().isEmpty()) {
+                // TODO: throw an exception when lists have values in the same
+                // time
+            } else if (!request.getData().isEmpty()) {
+                return serializerGeneric(request, context);
+            } else if (!request.getErrors().isEmpty()) {
+                return serializerError(request, context);
+            }
+        }
+
+        // TODO: Maybe it's best to throw an exception ??
+        return jsonElem;
+
+    }
+
+    private JsonElement serializerError(JsonApi request, JsonSerializationContext context) {
+
+        JsonObject jsonElem = new JsonObject();
+
+        JsonArray jsonArrayErrors = new JsonArray();
+
+        for (Error requestError : request.getErrors()) {
+
+            JsonObject jsonError = new JsonObject();
+
+            if (Assert.notEmpty(requestError.getId())) {
+                jsonError.addProperty("id", requestError.getId());
+            }
+
+            if (Assert.notEmpty(requestError.getTitle())) {
+                jsonError.addProperty("title", requestError.getTitle());
+            }
+
+            if (Assert.notEmpty(requestError.getCode())) {
+                jsonError.addProperty("code", requestError.getCode());
+            }
+
+            if (Assert.notEmpty(requestError.getDetail())) {
+                jsonError.addProperty("detail", requestError.getDetail());
+            }
+
+            if (Assert.notNull(requestError.getStatus())) {
+                jsonError.addProperty("status", String.valueOf(requestError.getStatus().getCode()));
+            }
+
+            if (Assert.notNull(requestError.getSource())) {
+                // TODO: Need to do
+                // jsonError.addProperty("source", requestError.getDetail());
+            }
+
+            if (Assert.notNull(requestError.getMeta())) {
+                // TODO: Need to do
+                // jsonError.addProperty("meta", requestError.getDetail());
+            }
+
+            jsonArrayErrors.add(jsonError);
+        }
+
+        jsonElem.add("errors", jsonArrayErrors);
+
+        return jsonElem;
+
+    }
+
+    private JsonElement serializerGeneric(JsonApi request, JsonSerializationContext context) {
 
         JsonObject jsonElem = new JsonObject();
 
@@ -74,6 +144,7 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
         jsonElem.add("data", jsonArrayData);
 
         return jsonElem;
+
     }
 
 }
