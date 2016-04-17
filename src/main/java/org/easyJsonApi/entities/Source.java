@@ -23,25 +23,11 @@ import com.google.gson.annotations.SerializedName;
 
 public class Source {
 
-    @SerializedName(value = "pointer")
-    private String pointer;
-
     @SerializedName(value = "parameter")
     private String parameter;
 
-    /**
-     * @return the pointer
-     */
-    public String getPointer() {
-        return pointer;
-    }
-
-    /**
-     * @param pointer the pointer to set
-     */
-    public void setPointer(String pointer) {
-        this.pointer = pointer;
-    }
+    @SerializedName(value = "pointer")
+    private String pointer;
 
     /**
      * @return the parameter
@@ -51,10 +37,24 @@ public class Source {
     }
 
     /**
+     * @return the pointer
+     */
+    public String getPointer() {
+        return pointer;
+    }
+
+    /**
      * @param parameter the parameter to set
      */
     public void setParameter(String parameter) {
         this.parameter = parameter;
+    }
+
+    /**
+     * @param pointer the pointer to set
+     */
+    public void setPointer(String pointer) {
+        this.pointer = pointer;
     }
 
 }

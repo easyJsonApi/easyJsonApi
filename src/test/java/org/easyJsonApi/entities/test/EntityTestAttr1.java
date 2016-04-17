@@ -40,13 +40,6 @@ public class EntityTestAttr1 {
     }
 
     /**
-     * @param attr1 the attr1 to set
-     */
-    public void setAttr1(String attr1) {
-        this.attr1 = attr1;
-    }
-
-    /**
      * @return the attr2
      */
     public BigDecimal getAttr2() {
@@ -54,17 +47,24 @@ public class EntityTestAttr1 {
     }
 
     /**
-     * @param attr2 the attr2 to set
-     */
-    public void setAttr2(BigDecimal attr2) {
-        this.attr2 = attr2;
-    }
-
-    /**
      * @return the attr3
      */
     public EntityDependencyTest getAttr3() {
         return attr3;
+    }
+
+    /**
+     * @param attr1 the attr1 to set
+     */
+    public void setAttr1(String attr1) {
+        this.attr1 = attr1;
+    }
+
+    /**
+     * @param attr2 the attr2 to set
+     */
+    public void setAttr2(BigDecimal attr2) {
+        this.attr2 = attr2;
     }
 
     /**

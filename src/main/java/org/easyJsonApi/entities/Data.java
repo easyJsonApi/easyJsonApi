@@ -28,33 +28,26 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Data {
 
-    @SerializedName(value = "type")
-    private String type;
+    @SerializedName(value = "attributes")
+    private Object attr;
 
     @SerializedName(value = "id")
     private String id;
 
-    @SerializedName(value = "attributes")
-    private Object attr;
+    @SerializedName(value = "links")
+    private Object links;
 
     @SerializedName(value = "relationships")
     private Object rels;
 
-    @SerializedName(value = "links")
-    private Object links;
+    @SerializedName(value = "type")
+    private String type;
 
     /**
-     * @return the type
+     * @return the attr
      */
-    public String getType() {
-        return type;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
+    public Object getAttr() {
+        return attr;
     }
 
     /**
@@ -65,24 +58,10 @@ public class Data {
     }
 
     /**
-     * @param id the id to set
+     * @return the links
      */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * @return the attr
-     */
-    public Object getAttr() {
-        return attr;
-    }
-
-    /**
-     * @param attr the attr to set
-     */
-    public void setAttr(Object attr) {
-        this.attr = attr;
+    public Object getLinks() {
+        return links;
     }
 
     /**
@@ -93,17 +72,24 @@ public class Data {
     }
 
     /**
-     * @param rels the rels to set
+     * @return the type
      */
-    public void setRels(Object rels) {
-        this.rels = rels;
+    public String getType() {
+        return type;
     }
 
     /**
-     * @return the links
+     * @param attr the attr to set
      */
-    public Object getLinks() {
-        return links;
+    public void setAttr(Object attr) {
+        this.attr = attr;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
     }
 
     /**
@@ -111,6 +97,20 @@ public class Data {
      */
     public void setLinks(Object links) {
         this.links = links;
+    }
+
+    /**
+     * @param rels the rels to set
+     */
+    public void setRels(Object rels) {
+        this.rels = rels;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
     /*

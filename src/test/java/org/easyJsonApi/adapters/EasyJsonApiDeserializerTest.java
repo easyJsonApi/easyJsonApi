@@ -41,6 +41,28 @@ import com.google.gson.JsonParser;
 public class EasyJsonApiDeserializerTest {
 
     @Test
+    public void genericDeserializerTest() throws EasyJsonApiInvalidPackageException {
+
+        JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
+
+        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
+        EasyJsonApiDeserializer deserializer = new EasyJsonApiDeserializer();
+        deserializer.setConfig(config);
+        deserializer.setClassesUsed(EntityTestAttr1.class);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElem = jsonParser.parse("{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { } } ] }").getAsJsonObject();
+
+        JsonApi responseJsonApi = deserializer.deserialize(jsonElem, null, deserializerContext);
+
+        Assert.assertNotNull(responseJsonApi);
+        Assert.assertEquals("TEST", responseJsonApi.getData().get(0).getType());
+        Assert.assertEquals("1", responseJsonApi.getData().get(0).getId());
+        Assert.assertEquals(1, responseJsonApi.getData().size());
+
+    }
+
+    @Test
     public void setClassesUsedTest() throws EasyJsonApiInvalidPackageException {
 
         JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
@@ -67,28 +89,6 @@ public class EasyJsonApiDeserializerTest {
         Assert.assertEquals("TEST", responseJsonApi.getData().get(0).getType());
         Assert.assertEquals("1", responseJsonApi.getData().get(0).getId());
         Assert.assertEquals("Attribute_1", ((EntityTestAttr2) responseJsonApi.getData().get(0).getAttr()).getAttr1());
-
-    }
-
-    @Test
-    public void genericDeserializerTest() throws EasyJsonApiInvalidPackageException {
-
-        JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
-
-        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
-        EasyJsonApiDeserializer deserializer = new EasyJsonApiDeserializer();
-        deserializer.setConfig(config);
-        deserializer.setClassesUsed(EntityTestAttr1.class);
-
-        JsonParser jsonParser = new JsonParser();
-        JsonElement jsonElem = jsonParser.parse("{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { } } ] }").getAsJsonObject();
-
-        JsonApi responseJsonApi = deserializer.deserialize(jsonElem, null, deserializerContext);
-
-        Assert.assertNotNull(responseJsonApi);
-        Assert.assertEquals("TEST", responseJsonApi.getData().get(0).getType());
-        Assert.assertEquals("1", responseJsonApi.getData().get(0).getId());
-        Assert.assertEquals(1, responseJsonApi.getData().size());
 
     }
 

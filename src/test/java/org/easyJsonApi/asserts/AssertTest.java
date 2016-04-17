@@ -27,6 +27,15 @@ import org.junit.Test;
 public class AssertTest {
 
     @Test
+    public void isEmptyTest() {
+
+        assertTrue(Assert.isEmpty(""));
+        assertTrue(Assert.isEmpty(null));
+        assertFalse(Assert.isEmpty("Test"));
+
+    }
+
+    @Test
     public void isNullTest() {
 
         assertFalse(Assert.isNull("test", null, ""));
@@ -41,26 +50,17 @@ public class AssertTest {
     }
 
     @Test
-    public void notNullTest() {
-
-        assertTrue(Assert.notNull("test"));
-
-    }
-
-    @Test
-    public void isEmptyTest() {
-
-        assertTrue(Assert.isEmpty(""));
-        assertTrue(Assert.isEmpty(null));
-        assertFalse(Assert.isEmpty("Test"));
-
-    }
-
-    @Test
     public void notEmptyTest() {
 
         assertTrue(Assert.notEmpty("Test"));
         assertFalse(Assert.notEmpty(""));
+
+    }
+
+    @Test
+    public void notNullTest() {
+
+        assertTrue(Assert.notNull("test"));
 
     }
 

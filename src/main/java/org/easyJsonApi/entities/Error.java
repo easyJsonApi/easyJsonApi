@@ -23,81 +23,32 @@ import com.google.gson.annotations.SerializedName;
 
 public class Error {
 
-    @SerializedName(value = "id")
-    private String id;
-
-    @SerializedName(value = "status")
-    private HttpStatus status;
-
     @SerializedName(value = "code")
     private String code;
-
-    @SerializedName(value = "title")
-    private String title;
 
     @SerializedName(value = "detail")
     private String detail;
 
-    @SerializedName(value = "source")
-    private Source source;
+    @SerializedName(value = "id")
+    private String id;
 
     @SerializedName(value = "meta")
     private Object meta;
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
-    }
+    @SerializedName(value = "source")
+    private Source source;
 
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
+    @SerializedName(value = "status")
+    private HttpStatus status;
 
-    /**
-     * @return the status
-     */
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    /**
-     * @param status the status to set
-     */
-    public void setStatus(HttpStatus status) {
-        this.status = status;
-    }
+    @SerializedName(value = "title")
+    private String title;
 
     /**
      * @return the code
      */
     public String getCode() {
         return code;
-    }
-
-    /**
-     * @param code the code to set
-     */
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    /**
-     * @return the title
-     */
-    public String getTitle() {
-        return title;
-    }
-
-    /**
-     * @param title the title to set
-     */
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     /**
@@ -108,24 +59,10 @@ public class Error {
     }
 
     /**
-     * @param detail the detail to set
+     * @return the id
      */
-    public void setDetail(String detail) {
-        this.detail = detail;
-    }
-
-    /**
-     * @return the source
-     */
-    public Source getSource() {
-        return source;
-    }
-
-    /**
-     * @param source the source to set
-     */
-    public void setSource(Source source) {
-        this.source = source;
+    public String getId() {
+        return id;
     }
 
     /**
@@ -136,10 +73,73 @@ public class Error {
     }
 
     /**
+     * @return the source
+     */
+    public Source getSource() {
+        return source;
+    }
+
+    /**
+     * @return the status
+     */
+    public HttpStatus getStatus() {
+        return status;
+    }
+
+    /**
+     * @return the title
+     */
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param code the code to set
+     */
+    public void setCode(String code) {
+        this.code = code;
+    }
+
+    /**
+     * @param detail the detail to set
+     */
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
      * @param meta the meta to set
      */
     public void setMeta(Object meta) {
         this.meta = meta;
+    }
+
+    /**
+     * @param source the source to set
+     */
+    public void setSource(Source source) {
+        this.source = source;
+    }
+
+    /**
+     * @param status the status to set
+     */
+    public void setStatus(HttpStatus status) {
+        this.status = status;
+    }
+
+    /**
+     * @param title the title to set
+     */
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     /*

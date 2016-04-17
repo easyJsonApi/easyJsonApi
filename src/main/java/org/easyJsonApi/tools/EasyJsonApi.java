@@ -51,20 +51,6 @@ public class EasyJsonApi {
 
     private static EasyJsonApi easyJsonApi = null;
 
-    private EasyJsonApiConfig easyJsonApiConfig = null;
-
-    private EasyJsonApiDeserializer deserializerJsonApi;
-
-    private EasyJsonApiSerializer serializerJsonApi;
-
-    /**
-     * The private construction for singleton
-     */
-    private EasyJsonApi() {
-        deserializerJsonApi = new EasyJsonApiDeserializer();
-        serializerJsonApi = new EasyJsonApiSerializer();
-    }
-
     /**
      * Get the EasyJsonApi instance
      * 
@@ -78,22 +64,67 @@ public class EasyJsonApi {
         return easyJsonApi;
     }
 
+    private EasyJsonApiDeserializer deserializerJsonApi;
+
+    private EasyJsonApiConfig easyJsonApiConfig = null;
+
+    private EasyJsonApiSerializer serializerJsonApi;
+
     /**
-     * Set the configuration of EasyJsonApi {@link EasyJsonApiConfig}
-     * 
-     * @param config the configuration of EasyJsonApi
+     * The private construction for singleton
      */
-    public void setConfig(EasyJsonApiConfig config) {
-        this.easyJsonApiConfig = config;
+    private EasyJsonApi() {
+        deserializerJsonApi = new EasyJsonApiDeserializer();
+        serializerJsonApi = new EasyJsonApiSerializer();
     }
 
     /**
-     * Set the configuration of EasyJsonApi using default configuration
-     * {@link EasyJsonApiConfig}
+     * Convert one {@link JsonApi} object into json api string
+     * 
+     * @param jsonApi the json api object
+     * @return the string with json api format
+     * @throws EasyJsonApiMalformedJsonException
      */
-    private void setConfigDefault() {
-        // TODO: Create the default configuration
-        throw new UnsupportedOperationException("Need create the default configuration!");
+    public String convertJsonApiToString(JsonApi json) throws EasyJsonApiMalformedJsonException {
+        return convertJsonApiToString(json, new Class[0]);
+    }
+
+    /**
+     * Convert one {@link JsonApi} object into json api string with utilized
+     * classes inside the object
+     * 
+     * @param json the json api object
+     * @param classes the classes utilized inside the object
+     * @return the string with json api format
+     * @throws EasyJsonApiMalformedJsonException
+     */
+    public String convertJsonApiToString(JsonApi json, Class<?>... classes) throws EasyJsonApiMalformedJsonException {
+
+        if (Assert.isNull(json)) {
+            return null;
+        }
+
+        GsonBuilder builder = new GsonBuilder();
+        builder.setPrettyPrinting();
+
+        if (Assert.isNull(this.easyJsonApiConfig)) {
+            setConfigDefault();
+        }
+
+        this.serializerJsonApi.setConfig(this.easyJsonApiConfig);
+        this.serializerJsonApi.setClassesUsed(classes);
+
+        builder.registerTypeAdapter(JsonApi.class, this.serializerJsonApi);
+
+        String jsonApi = null;
+
+        try {
+            jsonApi = builder.create().toJson(json);
+        } catch (JsonSyntaxException ex) {
+            throw new EasyJsonApiMalformedJsonException("Problem with json sended!", ex);
+        }
+
+        return jsonApi;
     }
 
     /**
@@ -167,52 +198,21 @@ public class EasyJsonApi {
     }
 
     /**
-     * Convert one {@link JsonApi} object into json api string
+     * Set the configuration of EasyJsonApi {@link EasyJsonApiConfig}
      * 
-     * @param jsonApi the json api object
-     * @return the string with json api format
-     * @throws EasyJsonApiMalformedJsonException
+     * @param config the configuration of EasyJsonApi
      */
-    public String convertJsonApiToString(JsonApi json) throws EasyJsonApiMalformedJsonException {
-        return convertJsonApiToString(json, new Class[0]);
+    public void setConfig(EasyJsonApiConfig config) {
+        this.easyJsonApiConfig = config;
     }
 
     /**
-     * Convert one {@link JsonApi} object into json api string with utilized
-     * classes inside the object
-     * 
-     * @param json the json api object
-     * @param classes the classes utilized inside the object
-     * @return the string with json api format
-     * @throws EasyJsonApiMalformedJsonException
+     * Set the configuration of EasyJsonApi using default configuration
+     * {@link EasyJsonApiConfig}
      */
-    public String convertJsonApiToString(JsonApi json, Class<?>... classes) throws EasyJsonApiMalformedJsonException {
-
-        if (Assert.isNull(json)) {
-            return null;
-        }
-
-        GsonBuilder builder = new GsonBuilder();
-        builder.setPrettyPrinting();
-
-        if (Assert.isNull(this.easyJsonApiConfig)) {
-            setConfigDefault();
-        }
-
-        this.serializerJsonApi.setConfig(this.easyJsonApiConfig);
-        this.serializerJsonApi.setClassesUsed(classes);
-
-        builder.registerTypeAdapter(JsonApi.class, this.serializerJsonApi);
-
-        String jsonApi = null;
-
-        try {
-            jsonApi = builder.create().toJson(json);
-        } catch (JsonSyntaxException ex) {
-            throw new EasyJsonApiMalformedJsonException("Problem with json sended!", ex);
-        }
-
-        return jsonApi;
+    private void setConfigDefault() {
+        // TODO: Create the default configuration
+        throw new UnsupportedOperationException("Need create the default configuration!");
     }
 
 }

@@ -58,17 +58,17 @@ public class JsonApi {
     }
 
     /**
-     * @param errors the errors to set
-     */
-    public void setErrors(List<Error> errors) {
-        this.errors = errors;
-    }
-
-    /**
      * @param data the data to set
      */
     public void setData(List<Data> data) {
         this.data = data;
+    }
+
+    /**
+     * @param errors the errors to set
+     */
+    public void setErrors(List<Error> errors) {
+        this.errors = errors;
     }
 
     /*

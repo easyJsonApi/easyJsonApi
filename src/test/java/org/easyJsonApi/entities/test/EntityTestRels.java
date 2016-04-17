@@ -24,23 +24,9 @@ import org.easyJsonApi.annotations.Relationships;
 @Relationships
 public class EntityTestRels {
 
-    private String name;
-
     private String age;
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
-
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    private String name;
 
     /**
      * @return the age
@@ -50,10 +36,24 @@ public class EntityTestRels {
     }
 
     /**
+     * @return the name
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
      * @param age the age to set
      */
     public void setAge(String age) {
         this.age = age;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 
 }

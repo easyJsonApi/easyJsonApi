@@ -44,9 +44,9 @@ import com.google.common.reflect.ClassPath;
  */
 public class EasyJsonApiConfig {
 
-    private String[] packagesSearched;
-
     private Map<EasyJsonApiTypeToken, List<Class<?>>> classesParsed = new HashMap<>();
+
+    private String[] packagesSearched;
 
     /**
      * The default constructor
@@ -62,6 +62,24 @@ public class EasyJsonApiConfig {
      */
     public EasyJsonApiConfig(String... packages) throws EasyJsonApiInvalidPackageException {
         setPackagesToSearch(packages);
+    }
+
+    /**
+     * Get the array with all classes parsed
+     * 
+     * @return the classesParsed the classes parsed
+     */
+    public Map<EasyJsonApiTypeToken, List<Class<?>>> getClassesParsed() {
+        return classesParsed;
+    }
+
+    /**
+     * Get the array with packages searched
+     * 
+     * @return the packagesSearched the packages searched
+     */
+    public String[] getPackagesSearched() {
+        return packagesSearched;
     }
 
     /**
@@ -104,24 +122,6 @@ public class EasyJsonApiConfig {
                 throw new EasyJsonApiInvalidPackageException("Invalid packages inserted!", ex);
             }
         }
-    }
-
-    /**
-     * Get the array with packages searched
-     * 
-     * @return the packagesSearched the packages searched
-     */
-    public String[] getPackagesSearched() {
-        return packagesSearched;
-    }
-
-    /**
-     * Get the array with all classes parsed
-     * 
-     * @return the classesParsed the classes parsed
-     */
-    public Map<EasyJsonApiTypeToken, List<Class<?>>> getClassesParsed() {
-        return classesParsed;
     }
 
 }
