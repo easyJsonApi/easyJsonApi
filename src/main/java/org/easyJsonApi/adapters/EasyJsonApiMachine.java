@@ -41,6 +41,8 @@ public class EasyJsonApiMachine implements TypeControl {
     @Override
     public void setClassesUsed(Class<?>... clazz) {
 
+        this.tokenTypesToUse.clear();
+
         if (this.classesUsedInJson.isEmpty()) {
             this.classesUsedInJson.addAll(Arrays.asList(clazz));
         } else {
@@ -50,13 +52,19 @@ public class EasyJsonApiMachine implements TypeControl {
             }
         }
 
-        for (Map.Entry<EasyJsonApiTypeToken, List<Class<?>>> clazzMapping : this.config.getClassesParsed().entrySet()) {
-            List<Class<?>> classes = clazzMapping.getValue();
+        if (this.config.getClassesParsed().isEmpty()) {
+            // Use Map structure to support the default configuration
+            Type mapType = TypeToken.get(Map.class).getType();
+            this.tokenTypesToUse.put(EasyJsonApiTypeToken.TOKEN_DEFAULT, mapType);
+        } else {
+            for (Map.Entry<EasyJsonApiTypeToken, List<Class<?>>> clazzMapping : this.config.getClassesParsed().entrySet()) {
+                List<Class<?>> classes = clazzMapping.getValue();
 
-            for (Class<?> cla : classes) {
-                if (this.classesUsedInJson.contains(cla)) {
-                    Type classType = TypeToken.get(cla).getType();
-                    this.tokenTypesToUse.put(clazzMapping.getKey(), classType);
+                for (Class<?> cla : classes) {
+                    if (this.classesUsedInJson.contains(cla)) {
+                        Type classType = TypeToken.get(cla).getType();
+                        this.tokenTypesToUse.put(clazzMapping.getKey(), classType);
+                    }
                 }
             }
         }

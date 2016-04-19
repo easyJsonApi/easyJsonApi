@@ -211,8 +211,10 @@ public class EasyJsonApi {
      * {@link EasyJsonApiConfig}
      */
     private void setConfigDefault() {
-        // TODO: Create the default configuration
-        throw new UnsupportedOperationException("Need create the default configuration!");
+
+        EasyJsonApiConfig configuration = new EasyJsonApiConfig();
+        this.easyJsonApiConfig = configuration;
+
     }
 
 }

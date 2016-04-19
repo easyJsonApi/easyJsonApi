@@ -20,6 +20,8 @@
 package org.easyJsonApi.tools;
 
 import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
@@ -362,8 +364,12 @@ public class EasyJsonApiTest {
 
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void convertWithDefaultConfigurationJsonApiToStringTest() throws EasyJsonApiMalformedJsonException {
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElemExpected = null;
+        JsonElement jsonElemResult = null;
 
         JsonApi request = new JsonApi();
 
@@ -371,26 +377,40 @@ public class EasyJsonApiTest {
         dataRequest.setId("Test");
         dataRequest.setType("REQUEST_JSON_API");
 
-        EntityTestAttr1 entityTest = new EntityTestAttr1();
-        entityTest.setAttr1("Test entity dependency");
-        entityTest.setAttr2(new BigDecimal(10));
+        Map<String, String> attrMap = new HashMap<>();
+        attrMap.put("Test", "100");
+        attrMap.put("Test2", "200");
 
-        dataRequest.setAttr(entityTest);
+        dataRequest.setAttr(attrMap);
 
         request.getData().add(dataRequest);
 
+        // Set the configuration to null for using default map type
         jsonMaker.setConfig(null);
-        jsonMaker.convertJsonApiToString(request);
+        jsonApiStringResult = jsonMaker.convertJsonApiToString(request);
+
+        jsonElemExpected = jsonParser
+                .parse("{ 'data': [ { 'id': 'Test', 'type': 'REQUEST_JSON_API', 'attributes': { 'Test': '100', 'Test2': '200' } } ] }")
+                .getAsJsonObject();
+        jsonElemResult = jsonParser.parse(jsonApiStringResult).getAsJsonObject();
+
+        Assert.assertNotNull(jsonApiStringResult);
+        Assert.assertEquals(jsonElemExpected, jsonElemResult);
 
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void convertWithDefaultConfigurationStringToJsonApiTest() throws EasyJsonApiException {
 
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { 'attr1': 'Test Unit 2' } } ] }";
 
         jsonMaker.setConfig(null);
-        jsonMaker.convertStringToJsonApi(jsonApiString);
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
+
+        Assert.assertNotNull(jsonApiObjectResult);
+        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
+        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
+        Assert.assertEquals("Test Unit 2", ((Map<?, ?>) jsonApiObjectResult.getData().get(0).getAttr()).get("attr1"));
 
     }
 
@@ -402,4 +422,5 @@ public class EasyJsonApiTest {
 
         jsonApiString = "";
     }
+
 }

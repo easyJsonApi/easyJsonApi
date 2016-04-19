@@ -123,17 +123,29 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
             }
 
             if (Assert.notNull(requestData.getAttr())) {
-                JsonElement jsonAttr = context.serialize(requestData.getAttr(), this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR));
+
+                Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                        ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR);
+
+                JsonElement jsonAttr = context.serialize(requestData.getAttr(), type);
                 jsonData.add("attributes", jsonAttr);
             }
 
             if (Assert.notNull(requestData.getRels())) {
-                JsonElement jsonRels = context.serialize(requestData.getRels(), this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS));
+
+                Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                        ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS);
+
+                JsonElement jsonRels = context.serialize(requestData.getRels(), type);
                 jsonData.add("relationships", jsonRels);
             }
 
             if (Assert.notNull(requestData.getLinks())) {
-                JsonElement jsonLinks = context.serialize(requestData.getLinks(), this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS));
+
+                Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                        ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS);
+
+                JsonElement jsonLinks = context.serialize(requestData.getLinks(), type);
                 jsonData.add("links", jsonLinks);
             }
 

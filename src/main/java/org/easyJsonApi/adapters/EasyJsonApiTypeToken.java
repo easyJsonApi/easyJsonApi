@@ -26,7 +26,7 @@ package org.easyJsonApi.adapters;
  */
 public enum EasyJsonApiTypeToken {
 
-    TOKEN_ATTR("TOKEN_ATTR"), TOKEN_LINKS("TOKEN_LINKS"), TOKEN_META("TOKEN_META"), TOKEN_RELS("TOKEN_RELS");
+    TOKEN_ATTR("TOKEN_ATTR"), TOKEN_DEFAULT("TOKEN_DEFAULT"), TOKEN_LINKS("TOKEN_LINKS"), TOKEN_META("TOKEN_META"), TOKEN_RELS("TOKEN_RELS");
 
     private String key;
 

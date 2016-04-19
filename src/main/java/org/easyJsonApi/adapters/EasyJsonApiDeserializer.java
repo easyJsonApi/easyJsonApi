@@ -105,7 +105,8 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
         // FIXME: Find solution for this validation
         if (this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_ATTR) || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_RELS)
-                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_META)) {
+                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_META)
+                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_DEFAULT)) {
 
             // Parse the attribute data
             JsonArray jsonArrayData = jsonElem.getAsJsonObject().get("data").getAsJsonArray();
@@ -122,21 +123,36 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                 // Get the attributes json
                 if (Assert.notNull(jsonData.get("attributes"))) {
                     JsonObject jsonAttr = jsonData.get("attributes").getAsJsonObject();
-                    Object objAttr = jsonContext.deserialize(jsonAttr, this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR));
+
+                    Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                            ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
+                            : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR);
+
+                    Object objAttr = jsonContext.deserialize(jsonAttr, type);
                     jsonApiData.setAttr(objAttr);
                 }
 
                 // Get the relationships json
                 if (Assert.notNull(jsonData.get("relationships"))) {
                     JsonObject jsonRels = jsonData.get("relationships").getAsJsonObject();
-                    Object objRels = jsonContext.deserialize(jsonRels, this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS));
+
+                    Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                            ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
+                            : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS);
+
+                    Object objRels = jsonContext.deserialize(jsonRels, type);
                     jsonApiData.setRels(objRels);
                 }
 
                 // Get the links json
                 if (Assert.notNull(jsonData.get("links"))) {
                     JsonObject jsonLinks = jsonData.get("links").getAsJsonObject();
-                    Object objLinks = jsonContext.deserialize(jsonLinks, this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS));
+
+                    Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                            ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
+                            : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS);
+
+                    Object objLinks = jsonContext.deserialize(jsonLinks, type);
                     jsonApiData.setLinks(objLinks);
                 }
 
