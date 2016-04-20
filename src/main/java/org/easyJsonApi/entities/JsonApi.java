@@ -25,9 +25,9 @@ import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Pojo represents the Request object in json api specification
+ * Entity represents the contract object in json api specification
  * 
- * @author nbento.neves@gmail.com
+ * @author Nuno Bento (nbento.neves@gmail.com)
  */
 public class JsonApi {
 

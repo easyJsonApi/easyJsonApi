@@ -39,7 +39,7 @@ import com.google.common.reflect.ClassPath;
  * This class allows to parsing the packages defined into the
  * {@link EasyJsonApiConfig#packagesSearched} inside the class
  * 
- * @author Nuno Bento
+ * @author Nuno Bento (nbento.neves@gmail.com)
  * @version %I%, %G%
  */
 public class EasyJsonApiConfig {
@@ -57,8 +57,7 @@ public class EasyJsonApiConfig {
      * The constructor with packages attributes
      * 
      * @param packages the packages needs to be search and parsing
-     * @throws EasyJsonApiInvalidPackageException If packages searched be
-     *             invalid
+     * @throws EasyJsonApiInvalidPackageException
      */
     public EasyJsonApiConfig(String... packages) throws EasyJsonApiInvalidPackageException {
         setPackagesToSearch(packages);
@@ -86,8 +85,7 @@ public class EasyJsonApiConfig {
      * Set the packages to search
      * 
      * @param packages the packages needs to be search and parsing
-     * @throws EasyJsonApiInvalidPackageException If packages searched be
-     *             invalid
+     * @throws EasyJsonApiInvalidPackageException
      */
     public void setPackagesToSearch(String... packages) throws EasyJsonApiInvalidPackageException {
 

@@ -34,9 +34,9 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
 /**
- * This is a main class of EasyJsonApi api. Is a singleton what you need to use
- * for convert the json strings to json objects, and vice-versa.
- * This class contain mechanisms to serializer and deserializer the json api
+ * This is a main class of EasyJsonApi. It is a singleton which you need to use
+ * in order to convert the json string to json object, and vice-versa.
+ * This class contain mechanisms to serialize and deserialize the json api
  * information, you only need to set the configuration, or use the default
  * configuration, and enter the json api with classes utilized inside the json
  * api.
@@ -44,7 +44,7 @@ import com.google.gson.JsonSyntaxException;
  * @see EasyJsonApiConfig the configuration of EasyJsonApi
  * @see EasyJsonApiSerializer the serializer of EasyJsonApi
  * @see EasyJsonApiDeserializer the deserializer of EasyJsonApi
- * @author Nuno Bento
+ * @author Nuno Bento (nbento.neves@gmail.com)
  * @version %I%, %G%
  */
 public class EasyJsonApi {
@@ -81,7 +81,7 @@ public class EasyJsonApi {
     /**
      * Convert one {@link JsonApi} object into json api string
      * 
-     * @param jsonApi the json api object
+     * @param json the json api object
      * @return the string with json api format
      * @throws EasyJsonApiMalformedJsonException
      */
@@ -90,8 +90,8 @@ public class EasyJsonApi {
     }
 
     /**
-     * Convert one {@link JsonApi} object into json api string with utilized
-     * classes inside the object
+     * Convert one {@link JsonApi} object into json api string with resource
+     * objects inside the object
      * 
      * @param json the json api object
      * @param classes the classes utilized inside the object
@@ -132,21 +132,20 @@ public class EasyJsonApi {
      * 
      * @param json the json api string
      * @return the {@link JsonApi} object
-     * @throws EasyJsonApiException if the json api string was any problem
+     * @throws EasyJsonApiException
      */
     public JsonApi convertStringToJsonApi(String json) throws EasyJsonApiException {
         return convertStringToJsonApi(json, new Class[0]);
     }
 
     /**
-     * Convert one string into {@link JsonApi} object with classes utilized
-     * inside the object
+     * Convert one string into {@link JsonApi} object with classes resource
+     * objects inside the object
      * 
      * @param json the json api string
-     * @param classes the classes utilized inside the json api
+     * @param classes the classes utilized inside the object
      * @return the {@link JsonApi} object
-     * @throws EasyJsonApiException if the json api string was any
-     *             problem
+     * @throws EasyJsonApiException
      */
     public JsonApi convertStringToJsonApi(String json, Class<?>... classes) throws EasyJsonApiException {
 
@@ -198,7 +197,7 @@ public class EasyJsonApi {
     }
 
     /**
-     * Set the configuration of EasyJsonApi {@link EasyJsonApiConfig}
+     * Set the configuration of EasyJsonApi
      * 
      * @param config the configuration of EasyJsonApi
      */
@@ -208,7 +207,6 @@ public class EasyJsonApi {
 
     /**
      * Set the configuration of EasyJsonApi using default configuration
-     * {@link EasyJsonApiConfig}
      */
     private void setConfigDefault() {
 

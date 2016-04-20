@@ -35,9 +35,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
 /**
- * Class helps deserialize the request received for json api specification
+ * Class helping deserializer the json api specification
  * 
- * @author nbento.neves@gmail.com
+ * @author Nuno Bento (nbento.neves@gmail.com)
  */
 public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonDeserializer<JsonApi> {
 
@@ -62,6 +62,13 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
         return request;
     }
 
+    /**
+     * Deserializer when occur an error
+     * 
+     * @param jsonElem the json element
+     * @param jsonContext the json context
+     * @return the json api object with values created
+     */
     private JsonApi deserializerError(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
 
         JsonApi request = new JsonApi();
@@ -99,6 +106,13 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
         return request;
     }
 
+    /**
+     * Deserializer when occur an success
+     * 
+     * @param jsonElem the json element
+     * @param jsonContext the json context
+     * @return the json api object with values created
+     */
     private JsonApi deserializerGeneric(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
 
         JsonApi request = new JsonApi();

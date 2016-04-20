@@ -32,21 +32,26 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonSerializationContext;
 import com.google.gson.JsonSerializer;
 
+/**
+ * Class helping serializer the json api specification
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSerializer<JsonApi> {
 
     @Override
-    public JsonElement serialize(JsonApi request, Type typeOfSrc, JsonSerializationContext context) {
+    public JsonElement serialize(JsonApi jsonApi, Type typeOfSrc, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 
-        if (Assert.notNull(request)) {
-            if (!request.getData().isEmpty() && !request.getErrors().isEmpty()) {
+        if (Assert.notNull(jsonApi)) {
+            if (!jsonApi.getData().isEmpty() && !jsonApi.getErrors().isEmpty()) {
                 // TODO: throw an exception when lists have values in the same
                 // time
-            } else if (!request.getData().isEmpty()) {
-                return serializerGeneric(request, context);
-            } else if (!request.getErrors().isEmpty()) {
-                return serializerError(request, context);
+            } else if (!jsonApi.getData().isEmpty()) {
+                return serializerGeneric(jsonApi, jsonContext);
+            } else if (!jsonApi.getErrors().isEmpty()) {
+                return serializerError(jsonApi, jsonContext);
             }
         }
 
@@ -55,42 +60,49 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
     }
 
-    private JsonElement serializerError(JsonApi request, JsonSerializationContext context) {
+    /**
+     * Serializer when occur an error
+     * 
+     * @param jsonApi the json object
+     * @param jsonContext the json context
+     * @return the json api object with values created
+     */
+    private JsonElement serializerError(JsonApi jsonApi, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 
         JsonArray jsonArrayErrors = new JsonArray();
 
-        for (Error requestError : request.getErrors()) {
+        for (Error jsonApiError : jsonApi.getErrors()) {
 
             JsonObject jsonError = new JsonObject();
 
-            if (Assert.notEmpty(requestError.getId())) {
-                jsonError.addProperty("id", requestError.getId());
+            if (Assert.notEmpty(jsonApiError.getId())) {
+                jsonError.addProperty("id", jsonApiError.getId());
             }
 
-            if (Assert.notEmpty(requestError.getTitle())) {
-                jsonError.addProperty("title", requestError.getTitle());
+            if (Assert.notEmpty(jsonApiError.getTitle())) {
+                jsonError.addProperty("title", jsonApiError.getTitle());
             }
 
-            if (Assert.notEmpty(requestError.getCode())) {
-                jsonError.addProperty("code", requestError.getCode());
+            if (Assert.notEmpty(jsonApiError.getCode())) {
+                jsonError.addProperty("code", jsonApiError.getCode());
             }
 
-            if (Assert.notEmpty(requestError.getDetail())) {
-                jsonError.addProperty("detail", requestError.getDetail());
+            if (Assert.notEmpty(jsonApiError.getDetail())) {
+                jsonError.addProperty("detail", jsonApiError.getDetail());
             }
 
-            if (Assert.notNull(requestError.getStatus())) {
-                jsonError.addProperty("status", String.valueOf(requestError.getStatus().getCode()));
+            if (Assert.notNull(jsonApiError.getStatus())) {
+                jsonError.addProperty("status", String.valueOf(jsonApiError.getStatus().getCode()));
             }
 
-            if (Assert.notNull(requestError.getSource())) {
+            if (Assert.notNull(jsonApiError.getSource())) {
                 // TODO: Need to do
                 // jsonError.addProperty("source", requestError.getDetail());
             }
 
-            if (Assert.notNull(requestError.getMeta())) {
+            if (Assert.notNull(jsonApiError.getMeta())) {
                 // TODO: Need to do
                 // jsonError.addProperty("meta", requestError.getDetail());
             }
@@ -104,48 +116,55 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
     }
 
-    private JsonElement serializerGeneric(JsonApi request, JsonSerializationContext context) {
+    /**
+     * Serializer when occur an success
+     * 
+     * @param jsonapi the json object
+     * @param jsonContext the json context
+     * @return the json api object with values created
+     */
+    private JsonElement serializerGeneric(JsonApi jsonapi, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 
         JsonArray jsonArrayData = new JsonArray();
 
-        for (Data requestData : request.getData()) {
+        for (Data jsonApiData : jsonapi.getData()) {
 
             JsonObject jsonData = new JsonObject();
 
-            if (Assert.notEmpty(requestData.getId())) {
-                jsonData.addProperty("id", requestData.getId());
+            if (Assert.notEmpty(jsonApiData.getId())) {
+                jsonData.addProperty("id", jsonApiData.getId());
             }
 
-            if (Assert.notEmpty(requestData.getType())) {
-                jsonData.addProperty("type", requestData.getType());
+            if (Assert.notEmpty(jsonApiData.getType())) {
+                jsonData.addProperty("type", jsonApiData.getType());
             }
 
-            if (Assert.notNull(requestData.getAttr())) {
+            if (Assert.notNull(jsonApiData.getAttr())) {
 
                 Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                         ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR);
 
-                JsonElement jsonAttr = context.serialize(requestData.getAttr(), type);
+                JsonElement jsonAttr = jsonContext.serialize(jsonApiData.getAttr(), type);
                 jsonData.add("attributes", jsonAttr);
             }
 
-            if (Assert.notNull(requestData.getRels())) {
+            if (Assert.notNull(jsonApiData.getRels())) {
 
                 Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                         ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS);
 
-                JsonElement jsonRels = context.serialize(requestData.getRels(), type);
+                JsonElement jsonRels = jsonContext.serialize(jsonApiData.getRels(), type);
                 jsonData.add("relationships", jsonRels);
             }
 
-            if (Assert.notNull(requestData.getLinks())) {
+            if (Assert.notNull(jsonApiData.getLinks())) {
 
                 Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                         ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS);
 
-                JsonElement jsonLinks = context.serialize(requestData.getLinks(), type);
+                JsonElement jsonLinks = jsonContext.serialize(jsonApiData.getLinks(), type);
                 jsonData.add("links", jsonLinks);
             }
 

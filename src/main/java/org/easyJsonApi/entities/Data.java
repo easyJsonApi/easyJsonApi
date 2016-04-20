@@ -22,9 +22,9 @@ package org.easyJsonApi.entities;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Pojo represents the Data object in json api specification
+ * Entity represents Data resource object in json api specification
  * 
- * @author nbento.neves@gmail.com
+ * @author Nuno Bento (nbento.neves@gmail.com)
  */
 public class Data {
 

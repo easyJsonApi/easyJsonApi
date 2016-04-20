@@ -30,7 +30,15 @@ import org.easyJsonApi.tools.EasyJsonApiConfig;
 
 import com.google.gson.reflect.TypeToken;
 
-public class EasyJsonApiMachine implements TypeControl {
+/**
+ * Abstract class with logic to decide which classes
+ * {@link EasyJsonApiDeserializer} and {@link EasyJsonApiSerializer} will use to
+ * create the json api structure, independently if you convert one json string
+ * to object or vice-versa
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
+public abstract class EasyJsonApiMachine {
 
     private LinkedList<Class<?>> classesUsedInJson = new LinkedList<>();
 
@@ -38,7 +46,11 @@ public class EasyJsonApiMachine implements TypeControl {
 
     protected Map<EasyJsonApiTypeToken, Type> tokenTypesToUse = new HashMap<>();
 
-    @Override
+    /**
+     * Set classes need to use when create the json api structure
+     * 
+     * @param clazz the class or classes need to use
+     */
     public void setClassesUsed(Class<?>... clazz) {
 
         this.tokenTypesToUse.clear();
@@ -70,7 +82,11 @@ public class EasyJsonApiMachine implements TypeControl {
         }
     }
 
-    @Override
+    /**
+     * Set the {@link EasyJsonApiConfig}
+     * 
+     * @param config the configuration
+     */
     public void setConfig(EasyJsonApiConfig config) {
         this.config = config;
     }

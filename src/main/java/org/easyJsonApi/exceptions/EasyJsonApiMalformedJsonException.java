@@ -19,6 +19,12 @@
  */
 package org.easyJsonApi.exceptions;
 
+/**
+ * Exception when EasyJsonApi for some reason can't create the json api
+ * structure
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class EasyJsonApiMalformedJsonException extends EasyJsonApiException {
 
     /**

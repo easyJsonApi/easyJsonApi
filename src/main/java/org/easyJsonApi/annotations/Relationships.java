@@ -24,6 +24,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * Metadata annotation represents the relationships resource object
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Relationships {}

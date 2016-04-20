@@ -21,6 +21,11 @@ package org.easyJsonApi.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Entity represents Link resource object in json api specification
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class Link {
 
     @SerializedName(value = "about")
@@ -38,6 +43,16 @@ public class Link {
      */
     public void setAbout(String about) {
         this.about = about;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Link [about=" + about + "]";
     }
 
 }

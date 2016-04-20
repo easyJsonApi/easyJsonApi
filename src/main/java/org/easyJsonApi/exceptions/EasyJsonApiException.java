@@ -19,6 +19,11 @@
  */
 package org.easyJsonApi.exceptions;
 
+/**
+ * Generic exception for EasyJsonApi
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class EasyJsonApiException extends Exception {
 
     /**

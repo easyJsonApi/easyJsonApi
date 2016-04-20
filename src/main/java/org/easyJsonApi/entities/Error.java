@@ -21,6 +21,11 @@ package org.easyJsonApi.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Entity represents Error resource object in json api specification
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class Error {
 
     @SerializedName(value = "code")

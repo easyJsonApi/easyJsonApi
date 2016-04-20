@@ -21,6 +21,11 @@ package org.easyJsonApi.entities;
 
 import com.google.gson.annotations.SerializedName;
 
+/**
+ * Entity represents Source resource object in json api specification
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class Source {
 
     @SerializedName(value = "parameter")
@@ -55,6 +60,16 @@ public class Source {
      */
     public void setPointer(String pointer) {
         this.pointer = pointer;
+    }
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Source [parameter=" + parameter + ", pointer=" + pointer + "]";
     }
 
 }

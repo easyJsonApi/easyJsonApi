@@ -19,6 +19,11 @@
  */
 package org.easyJsonApi.exceptions;
 
+/**
+ * Exception when it was defined invalid package to search meta annotations
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class EasyJsonApiInvalidPackageException extends EasyJsonApiException {
 
     /**

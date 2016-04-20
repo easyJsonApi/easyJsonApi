@@ -20,13 +20,17 @@
 package org.easyJsonApi.adapters;
 
 /**
- * Enum allows mapping type token
+ * Enum allows mapping type token for {@link EasyJsonApiMachine}
  * 
- * @author nbento.neves@gmail.com
+ * @author Nuno Bento (nbento.neves@gmail.com)
  */
 public enum EasyJsonApiTypeToken {
 
-    TOKEN_ATTR("TOKEN_ATTR"), TOKEN_DEFAULT("TOKEN_DEFAULT"), TOKEN_LINKS("TOKEN_LINKS"), TOKEN_META("TOKEN_META"), TOKEN_RELS("TOKEN_RELS");
+    TOKEN_ATTR("TOKEN_ATTR"),
+    TOKEN_DEFAULT("TOKEN_DEFAULT"),
+    TOKEN_LINKS("TOKEN_LINKS"),
+    TOKEN_META("TOKEN_META"),
+    TOKEN_RELS("TOKEN_RELS");
 
     private String key;
 
@@ -39,13 +43,6 @@ public enum EasyJsonApiTypeToken {
      */
     public String getKey() {
         return key;
-    }
-
-    /**
-     * @param key the key to set
-     */
-    public void setKey(String key) {
-        this.key = key;
     }
 
 }
