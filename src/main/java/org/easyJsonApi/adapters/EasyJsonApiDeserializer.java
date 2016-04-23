@@ -26,6 +26,7 @@ import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.JsonApi;
 import org.easyJsonApi.entities.Source;
+import org.easyJsonApi.exceptions.EasyJsonApiCastException;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -50,12 +51,17 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
             boolean existJsonFormat = jsonElem.getAsJsonObject().isJsonNull();
 
-            if (!existJsonFormat) {
-                if (Assert.notNull(jsonElem.getAsJsonObject().get("data"))) {
-                    request = deserializerGeneric(jsonElem, jsonContext);
-                } else if (Assert.notNull(jsonElem.getAsJsonObject().get("errors"))) {
-                    request = deserializerError(jsonElem, jsonContext);
+            try {
+                if (!existJsonFormat) {
+                    if (Assert.notNull(jsonElem.getAsJsonObject().get("data"))) {
+                        request = deserializerGeneric(jsonElem, jsonContext);
+                    } else if (Assert.notNull(jsonElem.getAsJsonObject().get("errors"))) {
+                        request = deserializerError(jsonElem, jsonContext);
+                    }
                 }
+            } catch (EasyJsonApiCastException exCast) {
+                // TODO
+                exCast.printStackTrace();
             }
         }
 
@@ -112,8 +118,9 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
      * @param jsonElem the json element
      * @param jsonContext the json context
      * @return the json api object with values created
+     * @throws EasyJsonApiCastException
      */
-    private JsonApi deserializerGeneric(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
+    private JsonApi deserializerGeneric(JsonElement jsonElem, JsonDeserializationContext jsonContext) throws EasyJsonApiCastException {
 
         JsonApi request = new JsonApi();
 
@@ -142,6 +149,10 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                             ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
                             : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR);
 
+                    if (Assert.isNull(type)) {
+                        throw new EasyJsonApiCastException("Doesn't find token for attributes resource object!");
+                    }
+
                     Object objAttr = jsonContext.deserialize(jsonAttr, type);
                     jsonApiData.setAttr(objAttr);
                 }
@@ -154,6 +165,10 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                             ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
                             : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS);
 
+                    if (Assert.isNull(type)) {
+                        throw new EasyJsonApiCastException("Doesn't find token for relationships resource object!");
+                    }
+
                     Object objRels = jsonContext.deserialize(jsonRels, type);
                     jsonApiData.setRels(objRels);
                 }
@@ -165,6 +180,10 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                     Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                             ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
                             : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS);
+
+                    if (Assert.isNull(type)) {
+                        throw new EasyJsonApiCastException("Doesn't find token for links resource object!");
+                    }
 
                     Object objLinks = jsonContext.deserialize(jsonLinks, type);
                     jsonApiData.setLinks(objLinks);

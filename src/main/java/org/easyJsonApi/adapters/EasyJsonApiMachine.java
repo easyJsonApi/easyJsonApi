@@ -58,9 +58,11 @@ public abstract class EasyJsonApiMachine {
         if (this.classesUsedInJson.isEmpty()) {
             this.classesUsedInJson.addAll(Arrays.asList(clazz));
         } else {
-            this.classesUsedInJson.retainAll(Arrays.asList(clazz));
             if (this.classesUsedInJson.isEmpty()) {
                 this.classesUsedInJson.addAll(Arrays.asList(clazz));
+            } else {
+                this.classesUsedInJson.addAll(Arrays.asList(clazz));
+                this.classesUsedInJson.retainAll(Arrays.asList(clazz));
             }
         }
 

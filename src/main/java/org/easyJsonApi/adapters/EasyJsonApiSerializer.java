@@ -25,6 +25,7 @@ import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.JsonApi;
+import org.easyJsonApi.exceptions.EasyJsonApiCastException;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -45,13 +46,20 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
         JsonObject jsonElem = new JsonObject();
 
         if (Assert.notNull(jsonApi)) {
-            if (!jsonApi.getData().isEmpty() && !jsonApi.getErrors().isEmpty()) {
-                // TODO: throw an exception when lists have values in the same
-                // time
-            } else if (!jsonApi.getData().isEmpty()) {
-                return serializerGeneric(jsonApi, jsonContext);
-            } else if (!jsonApi.getErrors().isEmpty()) {
-                return serializerError(jsonApi, jsonContext);
+
+            try {
+                if (!jsonApi.getData().isEmpty() && !jsonApi.getErrors().isEmpty()) {
+                    // TODO: throw an exception when lists have values in the
+                    // same
+                    // time
+                } else if (!jsonApi.getData().isEmpty()) {
+                    return serializerGeneric(jsonApi, jsonContext);
+                } else if (!jsonApi.getErrors().isEmpty()) {
+                    return serializerError(jsonApi, jsonContext);
+                }
+            } catch (EasyJsonApiCastException exCast) {
+                // TODO
+                exCast.printStackTrace();
             }
         }
 
@@ -122,8 +130,9 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
      * @param jsonapi the json object
      * @param jsonContext the json context
      * @return the json api object with values created
+     * @throws EasyJsonApiCastException
      */
-    private JsonElement serializerGeneric(JsonApi jsonapi, JsonSerializationContext jsonContext) {
+    private JsonElement serializerGeneric(JsonApi jsonapi, JsonSerializationContext jsonContext) throws EasyJsonApiCastException {
 
         JsonObject jsonElem = new JsonObject();
 
@@ -146,6 +155,10 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
                 Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                         ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR);
 
+                if (Assert.isNull(type)) {
+                    throw new EasyJsonApiCastException("Doesn't find token for attributes resource object!");
+                }
+
                 JsonElement jsonAttr = jsonContext.serialize(jsonApiData.getAttr(), type);
                 jsonData.add("attributes", jsonAttr);
             }
@@ -155,6 +168,10 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
                 Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                         ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS);
 
+                if (Assert.isNull(type)) {
+                    throw new EasyJsonApiCastException("Doesn't find token for relationships resource object!");
+                }
+
                 JsonElement jsonRels = jsonContext.serialize(jsonApiData.getRels(), type);
                 jsonData.add("relationships", jsonRels);
             }
@@ -163,6 +180,10 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
                 Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
                         ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS);
+
+                if (Assert.isNull(type)) {
+                    throw new EasyJsonApiCastException("Doesn't find token for links resource object!");
+                }
 
                 JsonElement jsonLinks = jsonContext.serialize(jsonApiData.getLinks(), type);
                 jsonData.add("links", jsonLinks);

@@ -35,7 +35,6 @@ import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
 import org.easyJsonApi.exceptions.EasyJsonApiMalformedJsonException;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,22 +58,20 @@ public class EasyJsonApiTest {
 
     private final Logger logger = LoggerFactory.getLogger(EasyJsonApiTest.class);
 
-    @Ignore
+    @Test
     public void convertAllResourcesStringToJsonApiTest() throws EasyJsonApiException {
 
         // TODO: Need add the link object
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { 'attr1': 'Attribute', 'attr2': 200, 'attr3': { 'attr': { 'Model': 'XPTO', 'License': '85599' } } }, 'relationships': { 'name': 'Miguel', 'age': '30' } } ] }";
 
-        // jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString,
-        // EntityTestAttr1.class, EntityTestRels.class);
-        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, new Class<?>[] { EntityTestAttr1.class, EntityTestRels.class });
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class, EntityTestRels.class);
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
         Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
         Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
         Assert.assertEquals("Attribute", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr1());
-        Assert.assertEquals(new BigDecimal(200), ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr2());
+        Assert.assertEquals(BigDecimal.valueOf(200), ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr2());
         Assert.assertEquals("XPTO", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr3().getAttr().get("Model"));
         Assert.assertEquals("85599", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr3().getAttr().get("License"));
         Assert.assertEquals("Miguel", ((EntityTestRels) jsonApiObjectResult.getData().get(0).getRels()).getName());
