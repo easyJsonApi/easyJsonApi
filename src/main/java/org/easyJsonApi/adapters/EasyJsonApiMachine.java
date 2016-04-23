@@ -51,7 +51,7 @@ public abstract class EasyJsonApiMachine {
      * 
      * @param clazz the class or classes need to use
      */
-    public void setClassesUsed(Class<?>... clazz) {
+    public final void setClassesUsed(Class<?>... clazz) {
 
         this.tokenTypesToUse.clear();
 
@@ -89,7 +89,7 @@ public abstract class EasyJsonApiMachine {
      * 
      * @param config the configuration
      */
-    public void setConfig(EasyJsonApiConfig config) {
+    public final void setConfig(EasyJsonApiConfig config) {
         this.config = config;
     }
 

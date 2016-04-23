@@ -22,6 +22,9 @@ package org.easyJsonApi.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easyJsonApi.asserts.Assert;
+import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -38,37 +41,86 @@ public class JsonApi {
     private List<Error> errors;
 
     /**
-     * @return the data
+     * Add {@link Data} inside the data list objects inside {@link JsonApi}
+     * 
+     * @param data the data to insert into {@link JsonApi}
      */
-    public List<Data> getData() {
-        if (data == null) {
+    public void addData(Data data) {
+
+        if (Assert.isNull(this.data)) {
+            this.data = new ArrayList<>();
+        }
+
+        this.data.add(data);
+
+    }
+
+    /**
+     * Add {@link Error} inside the errors list objects inside {@link JsonApi}
+     * 
+     * @param error the error to insert into {@link JsonApi}
+     */
+    public void addError(Error error) {
+
+        if (Assert.isNull(this.errors)) {
+            this.errors = new ArrayList<>();
+        }
+
+        this.errors.add(error);
+
+    }
+
+    /**
+     * Get the cloned data inside the JsonApi.
+     * 
+     * @return the data inside {@link JsonApi}
+     * @throws EasyJsonApiEntityException
+     */
+    public List<Data> getData() throws EasyJsonApiEntityException {
+
+        if (Assert.isNull(data)) {
             data = new ArrayList<>();
         }
-        return data;
+
+        List<Data> cloneData = null;
+
+        try {
+            cloneData = new ArrayList<>(data.size());
+            for (Data data : this.data) {
+                cloneData.add((Data) data.clone());
+            }
+        } catch (CloneNotSupportedException ex) {
+            throw new EasyJsonApiEntityException("Problem when try to clone the data attribute!", ex);
+        }
+
+        return cloneData;
     }
 
     /**
-     * @return the errors
+     * Get the cloned error inside the JsonApi.
+     * 
+     * @return the errors inside {@link JsonApi}
+     * @throws EasyJsonApiEntityException
      */
-    public List<Error> getErrors() {
-        if (errors == null) {
+    public List<Error> getErrors() throws EasyJsonApiEntityException {
+
+        if (Assert.isNull(errors)) {
             errors = new ArrayList<>();
         }
-        return errors;
-    }
 
-    /**
-     * @param data the data to set
-     */
-    public void setData(List<Data> data) {
-        this.data = data;
-    }
+        List<Error> cloneErrors = null;
+        try {
 
-    /**
-     * @param errors the errors to set
-     */
-    public void setErrors(List<Error> errors) {
-        this.errors = errors;
+            cloneErrors = new ArrayList<>(errors.size());
+            for (Error error : this.errors) {
+                cloneErrors.add((Error) error.clone());
+            }
+
+        } catch (CloneNotSupportedException ex) {
+            throw new EasyJsonApiEntityException("Problem when try to clone the data attribute!", ex);
+        }
+
+        return cloneErrors;
     }
 
     /*

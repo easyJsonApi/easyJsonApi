@@ -20,22 +20,22 @@
 package org.easyJsonApi.exceptions;
 
 /**
- * Exception when it was defined invalid classes to cast meta annotations
+ * Exception when it was problems in entities
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class EasyJsonApiCastException extends EasyJsonApiInvalidPackageException {
+public class EasyJsonApiEntityException extends EasyJsonApiException {
 
     /**
      * UID Generated
      */
-    private static final long serialVersionUID = -1976439574590963666L;
+    private static final long serialVersionUID = 5052459447438977284L;
 
-    public EasyJsonApiCastException(String message) {
+    public EasyJsonApiEntityException(String message) {
         super(message);
     }
 
-    public EasyJsonApiCastException(String message, Throwable cause) {
+    public EasyJsonApiEntityException(String message, Throwable cause) {
         super(message, cause);
     }
 

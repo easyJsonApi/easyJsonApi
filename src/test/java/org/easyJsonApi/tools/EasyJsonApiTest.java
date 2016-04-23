@@ -21,6 +21,7 @@ package org.easyJsonApi.tools;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.easyJsonApi.entities.Data;
@@ -66,16 +67,18 @@ public class EasyJsonApiTest {
 
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class, EntityTestRels.class);
 
+        List<Data> cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
-        Assert.assertEquals("Attribute", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr1());
-        Assert.assertEquals(BigDecimal.valueOf(200), ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr2());
-        Assert.assertEquals("XPTO", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr3().getAttr().get("Model"));
-        Assert.assertEquals("85599", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr3().getAttr().get("License"));
-        Assert.assertEquals("Miguel", ((EntityTestRels) jsonApiObjectResult.getData().get(0).getRels()).getName());
-        Assert.assertEquals("30", ((EntityTestRels) jsonApiObjectResult.getData().get(0).getRels()).getAge());
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
+        Assert.assertEquals("Attribute", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr1());
+        Assert.assertEquals(new BigDecimal(200), ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr2());
+        Assert.assertEquals("XPTO", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr3().getAttr().get("Model"));
+        Assert.assertEquals("85599", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr3().getAttr().get("License"));
+        Assert.assertEquals("Miguel", ((EntityTestRels) cloneData.get(0).getRels()).getName());
+        Assert.assertEquals("30", ((EntityTestRels) cloneData.get(0).getRels()).getAge());
     }
 
     @Test
@@ -98,14 +101,16 @@ public class EasyJsonApiTest {
 
         // Check result for object with all attributes using EntityTestAttr1
         jsonApiObject = new JsonApi();
-        Data dataRequest = new Data();
-        dataRequest.setId("Test");
-        dataRequest.setType("REQUEST_JSON_API");
+
         EntityTestAttr1 entityTest = new EntityTestAttr1();
         entityTest.setAttr1("Test entity dependency");
         entityTest.setAttr2(new BigDecimal(10));
+
+        Data dataRequest = new Data();
+        dataRequest.setId("Test");
+        dataRequest.setType("REQUEST_JSON_API");
         dataRequest.setAttr(entityTest);
-        jsonApiObject.getData().add(dataRequest);
+        jsonApiObject.addData(dataRequest);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject, EntityTestAttr1.class);
 
@@ -139,32 +144,38 @@ public class EasyJsonApiTest {
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
+        List<Data> cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
 
         // Check result for json with all attributes using EntityTestAttr1
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { 'attr1': 'Test Unit', 'attr2': 100, 'attr3': { 'attr': { 'TestMap': '1' } } } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
+        cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
-        Assert.assertEquals("Test Unit", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr1());
-        Assert.assertEquals("100", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr2().toPlainString());
-        Assert.assertEquals("1", ((EntityTestAttr1) jsonApiObjectResult.getData().get(0).getAttr()).getAttr3().getAttr().get("TestMap"));
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
+        Assert.assertEquals("Test Unit", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr1());
+        Assert.assertEquals("100", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr2().toPlainString());
+        Assert.assertEquals("1", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr3().getAttr().get("TestMap"));
 
         // Check result for json with all attributes using EntityTestAttr2
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { 'attr1': 'Test Unit 2' } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr2.class);
 
+        cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
-        Assert.assertEquals("Test Unit 2", ((EntityTestAttr2) jsonApiObjectResult.getData().get(0).getAttr()).getAttr1());
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
+        Assert.assertEquals("Test Unit 2", ((EntityTestAttr2) cloneData.get(0).getAttr()).getAttr1());
 
     }
 
@@ -177,14 +188,16 @@ public class EasyJsonApiTest {
 
         // Check result for object with all attributes using EntityTestAttr1
         jsonApiObject = new JsonApi();
-        Data dataRequest = new Data();
-        dataRequest.setId("Test");
-        dataRequest.setType("REQUEST_JSON_API");
+
         EntityTestRels entityTest = new EntityTestRels();
         entityTest.setName("Miguel");
         entityTest.setAge("10");
+
+        Data dataRequest = new Data();
+        dataRequest.setId("Test");
+        dataRequest.setType("REQUEST_JSON_API");
         dataRequest.setRels(entityTest);
-        jsonApiObject.getData().add(dataRequest);
+        jsonApiObject.addData(dataRequest);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject, EntityTestRels.class);
 
@@ -206,21 +219,25 @@ public class EasyJsonApiTest {
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'relationships': { } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestRels.class);
 
+        List<Data> cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
 
         // Check result for json with all relationship using EntityTestRels
         jsonApiString = "{ 'data': [ { 'type': 'TEST', 'id': '1', 'relationships': { 'name': 'Mickey', 'age': '20' } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestRels.class);
 
+        cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getData().get(0));
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
-        Assert.assertEquals("Mickey", ((EntityTestRels) jsonApiObjectResult.getData().get(0).getRels()).getName());
-        Assert.assertEquals("20", ((EntityTestRels) jsonApiObjectResult.getData().get(0).getRels()).getAge());
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
+        Assert.assertEquals("Mickey", ((EntityTestRels) cloneData.get(0).getRels()).getName());
+        Assert.assertEquals("20", ((EntityTestRels) cloneData.get(0).getRels()).getAge());
     }
 
     @Test
@@ -236,13 +253,15 @@ public class EasyJsonApiTest {
         jsonApiString = "{ 'errors': [ { 'id': '200', 'code': '2000',  'detail' : 'Error detail', 'title' : 'Error title', 'source' : { 'pointer' : '/test/attributes/tests' } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
+        List<Error> cloneError = jsonApiObjectResult.getErrors();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertNotNull(jsonApiObjectResult.getErrors().get(0));
-        Assert.assertEquals("200", jsonApiObjectResult.getErrors().get(0).getId());
-        Assert.assertEquals("2000", jsonApiObjectResult.getErrors().get(0).getCode());
-        Assert.assertEquals("Error detail", jsonApiObjectResult.getErrors().get(0).getDetail());
-        Assert.assertEquals("Error title", jsonApiObjectResult.getErrors().get(0).getTitle());
-        Assert.assertEquals("/test/attributes/tests", jsonApiObjectResult.getErrors().get(0).getSource().getPointer());
+        Assert.assertNotNull(cloneError.get(0));
+        Assert.assertEquals("200", cloneError.get(0).getId());
+        Assert.assertEquals("2000", cloneError.get(0).getCode());
+        Assert.assertEquals("Error detail", cloneError.get(0).getDetail());
+        Assert.assertEquals("Error title", cloneError.get(0).getTitle());
+        Assert.assertEquals("/test/attributes/tests", cloneError.get(0).getSource().getPointer());
 
         // Check result for json with multiple errors
         jsonApiString = "{ 'errors': [ { 'id': '200' }, { 'id' : '300'} ] }";
@@ -272,13 +291,14 @@ public class EasyJsonApiTest {
 
         // Check result for object with one error
         jsonApiObject = new JsonApi();
+
         Error error = new Error();
         error.setId("1000");
-        error.setDetail("The first error!");
         error.setCode("300");
+        error.setDetail("The first error!");
         error.setStatus(HttpStatus.GONE);
 
-        jsonApiObject.getErrors().add(error);
+        jsonApiObject.addError(error);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject);
 
@@ -290,14 +310,15 @@ public class EasyJsonApiTest {
 
         // Check result for object with multiple errors
         jsonApiObject = new JsonApi();
+
         Error errorSecond = new Error();
         errorSecond.setId("2000");
-        errorSecond.setDetail("The second error!");
         errorSecond.setCode("400");
+        errorSecond.setDetail("The second error!");
         errorSecond.setStatus(HttpStatus.OK);
 
-        jsonApiObject.getErrors().add(error);
-        jsonApiObject.getErrors().add(errorSecond);
+        jsonApiObject.addError(error);
+        jsonApiObject.addError(errorSecond);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject);
 
@@ -370,17 +391,15 @@ public class EasyJsonApiTest {
 
         JsonApi request = new JsonApi();
 
-        Data dataRequest = new Data();
-        dataRequest.setId("Test");
-        dataRequest.setType("REQUEST_JSON_API");
-
         Map<String, String> attrMap = new HashMap<>();
         attrMap.put("Test", "100");
         attrMap.put("Test2", "200");
 
+        Data dataRequest = new Data();
+        dataRequest.setId("Test");
+        dataRequest.setType("REQUEST_JSON_API");
         dataRequest.setAttr(attrMap);
-
-        request.getData().add(dataRequest);
+        request.addData(dataRequest);
 
         // Set the configuration to null for using default map type
         jsonMaker.setConfig(null);
@@ -404,10 +423,12 @@ public class EasyJsonApiTest {
         jsonMaker.setConfig(null);
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
 
+        List<Data> cloneData = jsonApiObjectResult.getData();
+
         Assert.assertNotNull(jsonApiObjectResult);
-        Assert.assertEquals("TEST", jsonApiObjectResult.getData().get(0).getType());
-        Assert.assertEquals("1", jsonApiObjectResult.getData().get(0).getId());
-        Assert.assertEquals("Test Unit 2", ((Map<?, ?>) jsonApiObjectResult.getData().get(0).getAttr()).get("attr1"));
+        Assert.assertEquals("TEST", cloneData.get(0).getType());
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("Test Unit 2", ((Map<?, ?>) cloneData.get(0).getAttr()).get("attr1"));
 
     }
 

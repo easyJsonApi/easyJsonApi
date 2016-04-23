@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class Error {
+public class Error implements Cloneable {
 
     @SerializedName(value = "code")
     private String code;
@@ -48,6 +48,16 @@ public class Error {
 
     @SerializedName(value = "title")
     private String title;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     /**
      * @return the code

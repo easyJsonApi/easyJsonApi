@@ -50,7 +50,6 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
         if (!jsonElem.isJsonNull()) {
 
             boolean existJsonFormat = jsonElem.getAsJsonObject().isJsonNull();
-
             try {
                 if (!existJsonFormat) {
                     if (Assert.notNull(jsonElem.getAsJsonObject().get("data"))) {
@@ -84,20 +83,20 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
         // Iterate the data list
         for (int index = 0; index < jsonArrayErrors.size(); index++) {
-            Error jsonApiError = new Error();
 
             JsonObject jsonError = jsonArrayErrors.get(index).getAsJsonObject();
 
-            jsonApiError.setDetail(Assert.isNull(jsonError.get("detail")) ? null : jsonError.get("detail").getAsString());
-            jsonApiError.setCode(Assert.isNull(jsonError.get("code")) ? null : jsonError.get("code").getAsString());
-            jsonApiError.setTitle(Assert.isNull(jsonError.get("title")) ? null : jsonError.get("title").getAsString());
-            jsonApiError.setId(Assert.isNull(jsonError.get("id")) ? null : jsonError.get("id").getAsString());
+            String jsonApiErrorDetail = Assert.isNull(jsonError.get("detail")) ? null : jsonError.get("detail").getAsString();
+            String jsonApiErrorCode = Assert.isNull(jsonError.get("code")) ? null : jsonError.get("code").getAsString();
+            String jsonApiErrorTitle = Assert.isNull(jsonError.get("title")) ? null : jsonError.get("title").getAsString();
+            String jsonApiErrorId = Assert.isNull(jsonError.get("id")) ? null : jsonError.get("id").getAsString();
+
+            Source jsonApiErrorSource = null;
 
             // Get the source json
             if (Assert.notNull(jsonError.get("source"))) {
                 JsonObject jsonErrorSource = jsonError.get("source").getAsJsonObject();
-                Source objSource = jsonContext.deserialize(jsonErrorSource, Source.class);
-                jsonApiError.setSource(objSource);
+                jsonApiErrorSource = jsonContext.deserialize(jsonErrorSource, Source.class);
             }
 
             // Get the links json
@@ -106,7 +105,16 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
             // Link objAttr = jsonContext.deserialize(jsonAttr, Link.class);
             // }
 
-            request.getErrors().add(jsonApiError);
+            Error jsonApiError = new Error();
+            jsonApiError.setId(jsonApiErrorId);
+            jsonApiError.setCode(jsonApiErrorCode);
+            jsonApiError.setDetail(jsonApiErrorDetail);
+            jsonApiError.setStatus(null);
+            jsonApiError.setSource(jsonApiErrorSource);
+            jsonApiError.setMeta(null);
+            jsonApiError.setTitle(jsonApiErrorTitle);
+
+            request.addError(jsonApiError);
         }
 
         return request;
@@ -134,12 +142,15 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
             // Iterate the data list
             for (int index = 0; index < jsonArrayData.size(); index++) {
-                Data jsonApiData = new Data();
 
                 JsonObject jsonData = jsonArrayData.get(index).getAsJsonObject();
 
-                jsonApiData.setId(Assert.isNull(jsonData.get("id")) ? null : jsonData.get("id").getAsString());
-                jsonApiData.setType(Assert.isNull(jsonData.get("type")) ? null : jsonData.get("type").getAsString());
+                Object dataAttr = null;
+                Object dataRels = null;
+                Object dataLinks = null;
+
+                String dataId = Assert.isNull(jsonData.get("id")) ? null : jsonData.get("id").getAsString();
+                String dataType = Assert.isNull(jsonData.get("type")) ? null : jsonData.get("type").getAsString();
 
                 // Get the attributes json
                 if (Assert.notNull(jsonData.get("attributes"))) {
@@ -153,8 +164,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                         throw new EasyJsonApiCastException("Doesn't find token for attributes resource object!");
                     }
 
-                    Object objAttr = jsonContext.deserialize(jsonAttr, type);
-                    jsonApiData.setAttr(objAttr);
+                    dataAttr = jsonContext.deserialize(jsonAttr, type);
                 }
 
                 // Get the relationships json
@@ -169,8 +179,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                         throw new EasyJsonApiCastException("Doesn't find token for relationships resource object!");
                     }
 
-                    Object objRels = jsonContext.deserialize(jsonRels, type);
-                    jsonApiData.setRels(objRels);
+                    dataRels = jsonContext.deserialize(jsonRels, type);
                 }
 
                 // Get the links json
@@ -185,11 +194,16 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                         throw new EasyJsonApiCastException("Doesn't find token for links resource object!");
                     }
 
-                    Object objLinks = jsonContext.deserialize(jsonLinks, type);
-                    jsonApiData.setLinks(objLinks);
+                    dataLinks = jsonContext.deserialize(jsonLinks, type);
                 }
 
-                request.getData().add(jsonApiData);
+                Data jsonApiData = new Data();
+                jsonApiData.setId(dataId);
+                jsonApiData.setType(dataType);
+                jsonApiData.setAttr(dataAttr);
+                jsonApiData.setRels(dataRels);
+                jsonApiData.setLinks(dataLinks);
+                request.addData(jsonApiData);
             }
         }
 

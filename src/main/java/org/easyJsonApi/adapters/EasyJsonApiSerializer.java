@@ -20,12 +20,14 @@
 package org.easyJsonApi.adapters;
 
 import java.lang.reflect.Type;
+import java.util.List;
 
 import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.JsonApi;
 import org.easyJsonApi.exceptions.EasyJsonApiCastException;
+import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -45,21 +47,29 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
         JsonObject jsonElem = new JsonObject();
 
-        if (Assert.notNull(jsonApi)) {
+        List<Data> cloneData = null;
+        List<Error> cloneError = null;
 
+        if (Assert.notNull(jsonApi)) {
             try {
-                if (!jsonApi.getData().isEmpty() && !jsonApi.getErrors().isEmpty()) {
+
+                cloneData = jsonApi.getData();
+                cloneError = jsonApi.getErrors();
+
+                if (!cloneData.isEmpty() && !cloneError.isEmpty()) {
                     // TODO: throw an exception when lists have values in the
-                    // same
-                    // time
-                } else if (!jsonApi.getData().isEmpty()) {
-                    return serializerGeneric(jsonApi, jsonContext);
-                } else if (!jsonApi.getErrors().isEmpty()) {
-                    return serializerError(jsonApi, jsonContext);
+                    // same time
+                } else if (!cloneData.isEmpty()) {
+                    return serializerGeneric(cloneData, jsonApi, jsonContext);
+                } else if (!cloneError.isEmpty()) {
+                    return serializerError(cloneError, jsonApi, jsonContext);
                 }
             } catch (EasyJsonApiCastException exCast) {
-                // TODO
+                // TODO: Log the exception
                 exCast.printStackTrace();
+            } catch (EasyJsonApiEntityException exEntity) {
+                // TODO Auto-generated catch block
+                exEntity.printStackTrace();
             }
         }
 
@@ -71,17 +81,18 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
     /**
      * Serializer when occur an error
      * 
+     * @param cloneError the list with errors cloned
      * @param jsonApi the json object
      * @param jsonContext the json context
      * @return the json api object with values created
      */
-    private JsonElement serializerError(JsonApi jsonApi, JsonSerializationContext jsonContext) {
+    private JsonElement serializerError(List<Error> cloneError, JsonApi jsonApi, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 
         JsonArray jsonArrayErrors = new JsonArray();
 
-        for (Error jsonApiError : jsonApi.getErrors()) {
+        for (Error jsonApiError : cloneError) {
 
             JsonObject jsonError = new JsonObject();
 
@@ -127,18 +138,20 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
     /**
      * Serializer when occur an success
      * 
+     * @param cloneData the list with data cloned
      * @param jsonapi the json object
      * @param jsonContext the json context
      * @return the json api object with values created
      * @throws EasyJsonApiCastException
      */
-    private JsonElement serializerGeneric(JsonApi jsonapi, JsonSerializationContext jsonContext) throws EasyJsonApiCastException {
+    private JsonElement serializerGeneric(List<Data> cloneData, JsonApi jsonapi, JsonSerializationContext jsonContext)
+            throws EasyJsonApiCastException {
 
         JsonObject jsonElem = new JsonObject();
 
         JsonArray jsonArrayData = new JsonArray();
 
-        for (Data jsonApiData : jsonapi.getData()) {
+        for (Data jsonApiData : cloneData) {
 
             JsonObject jsonData = new JsonObject();
 

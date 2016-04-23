@@ -24,7 +24,6 @@ import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Type;
 
-import org.easyJsonApi.adapters.EasyJsonApiSerializer;
 import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.JsonApi;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
@@ -60,17 +59,17 @@ public class EasyJsonApiSerializerTest {
         entityMock.setAttr1("Attribute_1");
         when(serializerContext.serialize(Mockito.any(JsonElement.class), Mockito.any(Type.class))).thenReturn(jsonElem);
 
-        JsonApi requestJsonApi = new JsonApi();
-        Data requestDataJsonApi = new Data();
-        requestDataJsonApi.setId("1");
-        requestDataJsonApi.setType("TEST");
-        requestDataJsonApi.setAttr(entityMock);
+        JsonApi jsonApi = new JsonApi();
+        Data jsonApiData = new Data();
+        jsonApiData.setId("1");
+        jsonApiData.setType("TEST");
+        jsonApiData.setAttr(entityMock);
 
-        requestJsonApi.getData().add(requestDataJsonApi);
+        jsonApi.addData(jsonApiData);
 
         String resultExpected = "{ 'data': [ { 'id': '1', 'type': 'TEST', 'attributes': { 'attr1' : 'Attribute_1' } } ] }";
 
-        JsonElement responseJsonApi = serializer.serialize(requestJsonApi, null, serializerContext);
+        JsonElement responseJsonApi = serializer.serialize(jsonApi, null, serializerContext);
 
         Assert.assertNotNull(responseJsonApi);
         Assert.assertEquals(resultExpected.replace(" ", ""), responseJsonApi.toString().replace(" ", "").replace("\"", "'"));

@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class Data {
+public class Data implements Cloneable {
 
     @SerializedName(value = "attributes")
     private Object attr;
@@ -42,6 +42,16 @@ public class Data {
 
     @SerializedName(value = "type")
     private String type;
+
+    /*
+     * (non-Javadoc)
+     * 
+     * @see java.lang.Object#clone()
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     /**
      * @return the attr

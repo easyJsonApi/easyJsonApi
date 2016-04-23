@@ -20,24 +20,20 @@
 package org.easyJsonApi.entities;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.easyJsonApi.entities.test.EntityDependencyTest;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
-import org.easyJsonApi.exceptions.EasyJsonApiException;
-import org.easyJsonApi.tools.EasyJsonApi;
-import org.easyJsonApi.tools.EasyJsonApiConfig;
+import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 import org.junit.Assert;
 import org.junit.Test;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.google.gson.GsonBuilder;
 
 public class JsonApiTest {
 
     @Test
-    public void createJsonApiRequestTest() throws JsonProcessingException, EasyJsonApiException {
+    public void getDataTest() throws EasyJsonApiEntityException {
 
-        JsonApi request = new JsonApi();
+        JsonApi jsonApi = new JsonApi();
 
         EntityDependencyTest testDependency = new EntityDependencyTest();
         testDependency.getAttr().put("TestMap", "1");
@@ -52,22 +48,34 @@ public class JsonApiTest {
         dataJsonApi.setType("TEST");
         dataJsonApi.setAttr(testEntity);
 
-        request.getData().add(dataJsonApi);
+        jsonApi.addData(dataJsonApi);
 
-        String resultRequest = new GsonBuilder().setPrettyPrinting().create().toJson(request);
+        List<Data> dataCloned = jsonApi.getData();
 
-        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
-        EasyJsonApi jsonMaker = EasyJsonApi.getInstance();
-        jsonMaker.setConfig(config);
-        JsonApi requestJsonRevert = jsonMaker.convertStringToJsonApi(resultRequest, EntityTestAttr1.class);
+        Assert.assertEquals(1, dataCloned.size());
+        Assert.assertEquals("1", dataCloned.get(0).getId());
+        Assert.assertEquals("TEST", dataCloned.get(0).getType());
+        Assert.assertNotEquals(System.identityHashCode(dataJsonApi), System.identityHashCode(dataCloned));
 
-        Assert.assertNotNull(requestJsonRevert);
-        Assert.assertNotNull(requestJsonRevert.getData().get(0));
-        Assert.assertEquals("1", requestJsonRevert.getData().get(0).getId());
-        Assert.assertEquals("TEST", requestJsonRevert.getData().get(0).getType());
-        Assert.assertEquals("Test Unit", ((EntityTestAttr1) requestJsonRevert.getData().get(0).getAttr()).getAttr1());
-        Assert.assertEquals("100", ((EntityTestAttr1) requestJsonRevert.getData().get(0).getAttr()).getAttr2().toPlainString());
-        Assert.assertEquals("1", ((EntityTestAttr1) requestJsonRevert.getData().get(0).getAttr()).getAttr3().getAttr().get("TestMap"));
+        // Remove the first element
+        dataCloned.remove(0);
+
+        Assert.assertEquals(0, dataCloned.size());
+
+        List<Data> dataClonedFirst = jsonApi.getData();
+        List<Data> dataClonedSecond = jsonApi.getData();
+
+        Assert.assertNotEquals(System.identityHashCode(dataClonedFirst), System.identityHashCode(dataClonedSecond));
+        // Assert.assertNotEquals(System.identityHashCode(dataClonedFirst.get(0).getAttr()),
+        // System.identityHashCode(dataClonedSecond.get(0).getAttr()));
+
+        Assert.assertEquals(1, dataClonedFirst.size());
+
+        ((EntityTestAttr1) dataClonedFirst.get(0).getAttr()).setAttr1("INVALID TEST");
+
+        // Assert.assertNotEquals(((EntityTestAttr1)
+        // dataClonedFirst.get(0).getAttr()).getAttr1(),
+        // ((EntityTestAttr1) dataClonedSecond.get(0).getAttr()).getAttr1());
 
     }
 

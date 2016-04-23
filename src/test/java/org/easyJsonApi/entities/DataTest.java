@@ -17,26 +17,26 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.exceptions;
+package org.easyJsonApi.entities;
 
-/**
- * Exception when it was defined invalid classes to cast meta annotations
- * 
- * @author Nuno Bento (nbento.neves@gmail.com)
- */
-public class EasyJsonApiCastException extends EasyJsonApiInvalidPackageException {
+import org.junit.Assert;
+import org.junit.Test;
 
-    /**
-     * UID Generated
-     */
-    private static final long serialVersionUID = -1976439574590963666L;
+public class DataTest {
 
-    public EasyJsonApiCastException(String message) {
-        super(message);
-    }
+    @Test
+    public void cloneTest() throws CloneNotSupportedException {
 
-    public EasyJsonApiCastException(String message, Throwable cause) {
-        super(message, cause);
+        Data dataType = new Data();
+        dataType.setId("1");
+        dataType.setType("CLONE");
+
+        Data dataClone = (Data) dataType.clone();
+
+        Assert.assertEquals(dataType.getId(), dataClone.getId());
+        Assert.assertEquals(dataType.getType(), dataClone.getType());
+        Assert.assertNotEquals(System.identityHashCode(dataType.hashCode()), System.identityHashCode(dataClone.hashCode()));
+
     }
 
 }

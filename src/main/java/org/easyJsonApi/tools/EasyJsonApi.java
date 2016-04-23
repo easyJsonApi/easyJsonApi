@@ -20,6 +20,7 @@
 package org.easyJsonApi.tools;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import org.easyJsonApi.adapters.EasyJsonApiDeserializer;
 import org.easyJsonApi.adapters.EasyJsonApiSerializer;
@@ -171,20 +172,23 @@ public class EasyJsonApi {
 
         if (Assert.notNull(jsonApi)) {
 
+            List<Data> cloneData = jsonApi.getData();
+            List<Error> cloneError = jsonApi.getErrors();
+
             // Return null when doesn't exist errors and data
-            if (jsonApi.getErrors().isEmpty() && jsonApi.getData().isEmpty()) {
+            if (cloneError.isEmpty() && cloneData.isEmpty()) {
                 return null;
-            } else if (!jsonApi.getData().isEmpty()) {
+            } else if (!cloneData.isEmpty()) {
                 // Get the first object inside the data and check if has any
                 // attribute instanced
-                Data firstData = jsonApi.getData().get(BigDecimal.ZERO.intValue());
+                Data firstData = cloneData.get(BigDecimal.ZERO.intValue());
                 if (Assert.isNull(firstData.getId(), firstData.getType(), firstData.getAttr(), firstData.getRels(), firstData.getLinks())) {
                     return null;
                 }
-            } else if (!jsonApi.getErrors().isEmpty()) {
+            } else if (!cloneError.isEmpty()) {
                 // Get the first object inside the errors and check if has any
                 // error instanced
-                Error firstError = jsonApi.getErrors().get(BigDecimal.ZERO.intValue());
+                Error firstError = cloneError.get(BigDecimal.ZERO.intValue());
                 if (Assert.isNull(firstError.getId(), firstError.getTitle(), firstError.getDetail(), firstError.getCode(), firstError.getMeta(),
                         firstError.getSource(), firstError.getStatus())) {
                     return null;
