@@ -1,3 +1,5 @@
+#Why easyJsonApi?
+
 ### Description
 Don't know what request and response should use? 
 Maybe JsonApi turns your life more easy, use the EasyJsonApi and forget the problems.
@@ -12,5 +14,3 @@ The EasyJsonApi has being created because we don't have many possibilities when 
 ### Good things:
 * Follow the [jsonapi](http://jsonapi.org/) specification,
 * OpenSource project.
-
-  
