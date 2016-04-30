@@ -82,16 +82,7 @@ public class JsonApi {
             data = new ArrayList<>();
         }
 
-        List<Data> cloneData = null;
-
-        try {
-            cloneData = new ArrayList<>(data.size());
-            for (Data data : this.data) {
-                cloneData.add((Data) data.clone());
-            }
-        } catch (CloneNotSupportedException ex) {
-            throw new EasyJsonApiEntityException("Problem when try to clone the data attribute!", ex);
-        }
+        List<Data> cloneData = new ArrayList<>(this.data);
 
         return cloneData;
     }
@@ -108,17 +99,7 @@ public class JsonApi {
             errors = new ArrayList<>();
         }
 
-        List<Error> cloneErrors = null;
-        try {
-
-            cloneErrors = new ArrayList<>(errors.size());
-            for (Error error : this.errors) {
-                cloneErrors.add((Error) error.clone());
-            }
-
-        } catch (CloneNotSupportedException ex) {
-            throw new EasyJsonApiEntityException("Problem when try to clone the data attribute!", ex);
-        }
+        List<Error> cloneErrors = new ArrayList<>(this.errors);
 
         return cloneErrors;
     }

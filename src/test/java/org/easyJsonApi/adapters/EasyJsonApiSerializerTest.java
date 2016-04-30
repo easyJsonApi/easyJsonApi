@@ -43,36 +43,40 @@ public class EasyJsonApiSerializerTest {
     @Test
     public void setClassesUsedTest() throws EasyJsonApiInvalidPackageException {
 
-        JsonSerializationContext serializerContext = mock(JsonSerializationContext.class);
+        JsonSerializationContext serializerContext = mock(
+                JsonSerializationContext.class);
 
-        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
+        EasyJsonApiConfig config = new EasyJsonApiConfig(
+                "org.easyJsonApi.entities.test");
         EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
         serializer.setConfig(config);
         serializer.setClassesUsed(EntityTestAttr1.class);
         serializer.setClassesUsed(EntityTestAttr2.class);
 
         JsonParser jsonParser = new JsonParser();
-        JsonElement jsonElem = jsonParser.parse("{ 'attr1' : 'Attribute_1' }").getAsJsonObject();
+        JsonElement jsonElem = jsonParser.parse("{ 'attr1' : 'Attribute_1' }")
+                .getAsJsonObject();
 
         // MOCK INFORMATION
         EntityTestAttr2 entityMock = new EntityTestAttr2();
         entityMock.setAttr1("Attribute_1");
-        when(serializerContext.serialize(Mockito.any(JsonElement.class), Mockito.any(Type.class))).thenReturn(jsonElem);
+        when(serializerContext.serialize(Mockito.any(JsonElement.class),
+                Mockito.any(Type.class))).thenReturn(jsonElem);
 
         JsonApi jsonApi = new JsonApi();
-        Data jsonApiData = new Data();
-        jsonApiData.setId("1");
-        jsonApiData.setType("TEST");
-        jsonApiData.setAttr(entityMock);
+        Data jsonApiData = new Data("1", "TEST", entityMock, Data.NULLABLE,
+                Data.NULLABLE);
 
         jsonApi.addData(jsonApiData);
 
         String resultExpected = "{ 'data': [ { 'id': '1', 'type': 'TEST', 'attributes': { 'attr1' : 'Attribute_1' } } ] }";
 
-        JsonElement responseJsonApi = serializer.serialize(jsonApi, null, serializerContext);
+        JsonElement responseJsonApi = serializer.serialize(jsonApi, null,
+                serializerContext);
 
         Assert.assertNotNull(responseJsonApi);
-        Assert.assertEquals(resultExpected.replace(" ", ""), responseJsonApi.toString().replace(" ", "").replace("\"", "'"));
+        Assert.assertEquals(resultExpected.replace(" ", ""),
+                responseJsonApi.toString().replace(" ", "").replace("\"", "'"));
 
     }
 

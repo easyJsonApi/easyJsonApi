@@ -19,6 +19,13 @@
  */
 package org.easyJsonApi.entities;
 
+import java.util.Map;
+
+import org.easyJsonApi.annotations.Attributes;
+import org.easyJsonApi.annotations.Links;
+import org.easyJsonApi.annotations.Relationships;
+import org.easyJsonApi.asserts.Assert;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -26,22 +33,74 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class Data implements Cloneable {
+public final class Data implements Cloneable {
+
+    public final static Object NULLABLE = null;
 
     @SerializedName(value = "attributes")
-    private Object attr;
+    private final Object attr;
 
     @SerializedName(value = "id")
-    private String id;
+    private final String id;
 
     @SerializedName(value = "links")
-    private Object links;
+    private final Object links;
 
     @SerializedName(value = "relationships")
-    private Object rels;
+    private final Object rels;
 
     @SerializedName(value = "type")
-    private String type;
+    private final String type;
+
+    public Data(String id, String type, Object attr, Object rels,
+            Object links) {
+
+        checkValidData(attr);
+        checkValidData(rels);
+        checkValidData(links);
+        this.id = id;
+        this.type = type;
+        this.attr = attr;
+        this.rels = rels;
+        this.links = links;
+
+    }
+
+    /**
+     * Check if object is valid. One object is valid when has one of the rules
+     * below:
+     * - is null
+     * - is an instance of {@link Map}
+     * - has the annotation {@link Attributes}
+     * - has the annotation {@link Relationships}
+     * - has the annotation {@link Links}
+     * 
+     * @param objectAnnotated the object needs validate
+     */
+    private void checkValidData(Object objectAnnotated) {
+
+        boolean notAnnotated = true;
+
+        if (Assert.isNull(objectAnnotated)) {
+            notAnnotated = false;
+        } else if (objectAnnotated instanceof Map) {
+            notAnnotated = false;
+        } else if (Assert.notNull(
+                objectAnnotated.getClass().getAnnotation(Attributes.class))) {
+            notAnnotated = false;
+        } else if (Assert.notNull(objectAnnotated.getClass()
+                .getAnnotation(Relationships.class))) {
+            notAnnotated = false;
+        } else if (Assert.notNull(
+                objectAnnotated.getClass().getAnnotation(Links.class))) {
+            notAnnotated = false;
+        }
+
+        if (notAnnotated) {
+            throw new IllegalAccessError("Invalid object inserted!");
+        }
+
+    }
 
     /*
      * (non-Javadoc)
@@ -88,41 +147,6 @@ public class Data implements Cloneable {
         return type;
     }
 
-    /**
-     * @param attr the attr to set
-     */
-    public void setAttr(Object attr) {
-        this.attr = attr;
-    }
-
-    /**
-     * @param id the id to set
-     */
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    /**
-     * @param links the links to set
-     */
-    public void setLinks(Object links) {
-        this.links = links;
-    }
-
-    /**
-     * @param rels the rels to set
-     */
-    public void setRels(Object rels) {
-        this.rels = rels;
-    }
-
-    /**
-     * @param type the type to set
-     */
-    public void setType(String type) {
-        this.type = type;
-    }
-
     /*
      * (non-Javadoc)
      * 
@@ -130,7 +154,8 @@ public class Data implements Cloneable {
      */
     @Override
     public String toString() {
-        return "Data [type=" + type + ", id=" + id + ", attr=" + attr + ", rels=" + rels + ", links=" + links + "]";
+        return "Data [type=" + type + ", id=" + id + ", attr=" + attr
+                + ", rels=" + rels + ", links=" + links + "]";
     }
 
 }
