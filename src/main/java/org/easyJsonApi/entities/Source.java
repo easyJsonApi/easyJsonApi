@@ -28,6 +28,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Source {
 
+    public final static Source NULLABLE = null;
+
     @SerializedName(value = "parameter")
     private String parameter;
 

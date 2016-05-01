@@ -24,6 +24,7 @@ import java.lang.reflect.Type;
 import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
+import org.easyJsonApi.entities.HttpStatus;
 import org.easyJsonApi.entities.JsonApi;
 import org.easyJsonApi.entities.Source;
 import org.easyJsonApi.exceptions.EasyJsonApiCastException;
@@ -102,6 +103,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine
                     : jsonError.get("id").getAsString();
 
             Source jsonApiErrorSource = null;
+            HttpStatus jsonApiErrorStatus = null;
 
             // Get the source json
             if (Assert.notNull(jsonError.get("source"))) {
@@ -111,20 +113,23 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine
                         Source.class);
             }
 
+            // Get the http status json
+            if (Assert.notNull(jsonError.get("status"))) {
+                JsonObject jsonErrorStatus = jsonError.get("status")
+                        .getAsJsonObject();
+                jsonApiErrorStatus = HttpStatus.getStatus(
+                        Integer.valueOf(jsonErrorStatus.getAsString()));
+            }
+
             // Get the links json
             // if (Assert.notNull(jsonError.get("links"))) {
             // JsonObject jsonAttr = jsonError.get("links").getAsJsonObject();
             // Link objAttr = jsonContext.deserialize(jsonAttr, Link.class);
             // }
 
-            Error jsonApiError = new Error();
-            jsonApiError.setId(jsonApiErrorId);
-            jsonApiError.setCode(jsonApiErrorCode);
-            jsonApiError.setDetail(jsonApiErrorDetail);
-            jsonApiError.setStatus(null);
-            jsonApiError.setSource(jsonApiErrorSource);
-            jsonApiError.setMeta(null);
-            jsonApiError.setTitle(jsonApiErrorTitle);
+            Error jsonApiError = new Error(jsonApiErrorId, jsonApiErrorTitle,
+                    jsonApiErrorStatus, jsonApiErrorCode, jsonApiErrorDetail,
+                    Error.NULLABLE, jsonApiErrorSource);
 
             request.addError(jsonApiError);
         }

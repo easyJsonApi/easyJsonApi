@@ -28,6 +28,8 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Link {
 
+    public final static Link NULLABLE = null;
+
     @SerializedName(value = "about")
     private String about;
 

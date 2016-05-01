@@ -28,6 +28,7 @@ import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.HttpStatus;
 import org.easyJsonApi.entities.JsonApi;
+import org.easyJsonApi.entities.Source;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
 import org.easyJsonApi.entities.test.EntityTestAttr2;
 import org.easyJsonApi.entities.test.EntityTestRels;
@@ -328,18 +329,15 @@ public class EasyJsonApiTest {
         // Check result for object with one error
         jsonApiObject = new JsonApi();
 
-        Error error = new Error();
-        error.setId("1000");
-        error.setCode("300");
-        error.setDetail("The first error!");
-        error.setStatus(HttpStatus.GONE);
+        Error error = new Error("1000", "Error", HttpStatus.GONE, "300",
+                "The first error!", Error.NULLABLE, Source.NULLABLE);
 
         jsonApiObject.addError(error);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject);
 
         jsonElemExpected = jsonParser
-                .parse("{ 'errors': [ { 'id': '1000', 'code': '300', 'detail': 'The first error!', 'status': '410' } ] }")
+                .parse("{ 'errors': [ { 'id': '1000', 'title': 'Error', 'code': '300', 'detail': 'The first error!', 'status': '410' } ] }")
                 .getAsJsonObject();
         jsonElemResult = jsonParser.parse(jsonApiStringResult)
                 .getAsJsonObject();
@@ -349,11 +347,8 @@ public class EasyJsonApiTest {
         // Check result for object with multiple errors
         jsonApiObject = new JsonApi();
 
-        Error errorSecond = new Error();
-        errorSecond.setId("2000");
-        errorSecond.setCode("400");
-        errorSecond.setDetail("The second error!");
-        errorSecond.setStatus(HttpStatus.OK);
+        Error errorSecond = new Error("2000", "Error", HttpStatus.OK, "400",
+                "The second error!", Error.NULLABLE, Source.NULLABLE);
 
         jsonApiObject.addError(error);
         jsonApiObject.addError(errorSecond);
@@ -361,7 +356,7 @@ public class EasyJsonApiTest {
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject);
 
         jsonElemExpected = jsonParser
-                .parse("{ 'errors': [ { 'id': '1000', 'code': '300', 'detail': 'The first error!', 'status': '410' }, { 'id': '2000', 'code': '400', 'detail': 'The second error!', 'status': '200' } ] }")
+                .parse("{ 'errors': [ { 'id': '1000', 'title': 'Error', 'code': '300', 'detail': 'The first error!', 'status': '410' }, { 'id': '2000', 'title': 'Error', 'code': '400', 'detail': 'The second error!', 'status': '200' } ] }")
                 .getAsJsonObject();
         jsonElemResult = jsonParser.parse(jsonApiStringResult)
                 .getAsJsonObject();

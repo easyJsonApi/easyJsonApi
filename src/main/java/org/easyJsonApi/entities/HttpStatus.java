@@ -159,6 +159,26 @@ public enum HttpStatus {
      */
     UNSUPPORTED_MEDIA_TYPE(415, "Unsupported Media Type");
 
+    /**
+     * Get status using the http code status
+     * 
+     * @param code the http code status
+     * @return the http status complete
+     */
+    public static HttpStatus
+
+            getStatus(int code) {
+
+        for (HttpStatus status : values()) {
+            if (status.code == code) {
+                return status;
+            }
+        }
+
+        return null;
+
+    }
+
     private final int code;
 
     private final String reason;
