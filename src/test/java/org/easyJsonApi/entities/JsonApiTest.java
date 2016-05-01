@@ -31,6 +31,35 @@ import org.junit.Test;
 public class JsonApiTest {
 
     @Test
+    public void addDataJsonApiTest() throws EasyJsonApiEntityException {
+
+        JsonApi jsonApi = new JsonApi();
+
+        jsonApi.addData(new Data("100", "TEST", Data.NULLABLE, Data.NULLABLE,
+                Data.NULLABLE));
+
+        List<Data> dataList = jsonApi.getData();
+
+        Assert.assertEquals(1, dataList.size());
+
+    }
+
+    @Test
+    public void addErrorJsonApiTest() throws EasyJsonApiEntityException {
+
+        JsonApi jsonApi = new JsonApi();
+
+        jsonApi.addError(new Error("100", "Error", HttpStatus.ACCEPTED,
+                Error.NULLABLE, Source.NULLABLE));
+
+        List<Error> errorList = jsonApi.getErrors();
+
+        Assert.assertEquals(1, errorList.size());
+
+    }
+
+    // FIXME: Review test
+    @Test
     public void getDataTest() throws EasyJsonApiEntityException {
 
         JsonApi jsonApi = new JsonApi();

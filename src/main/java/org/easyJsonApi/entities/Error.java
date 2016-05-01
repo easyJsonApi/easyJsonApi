@@ -56,6 +56,18 @@ public final class Error implements Cloneable {
     @SerializedName(value = "title")
     private final String title;
 
+    public Error(String id, String title, HttpStatus status, Object meta,
+            Source source) {
+        checkValidData(meta);
+        this.code = null;
+        this.detail = null;
+        this.id = id;
+        this.meta = meta;
+        this.source = source;
+        this.status = status;
+        this.title = title;
+    }
+
     public Error(String id, String title, HttpStatus status, String code,
             String detail, Object meta, Source source) {
         checkValidData(meta);
