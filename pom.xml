@@ -83,6 +83,7 @@
 		<maven.compile.plugin.version>3.5.1</maven.compile.plugin.version>
 		<jacoco.plugin.version>0.7.6.201602180812</jacoco.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
+		<coveralls.plugin.version>4.1.0</coveralls.plugin.version>
 		<license.plugin.verion>1.8</license.plugin.verion>
 		<plantuml.plugin.version>7954</plantuml.plugin.version>
 
@@ -201,6 +202,12 @@
 				</plugin>
 
 				<plugin>
+					<groupId>org.eluder.coveralls</groupId>
+					<artifactId>coveralls-maven-plugin</artifactId>
+					<version>${coveralls.plugin.version}</version>
+				</plugin>
+
+				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>license-maven-plugin</artifactId>
 					<version>${license.plugin.verion}</version>
@@ -295,6 +302,20 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+
+			<!-- Coveralls -->
+			<plugin>
+				<groupId>org.eluder.coveralls</groupId>
+				<artifactId>coveralls-maven-plugin</artifactId>
+				<configuration>
+					<format>xml</format>
+					<maxmem>256m</maxmem>
+					<aggregate>true</aggregate>
+					<jacocoReports>
+						<param>${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml</param>
+					</jacocoReports>
+				</configuration>
 			</plugin>
 
 			<!-- License plugin -->
