@@ -308,6 +308,14 @@
 			<plugin>
 				<groupId>org.eluder.coveralls</groupId>
 				<artifactId>coveralls-maven-plugin</artifactId>
+				<configuration>
+					<format>xml</format>
+					<maxmem>256m</maxmem>
+					<aggregate>true</aggregate>
+					<jacocoReports>
+						<param>${project.reporting.outputDirectory}/jacoco-ut/jacoco.xml</param>
+					</jacocoReports>
+				</configuration>
 			</plugin>
 
 			<!-- License plugin -->
