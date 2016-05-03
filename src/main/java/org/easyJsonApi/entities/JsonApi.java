@@ -1,14 +1,35 @@
+/*
+ * #%L
+ * EasyJsonApi
+ * %%
+ * Copyright (C) 2016 EasyJsonApi
+ * %%
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * #L%
+ */
 package org.easyJsonApi.entities;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.easyJsonApi.asserts.Assert;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Pojo represents the Request object in json api specification
+ * Entity represents the contract object in json api specification
  * 
- * @author nbento.neves@gmail.com
+ * @author Nuno Bento (nbento.neves@gmail.com)
  */
 public class JsonApi {
 
@@ -19,42 +40,71 @@ public class JsonApi {
     private List<Error> errors;
 
     /**
-     * @return the data
+     * Add {@link Data} inside the data list objects inside {@link JsonApi}
+     * 
+     * @param data
+     *            the data to insert into {@link JsonApi}
+     */
+    public void addData(Data data) {
+
+        if (Assert.isNull(this.data)) {
+            this.data = new ArrayList<>();
+        }
+
+        this.data.add(data);
+
+    }
+
+    /**
+     * Add {@link Error} inside the errors list objects inside {@link JsonApi}
+     * 
+     * @param error
+     *            the error to insert into {@link JsonApi}
+     */
+    public void addError(Error error) {
+
+        if (Assert.isNull(this.errors)) {
+            this.errors = new ArrayList<>();
+        }
+
+        this.errors.add(error);
+
+    }
+
+    /**
+     * Get the cloned data inside the JsonApi.
+     * 
+     * @return the data inside {@link JsonApi}
      */
     public List<Data> getData() {
-        if (data == null) {
+
+        if (Assert.isNull(data)) {
             data = new ArrayList<>();
         }
-        return data;
+
+        List<Data> cloneData = new ArrayList<>(this.data);
+
+        return cloneData;
     }
 
     /**
-     * @return the errors
+     * Get the cloned error inside the JsonApi.
+     * 
+     * @return the errors inside {@link JsonApi}
      */
     public List<Error> getErrors() {
-        if (errors == null) {
+
+        if (Assert.isNull(errors)) {
             errors = new ArrayList<>();
         }
-        return errors;
-    }
 
-    /**
-     * @param errors the errors to set
-     */
-    public void setErrors(List<Error> errors) {
-        this.errors = errors;
-    }
+        List<Error> cloneErrors = new ArrayList<>(this.errors);
 
-    /**
-     * @param data the data to set
-     */
-    public void setData(List<Data> data) {
-        this.data = data;
+        return cloneErrors;
     }
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

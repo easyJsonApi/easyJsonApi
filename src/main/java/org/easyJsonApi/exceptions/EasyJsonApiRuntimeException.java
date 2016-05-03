@@ -17,32 +17,26 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.adapters;
+package org.easyJsonApi.exceptions;
 
 /**
- * Enum allows mapping type token for {@link EasyJsonApiMachine}
+ * Generic runtime exception for EasyJsonApi
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public enum EasyJsonApiTypeToken {
-
-    TOKEN_ATTR("TOKEN_ATTR"),
-    TOKEN_DEFAULT("TOKEN_DEFAULT"),
-    TOKEN_LINKS("TOKEN_LINKS"),
-    TOKEN_META("TOKEN_META"),
-    TOKEN_RELS("TOKEN_RELS");
-
-    private String key;
-
-    private EasyJsonApiTypeToken(String key) {
-        this.key = key;
-    }
+public class EasyJsonApiRuntimeException extends RuntimeException {
 
     /**
-     * @return the key
+     * UID Generated
      */
-    public String getKey() {
-        return key;
+    private static final long serialVersionUID = 6382099926165220367L;
+
+    public EasyJsonApiRuntimeException(String message) {
+        super(message);
+    }
+
+    public EasyJsonApiRuntimeException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

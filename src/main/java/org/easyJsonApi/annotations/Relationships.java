@@ -17,32 +17,18 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.adapters;
+package org.easyJsonApi.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Enum allows mapping type token for {@link EasyJsonApiMachine}
+ * Metadata annotation represents the relationships resource object
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public enum EasyJsonApiTypeToken {
-
-    TOKEN_ATTR("TOKEN_ATTR"),
-    TOKEN_DEFAULT("TOKEN_DEFAULT"),
-    TOKEN_LINKS("TOKEN_LINKS"),
-    TOKEN_META("TOKEN_META"),
-    TOKEN_RELS("TOKEN_RELS");
-
-    private String key;
-
-    private EasyJsonApiTypeToken(String key) {
-        this.key = key;
-    }
-
-    /**
-     * @return the key
-     */
-    public String getKey() {
-        return key;
-    }
-
-}
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+public @interface Relationships {}

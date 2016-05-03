@@ -17,32 +17,26 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.adapters;
+package org.easyJsonApi.exceptions;
 
 /**
- * Enum allows mapping type token for {@link EasyJsonApiMachine}
+ * Exception when it was defined invalid classes to cast meta annotations
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public enum EasyJsonApiTypeToken {
-
-    TOKEN_ATTR("TOKEN_ATTR"),
-    TOKEN_DEFAULT("TOKEN_DEFAULT"),
-    TOKEN_LINKS("TOKEN_LINKS"),
-    TOKEN_META("TOKEN_META"),
-    TOKEN_RELS("TOKEN_RELS");
-
-    private String key;
-
-    private EasyJsonApiTypeToken(String key) {
-        this.key = key;
-    }
+public class EasyJsonApiCastException extends EasyJsonApiEntityException {
 
     /**
-     * @return the key
+     * UID Generated
      */
-    public String getKey() {
-        return key;
+    private static final long serialVersionUID = -1976439574590963666L;
+
+    public EasyJsonApiCastException(String message) {
+        super(message);
+    }
+
+    public EasyJsonApiCastException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

@@ -21,10 +21,10 @@ package org.easyJsonApi.entities.test;
 
 import java.math.BigDecimal;
 
-import org.easyJsonApi.annotations.Attributes;
+import org.easyJsonApi.annotations.Links;
 
-@Attributes
-public class EntityTestAttr1 {
+@Links
+public class EntityTestLink {
 
     private String attr1;
 
@@ -54,21 +54,24 @@ public class EntityTestAttr1 {
     }
 
     /**
-     * @param attr1 the attr1 to set
+     * @param attr1
+     *            the attr1 to set
      */
     public void setAttr1(String attr1) {
         this.attr1 = attr1;
     }
 
     /**
-     * @param attr2 the attr2 to set
+     * @param attr2
+     *            the attr2 to set
      */
     public void setAttr2(BigDecimal attr2) {
         this.attr2 = attr2;
     }
 
     /**
-     * @param attr3 the attr3 to set
+     * @param attr3
+     *            the attr3 to set
      */
     public void setAttr3(EntityDependencyTest attr3) {
         this.attr3 = attr3;
