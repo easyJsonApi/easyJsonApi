@@ -22,9 +22,10 @@ package org.easyJsonApi.adapters;
 import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.easyJsonApi.tools.EasyJsonApiConfig;
 
@@ -40,7 +41,7 @@ import com.google.gson.reflect.TypeToken;
  */
 public abstract class EasyJsonApiMachine {
 
-    private LinkedList<Class<?>> classesUsedInJson = new LinkedList<>();
+    private Set<Class<?>> classesUsedInJson = new HashSet<>();
 
     private EasyJsonApiConfig config;
 
@@ -49,7 +50,8 @@ public abstract class EasyJsonApiMachine {
     /**
      * Set classes need to use when create the json api structure
      * 
-     * @param clazz the class or classes need to use
+     * @param clazz
+     *            the class or classes need to use
      */
     public final void setClassesUsed(Class<?>... clazz) {
 
@@ -87,7 +89,8 @@ public abstract class EasyJsonApiMachine {
     /**
      * Set the {@link EasyJsonApiConfig}
      * 
-     * @param config the configuration
+     * @param config
+     *            the configuration
      */
     public final void setConfig(EasyJsonApiConfig config) {
         this.config = config;

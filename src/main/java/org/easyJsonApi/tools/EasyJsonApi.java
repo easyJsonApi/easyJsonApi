@@ -47,6 +47,7 @@ import com.google.gson.JsonSyntaxException;
  * @see EasyJsonApiDeserializer the deserializer of EasyJsonApi
  * @author Nuno Bento (nbento.neves@gmail.com)
  * @version %I%, %G%
+ *
  */
 public class EasyJsonApi {
 
@@ -82,11 +83,12 @@ public class EasyJsonApi {
     /**
      * Convert one {@link JsonApi} object into json api string
      * 
-     * @param json the json api object
+     * @param json
+     *            the json api object
      * @return the string with json api format
-     * @throws EasyJsonApiMalformedJsonException
+     * @throws EasyJsonApiException
      */
-    public String convertJsonApiToString(JsonApi json) throws EasyJsonApiMalformedJsonException {
+    public String convertJsonApiToString(JsonApi json) throws EasyJsonApiException {
         return convertJsonApiToString(json, new Class[0]);
     }
 
@@ -94,12 +96,14 @@ public class EasyJsonApi {
      * Convert one {@link JsonApi} object into json api string with resource
      * objects inside the object
      * 
-     * @param json the json api object
-     * @param classes the classes utilized inside the object
+     * @param json
+     *            the json api object
+     * @param classes
+     *            the classes utilized inside the object
      * @return the string with json api format
-     * @throws EasyJsonApiMalformedJsonException
+     * @throws EasyJsonApiException
      */
-    public String convertJsonApiToString(JsonApi json, Class<?>... classes) throws EasyJsonApiMalformedJsonException {
+    public String convertJsonApiToString(JsonApi json, Class<?>... classes) throws EasyJsonApiException {
 
         if (Assert.isNull(json)) {
             return null;
@@ -131,7 +135,8 @@ public class EasyJsonApi {
     /**
      * Convert one string into {@link JsonApi} object
      * 
-     * @param json the json api string
+     * @param json
+     *            the json api string
      * @return the {@link JsonApi} object
      * @throws EasyJsonApiException
      */
@@ -143,8 +148,10 @@ public class EasyJsonApi {
      * Convert one string into {@link JsonApi} object with classes resource
      * objects inside the object
      * 
-     * @param json the json api string
-     * @param classes the classes utilized inside the object
+     * @param json
+     *            the json api string
+     * @param classes
+     *            the classes utilized inside the object
      * @return the {@link JsonApi} object
      * @throws EasyJsonApiException
      */
@@ -203,7 +210,8 @@ public class EasyJsonApi {
     /**
      * Set the configuration of EasyJsonApi
      * 
-     * @param config the configuration of EasyJsonApi
+     * @param config
+     *            the configuration of EasyJsonApi
      */
     public void setConfig(EasyJsonApiConfig config) {
         this.easyJsonApiConfig = config;

@@ -76,12 +76,16 @@
 		<!-- Code coverage -->
 		<jacoco.version>0.7.6.201602180812</jacoco.version>
 
+		<!-- PlantUML -->
+		<plantuml.version>7954</plantuml.version>
+
 		<!-- Plugins Version -->
 		<maven.compile.plugin.version>3.5.1</maven.compile.plugin.version>
 		<jacoco.plugin.version>0.7.6.201602180812</jacoco.plugin.version>
 		<surefire.plugin.version>2.19.1</surefire.plugin.version>
 		<license.plugin.verion>1.8</license.plugin.verion>
-		
+		<plantuml.plugin.version>7954</plantuml.plugin.version>
+
 		<!-- License -->
 		<license.licenseName>apache_v2</license.licenseName>
 		<license.addJavaLicenseAfterPackage>false</license.addJavaLicenseAfterPackage>
@@ -201,6 +205,12 @@
 					<artifactId>license-maven-plugin</artifactId>
 					<version>${license.plugin.verion}</version>
 				</plugin>
+
+				<plugin>
+					<groupId>com.github.jeluard</groupId>
+					<artifactId>plantuml-maven-plugin</artifactId>
+					<version>${plantuml.plugin.version}</version>
+				</plugin>
 			</plugins>
 		</pluginManagement>
 
@@ -314,6 +324,41 @@
 					</execution>
 				</executions>
 			</plugin>
+
+			<!-- Plant UML -->
+			<plugin>
+				<groupId>com.github.jeluard</groupId>
+				<artifactId>plantuml-maven-plugin</artifactId>
+				<configuration>
+					<sourceFiles>
+						<directory>${basedir}</directory>
+						<includes>
+							<include>src/main/java/**/*.java</include>
+							<include>src/main/resources/**/*.txt</include>
+						</includes>
+					</sourceFiles>
+				</configuration>
+				<executions>
+					<execution>
+						<id>plantuml-diagrams</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<phase>generate-sources</phase>
+						<configuration>
+							<outputDirectory>${basedir}/target/site/apidocs/doc-files</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>net.sourceforge.plantuml</groupId>
+						<artifactId>plantuml</artifactId>
+						<version>${plantuml.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>

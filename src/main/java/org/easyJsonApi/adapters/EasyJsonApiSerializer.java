@@ -27,7 +27,6 @@ import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.JsonApi;
 import org.easyJsonApi.exceptions.EasyJsonApiCastException;
-import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -51,26 +50,19 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
         List<Error> cloneError = null;
 
         if (Assert.notNull(jsonApi)) {
-            try {
 
-                cloneData = jsonApi.getData();
-                cloneError = jsonApi.getErrors();
+            cloneData = jsonApi.getData();
+            cloneError = jsonApi.getErrors();
 
-                if (!cloneData.isEmpty() && !cloneError.isEmpty()) {
-                    // TODO: throw an exception when lists have values in the
-                    // same time
-                } else if (!cloneData.isEmpty()) {
-                    return serializerGeneric(cloneData, jsonApi, jsonContext);
-                } else if (!cloneError.isEmpty()) {
-                    return serializerError(cloneError, jsonApi, jsonContext);
-                }
-            } catch (EasyJsonApiCastException exCast) {
-                // TODO: Log the exception
-                exCast.printStackTrace();
-            } catch (EasyJsonApiEntityException exEntity) {
-                // TODO Auto-generated catch block
-                exEntity.printStackTrace();
+            if (!cloneData.isEmpty() && !cloneError.isEmpty()) {
+                // TODO: throw an exception when lists have values in the
+                // same time
+            } else if (!cloneData.isEmpty()) {
+                return serializerGeneric(cloneData, jsonApi, jsonContext);
+            } else if (!cloneError.isEmpty()) {
+                return serializerError(cloneError, jsonApi, jsonContext);
             }
+
         }
 
         // TODO: Maybe it's best to throw an exception ??
@@ -81,9 +73,12 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
     /**
      * Serializer when occur an error
      * 
-     * @param cloneError the list with errors cloned
-     * @param jsonApi the json object
-     * @param jsonContext the json context
+     * @param cloneError
+     *            the list with errors cloned
+     * @param jsonApi
+     *            the json object
+     * @param jsonContext
+     *            the json context
      * @return the json api object with values created
      */
     private JsonElement serializerError(List<Error> cloneError, JsonApi jsonApi, JsonSerializationContext jsonContext) {
@@ -138,14 +133,15 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
     /**
      * Serializer when occur an success
      * 
-     * @param cloneData the list with data cloned
-     * @param jsonapi the json object
-     * @param jsonContext the json context
+     * @param cloneData
+     *            the list with data cloned
+     * @param jsonapi
+     *            the json object
+     * @param jsonContext
+     *            the json context
      * @return the json api object with values created
-     * @throws EasyJsonApiCastException
      */
-    private JsonElement serializerGeneric(List<Data> cloneData, JsonApi jsonapi, JsonSerializationContext jsonContext)
-            throws EasyJsonApiCastException {
+    private JsonElement serializerGeneric(List<Data> cloneData, JsonApi jsonapi, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 

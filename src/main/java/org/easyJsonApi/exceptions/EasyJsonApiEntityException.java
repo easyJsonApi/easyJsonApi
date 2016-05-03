@@ -24,7 +24,7 @@ package org.easyJsonApi.exceptions;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class EasyJsonApiEntityException extends EasyJsonApiException {
+public class EasyJsonApiEntityException extends EasyJsonApiRuntimeException {
 
     /**
      * UID Generated

@@ -23,7 +23,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.easyJsonApi.asserts.Assert;
-import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -43,7 +42,8 @@ public class JsonApi {
     /**
      * Add {@link Data} inside the data list objects inside {@link JsonApi}
      * 
-     * @param data the data to insert into {@link JsonApi}
+     * @param data
+     *            the data to insert into {@link JsonApi}
      */
     public void addData(Data data) {
 
@@ -58,7 +58,8 @@ public class JsonApi {
     /**
      * Add {@link Error} inside the errors list objects inside {@link JsonApi}
      * 
-     * @param error the error to insert into {@link JsonApi}
+     * @param error
+     *            the error to insert into {@link JsonApi}
      */
     public void addError(Error error) {
 
@@ -74,9 +75,8 @@ public class JsonApi {
      * Get the cloned data inside the JsonApi.
      * 
      * @return the data inside {@link JsonApi}
-     * @throws EasyJsonApiEntityException
      */
-    public List<Data> getData() throws EasyJsonApiEntityException {
+    public List<Data> getData() {
 
         if (Assert.isNull(data)) {
             data = new ArrayList<>();
@@ -91,9 +91,8 @@ public class JsonApi {
      * Get the cloned error inside the JsonApi.
      * 
      * @return the errors inside {@link JsonApi}
-     * @throws EasyJsonApiEntityException
      */
-    public List<Error> getErrors() throws EasyJsonApiEntityException {
+    public List<Error> getErrors() {
 
         if (Assert.isNull(errors)) {
             errors = new ArrayList<>();
@@ -106,7 +105,6 @@ public class JsonApi {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

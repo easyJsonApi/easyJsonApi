@@ -29,6 +29,8 @@ import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.JsonApi;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
 import org.easyJsonApi.entities.test.EntityTestAttr2;
+import org.easyJsonApi.entities.test.EntityTestRels;
+import org.easyJsonApi.exceptions.EasyJsonApiCastException;
 import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
 import org.easyJsonApi.tools.EasyJsonApiConfig;
@@ -41,6 +43,57 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 public class EasyJsonApiDeserializerTest {
+
+    @Test(expected = EasyJsonApiCastException.class)
+    public void genericDeserializerCastExceptionAttrTest() throws EasyJsonApiInvalidPackageException {
+
+        JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
+
+        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
+        EasyJsonApiDeserializer deserializer = new EasyJsonApiDeserializer();
+        deserializer.setConfig(config);
+        deserializer.setClassesUsed(EntityTestRels.class);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElem = jsonParser.parse("{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { 'name': 'My Name' } } ] }")
+                .getAsJsonObject();
+
+        deserializer.deserialize(jsonElem, null, deserializerContext);
+    }
+
+    @Test(expected = EasyJsonApiCastException.class)
+    public void genericDeserializerCastExceptionLinksTest() throws EasyJsonApiInvalidPackageException {
+
+        JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
+
+        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
+        EasyJsonApiDeserializer deserializer = new EasyJsonApiDeserializer();
+        deserializer.setConfig(config);
+        deserializer.setClassesUsed(EntityTestAttr1.class);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElem = jsonParser.parse("{ 'data': [ { 'type': 'TEST', 'id': '1', 'relationships': { 'Rel': 'My Rel' } } ] }")
+                .getAsJsonObject();
+
+        deserializer.deserialize(jsonElem, null, deserializerContext);
+    }
+
+    @Test(expected = EasyJsonApiCastException.class)
+    public void genericDeserializerCastExceptionRelsTest() throws EasyJsonApiInvalidPackageException {
+
+        JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
+
+        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
+        EasyJsonApiDeserializer deserializer = new EasyJsonApiDeserializer();
+        deserializer.setConfig(config);
+        deserializer.setClassesUsed(EntityTestAttr1.class);
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElem = jsonParser.parse("{ 'data': [ { 'type': 'TEST', 'id': '1', 'links': { 'first': 'http://test.com' } } ] }")
+                .getAsJsonObject();
+
+        deserializer.deserialize(jsonElem, null, deserializerContext);
+    }
 
     @Test
     public void genericDeserializerTest() throws EasyJsonApiInvalidPackageException, EasyJsonApiEntityException {
