@@ -1,4 +1,5 @@
 [![Coverage Status](https://coveralls.io/repos/bitbucket/easyjsonapi/easyjsonapi/badge.svg?branch=master)](https://coveralls.io/bitbucket/easyjsonapi/easyjsonapi?branch=master)
+[![License](https://img.shields.io/badge/style-flat-green.svg?style=flat)](https://opensource.org/licenses/Apache-2.0)
 
 #Why easyJsonApi?
 
