@@ -1,3 +1,5 @@
+[![Coverage Status](https://coveralls.io/repos/bitbucket/easyjsonapi/easyjsonapi/badge.svg?branch=master)](https://coveralls.io/bitbucket/easyjsonapi/easyjsonapi?branch=master)
+
 #Why easyJsonApi?
 
 ### Description
