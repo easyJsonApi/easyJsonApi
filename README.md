@@ -1,5 +1,7 @@
 [![Coverage Status](https://coveralls.io/repos/bitbucket/easyjsonapi/easyjsonapi/badge.svg?branch=master)](https://coveralls.io/bitbucket/easyjsonapi/easyjsonapi?branch=master)
 [![License](https://img.shields.io/badge/licence-Apache-blue.svg?style=flat)](https://opensource.org/licenses/Apache-2.0)
+[![Hipchat](https://img.shields.io/badge/chat-Hipchat-green.svg?style=flat)](https://easy-json-api.hipchat.com)
+
 
 #Why easyJsonApi?
 
