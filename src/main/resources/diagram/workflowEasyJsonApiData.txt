@@ -1,0 +1,24 @@
+@startuml workflowEasyJsonApiData.png
+
+actor User
+participant JsonApi << (C,#ADD1B2) >>
+participant Data << (C,#ADD1B2) >>
+participant EasyJsonApi << (C,#ADD1B2) >>
+
+create JsonApi
+User -> JsonApi : new
+JsonApi --> User : jsonapi
+
+create Data
+User -> Data : new
+Data --> User : data
+note right : Immutable object
+
+User -> JsonApi : jsonapi.addData(data)
+
+User -> EasyJsonApi : EasyJsonApi.getInstance().convertJsonApiToString(jsonapi)
+EasyJsonApi --> User : result
+
+
+
+@enduml

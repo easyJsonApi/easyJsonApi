@@ -1,0 +1,31 @@
+@startuml workflowEasyJsonApiDataConfigs.png
+
+actor User
+participant JsonApi << (C,#ADD1B2) >>
+participant Data << (C,#ADD1B2) >>
+participant EasyJsonApi << (C,#ADD1B2) >>
+participant EasyJsonApiConfig << (C,#ADD1B2) >>
+
+create JsonApi
+User -> JsonApi : new
+JsonApi --> User : jsonapi
+
+create Data
+User -> Data : new
+Data --> User : data
+note right : Immutable object
+
+User -> JsonApi : jsonapi.addData(data)
+
+create EasyJsonApiConfig
+User -> EasyJsonApiConfig : new
+EasyJsonApiConfig --> User : config
+User -> EasyJsonApiConfig : config.setPackagesToSearch("org.entities.example")
+
+User -> EasyJsonApi : EasyJsonApi.getInstance()
+EasyJsonApi --> User : easyJsonApi
+User -> EasyJsonApi : easyJsonApi.setConfig(config)
+User -> EasyJsonApi : easyJsonApi.convertJsonApiToString(jsonapi, EntityExample.class)
+EasyJsonApi --> User : result
+
+@enduml

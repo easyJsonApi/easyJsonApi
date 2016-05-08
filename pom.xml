@@ -354,7 +354,6 @@
 					<sourceFiles>
 						<directory>${basedir}</directory>
 						<includes>
-							<include>src/main/java/**/*.java</include>
 							<include>src/main/resources/**/*.txt</include>
 						</includes>
 					</sourceFiles>
