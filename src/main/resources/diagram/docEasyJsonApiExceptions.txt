@@ -1,0 +1,53 @@
+@startuml docEasyJsonApiExceptions.png
+scale 979 width
+
+class Exception {
+}
+
+class RuntimeException {
+}
+
+class EasyJsonApiException {
+	-{static}long serialVersionUID
+	+EasyJsonApiException(String message)
+	+EasyJsonApiException(String message, Throwable cause)
+}
+
+class EasyJsonApiInvalidPackageException {
+	-{static}long serialVersionUID
+	+EasyJsonApiInvalidPackageException(String message)
+	+EasyJsonApiInvalidPackageException(String message, Throwable cause)
+}
+
+class EasyJsonApiMalformedJsonException {
+	-{static}long serialVersionUID
+	+EasyJsonApiMalformedJsonException(String message)
+	+EasyJsonApiMalformedJsonException(String message, Throwable cause)
+}
+
+class EasyJsonApiRuntimeException {
+	-{static}long serialVersionUID
+	+EasyJsonApiRuntimeException(String message)
+	+EasyJsonApiRuntimeException(String message, Throwable cause)
+}
+
+class EasyJsonApiEntityException {
+	-{static}long serialVersionUID
+	+EasyJsonApiEntityException(String message)
+	+EasyJsonApiEntityException(String message, Throwable cause)
+}
+
+class EasyJsonApiCastException {
+	-{static}long serialVersionUID
+	+EasyJsonApiCastException(String message)
+	+EasyJsonApiCastException(String message, Throwable cause)
+}
+
+Exception <|-- EasyJsonApiException
+RuntimeException <|-- EasyJsonApiRuntimeException
+EasyJsonApiRuntimeException <|-- EasyJsonApiEntityException
+EasyJsonApiEntityException <|-- EasyJsonApiCastException
+EasyJsonApiException <|-- EasyJsonApiInvalidPackageException
+EasyJsonApiException <|-- EasyJsonApiMalformedJsonException
+
+@enduml

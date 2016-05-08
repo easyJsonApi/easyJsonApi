@@ -1,0 +1,24 @@
+@startuml workflowEasyJsonApiError.png
+
+actor User
+participant JsonApi << (C,#ADD1B2) >>
+participant Error << (C,#ADD1B2) >>
+participant EasyJsonApi << (C,#ADD1B2) >>
+
+create JsonApi
+User -> JsonApi : new
+JsonApi --> User : jsonapi
+
+create Error
+User -> Error : new
+Error --> User : error
+note right : Immutable object
+
+User -> JsonApi : jsonapi.addError(error)
+
+User -> EasyJsonApi : EasyJsonApi.getInstance().convertJsonApiToString(jsonapi)
+EasyJsonApi --> User : result
+
+
+
+@enduml
