@@ -1,0 +1,17 @@
+{
+    'data': [
+        {
+            'type': 'books',
+            'id': '1',
+            'attributes': {
+                'attr1': 'Spring book',
+                'attr2': 100,
+                'attr3': {
+                    'attr': {
+                        'author': 'David'
+                    }
+                }
+            }
+        }
+    ]
+}

@@ -25,36 +25,35 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents Link resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link Relationship}
+ * @see {@link LinkRelated}
  */
-public class Link {
+public final class Link {
 
-    public final static Link NULLABLE = null;
+    @SerializedName(value = "related")
+    private final LinkRelated linkRelated;
 
-    @SerializedName(value = "about")
-    private String about;
+    @SerializedName(value = "self")
+    private final String self;
 
-    /**
-     * @return the about
-     */
-    public String getAbout() {
-        return about;
+    public Link(LinkRelated linkRelated, String self) {
+        super();
+        this.linkRelated = linkRelated;
+        this.self = self;
     }
 
     /**
-     * @param about the about to set
+     * @return the linkRelated
      */
-    public void setAbout(String about) {
-        this.about = about;
+    public LinkRelated getLinkRelated() {
+        return linkRelated;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
+    /**
+     * @return the self
      */
-    @Override
-    public String toString() {
-        return "Link [about=" + about + "]";
+    public String getSelf() {
+        return self;
     }
 
 }

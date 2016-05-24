@@ -1,0 +1,11 @@
+{
+    'errors': [
+        {
+            'id': '1',
+            'title': 'Invalid operation',
+            'code': '4000',
+            'detail': 'Not acceptable operation!',
+            'status': '406'
+        }
+    ]
+}

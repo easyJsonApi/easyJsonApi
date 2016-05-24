@@ -24,19 +24,17 @@ import java.util.List;
 
 import org.easyJsonApi.entities.test.EntityDependencyTest;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
-import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class JsonApiTest {
 
     @Test
-    public void addDataJsonApiTest() throws EasyJsonApiEntityException {
+    public void addDataJsonApiTest() {
 
         JsonApi jsonApi = new JsonApi();
 
-        jsonApi.addData(new Data("100", "TEST", Data.NULLABLE, Data.NULLABLE,
-                Data.NULLABLE));
+        jsonApi.addData(new Data("100", "books", Nullable.OBJECT));
 
         List<Data> dataList = jsonApi.getData();
 
@@ -45,12 +43,11 @@ public class JsonApiTest {
     }
 
     @Test
-    public void addErrorJsonApiTest() throws EasyJsonApiEntityException {
+    public void addErrorJsonApiTest() {
 
         JsonApi jsonApi = new JsonApi();
 
-        jsonApi.addError(new Error("100", "Error", HttpStatus.ACCEPTED,
-                Error.NULLABLE, Source.NULLABLE));
+        jsonApi.addError(new Error("100", "books", HttpStatus.ACCEPTED, Nullable.OBJECT, Nullable.SOURCE));
 
         List<Error> errorList = jsonApi.getErrors();
 
@@ -60,7 +57,7 @@ public class JsonApiTest {
 
     // FIXME: Review test
     @Test
-    public void getDataTest() throws EasyJsonApiEntityException {
+    public void getDataTest() {
 
         JsonApi jsonApi = new JsonApi();
 
@@ -72,8 +69,8 @@ public class JsonApiTest {
         testEntity.setAttr2(new BigDecimal(100));
         testEntity.setAttr3(testDependency);
 
-        Data dataJsonApi = new Data("1", "TEST", testEntity, Data.NULLABLE,
-                Data.NULLABLE);
+        // Data dataJsonApi = new Data("1", "TEST", testEntity, Data.NULLABLE, Data.NULLABLE);
+        Data dataJsonApi = new Data("1", "TEST", testEntity);
 
         jsonApi.addData(dataJsonApi);
 
@@ -82,8 +79,7 @@ public class JsonApiTest {
         Assert.assertEquals(1, dataCloned.size());
         Assert.assertEquals("1", dataCloned.get(0).getId());
         Assert.assertEquals("TEST", dataCloned.get(0).getType());
-        Assert.assertNotEquals(System.identityHashCode(dataJsonApi),
-                System.identityHashCode(dataCloned));
+        Assert.assertNotEquals(System.identityHashCode(dataJsonApi), System.identityHashCode(dataCloned));
 
         // Remove the first element
         dataCloned.remove(0);
@@ -93,15 +89,13 @@ public class JsonApiTest {
         List<Data> dataClonedFirst = jsonApi.getData();
         List<Data> dataClonedSecond = jsonApi.getData();
 
-        Assert.assertNotEquals(System.identityHashCode(dataClonedFirst),
-                System.identityHashCode(dataClonedSecond));
+        Assert.assertNotEquals(System.identityHashCode(dataClonedFirst), System.identityHashCode(dataClonedSecond));
         // Assert.assertNotEquals(System.identityHashCode(dataClonedFirst.get(0).getAttr()),
         // System.identityHashCode(dataClonedSecond.get(0).getAttr()));
 
         Assert.assertEquals(1, dataClonedFirst.size());
 
-        ((EntityTestAttr1) dataClonedFirst.get(0).getAttr())
-                .setAttr1("INVALID TEST");
+        ((EntityTestAttr1) dataClonedFirst.get(0).getAttr()).setAttr1("INVALID TEST");
 
         // Assert.assertNotEquals(((EntityTestAttr1)
         // dataClonedFirst.get(0).getAttr()).getAttr1(),

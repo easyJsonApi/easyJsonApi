@@ -17,29 +17,32 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.adapters;
+package org.easyJsonApi;
 
-/**
- * Enum allows mapping type token for {@link EasyJsonApiMachine}
- * 
- * @author Nuno Bento (nbento.neves@gmail.com)
- */
-public enum EasyJsonApiTypeToken {
+import java.io.IOException;
 
-    TOKEN_ATTR("TOKEN_ATTR"), TOKEN_DEFAULT("TOKEN_DEFAULT"), TOKEN_LINKS("TOKEN_LINKS"), TOKEN_META("TOKEN_META"), TOKEN_META_RELATIONSHIP(
-            "TOKEN_META_RELATIONSHIP");
+import org.apache.commons.io.IOUtils;
 
-    private String key;
-
-    private EasyJsonApiTypeToken(String key) {
-        this.key = key;
-    }
+public class TestHelper {
 
     /**
-     * @return the key
+     * Retrive the json inside the test file
+     * 
+     * @param fileName
+     *            the file name
+     * @return string with json to test
      */
-    public String getKey() {
-        return key;
+    public static String retriveJsonFile(String fileName) {
+
+        String json = null;
+
+        try {
+            json = IOUtils.toString(TestHelper.class.getClassLoader().getResourceAsStream(fileName), "UTF-8");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return json;
     }
 
 }

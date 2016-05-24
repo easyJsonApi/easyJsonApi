@@ -20,58 +20,38 @@
 package org.easyJsonApi.entities;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedList;
 
+import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class DataTest {
 
     @Test
-    public void cloneTest() throws CloneNotSupportedException {
+    public void closeDataTest() throws CloneNotSupportedException {
 
-        Data dataType = new Data("1", "CLONE", Data.NULLABLE, Data.NULLABLE,
-                Data.NULLABLE);
+        Data dataType = new Data("1", "books", Nullable.OBJECT);
 
         Data dataClone = (Data) dataType.clone();
 
         Assert.assertEquals(dataType.getId(), dataClone.getId());
         Assert.assertEquals(dataType.getType(), dataClone.getType());
-        Assert.assertNotEquals(System.identityHashCode(dataType.hashCode()),
-                System.identityHashCode(dataClone.hashCode()));
+        Assert.assertNotEquals(System.identityHashCode(dataType.hashCode()), System.identityHashCode(dataClone.hashCode()));
 
     }
 
-    @Test(expected = IllegalAccessError.class)
+    @Test(expected = EasyJsonApiEntityException.class)
     public void invalidDataInstance() {
 
-        new Data("100", "INVALID_DATA", new HashMap<>(), new LinkedList<>(),
-                new ArrayList<>());
+        new Data("100", "books", new LinkedList<>());
 
     }
 
-    @Test(expected = IllegalAccessError.class)
+    @Test(expected = EasyJsonApiEntityException.class)
     public void invalidDataInstanceAttrTest() {
 
-        new Data("100", "INVALID_DATA", new ArrayList<>(), Data.NULLABLE,
-                Data.NULLABLE);
-
-    }
-
-    @Test(expected = IllegalAccessError.class)
-    public void invalidDataInstanceLinksTest() {
-
-        new Data("100", "INVALID_DATA", Data.NULLABLE, new ArrayList<>(),
-                Data.NULLABLE);
-
-    }
-
-    @Test(expected = IllegalAccessError.class)
-    public void invalidDataInstanceRelsTest() {
-
-        new Data("100", "INVALID_DATA", Data.NULLABLE, Data.NULLABLE,
-                new ArrayList<>());
+        new Data("200", "books", new ArrayList<>());
 
     }
 

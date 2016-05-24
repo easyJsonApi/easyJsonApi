@@ -19,23 +19,19 @@
  */
 package org.easyJsonApi.entities;
 
-import java.util.Map;
-
-import org.easyJsonApi.annotations.Attributes;
-import org.easyJsonApi.annotations.Links;
-import org.easyJsonApi.annotations.Relationships;
 import org.easyJsonApi.asserts.Assert;
+import org.easyJsonApi.asserts.Validation;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Entity represents Data resource object in json api specification
+ * Entity represents data resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link JsonApi}
+ * @see {@link Relationships}
  */
 public final class Data implements Cloneable {
-
-    public final static Object NULLABLE = null;
 
     @SerializedName(value = "attributes")
     private final Object attr;
@@ -43,68 +39,33 @@ public final class Data implements Cloneable {
     @SerializedName(value = "id")
     private final String id;
 
-    @SerializedName(value = "links")
-    private final Object links;
+    // @SerializedName(value = "links")
+    // private final Object links;
 
     @SerializedName(value = "relationships")
-    private final Object rels;
+    private Relationships rels;
 
     @SerializedName(value = "type")
     private final String type;
 
-    public Data(String id, String type, Object attr, Object rels,
-            Object links) {
+    public Data(String id, String type, Object attr) {
+        Validation.checkValidObject(attr);
+        this.id = id;
+        this.type = type;
+        this.attr = attr;
+        this.rels = null;
+    }
 
-        checkValidData(attr);
-        checkValidData(rels);
-        checkValidData(links);
+    public Data(String id, String type, Object attr, Relationships rels) {
+        Validation.checkValidObject(attr);
         this.id = id;
         this.type = type;
         this.attr = attr;
         this.rels = rels;
-        this.links = links;
-
-    }
-
-    /**
-     * Check if object is valid. One object is valid when has one of the rules
-     * below:
-     * - is null
-     * - is an instance of {@link Map}
-     * - has the annotation {@link Attributes}
-     * - has the annotation {@link Relationships}
-     * - has the annotation {@link Links}
-     * 
-     * @param objectAnnotated the object needs validate
-     */
-    private void checkValidData(Object objectAnnotated) {
-
-        boolean notAnnotated = true;
-
-        if (Assert.isNull(objectAnnotated)) {
-            notAnnotated = false;
-        } else if (objectAnnotated instanceof Map) {
-            notAnnotated = false;
-        } else if (Assert.notNull(
-                objectAnnotated.getClass().getAnnotation(Attributes.class))) {
-            notAnnotated = false;
-        } else if (Assert.notNull(objectAnnotated.getClass()
-                .getAnnotation(Relationships.class))) {
-            notAnnotated = false;
-        } else if (Assert.notNull(
-                objectAnnotated.getClass().getAnnotation(Links.class))) {
-            notAnnotated = false;
-        }
-
-        if (notAnnotated) {
-            throw new IllegalAccessError("Invalid object inserted!");
-        }
-
     }
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#clone()
      */
     @Override
@@ -127,16 +88,12 @@ public final class Data implements Cloneable {
     }
 
     /**
-     * @return the links
-     */
-    public Object getLinks() {
-        return links;
-    }
-
-    /**
      * @return the rels
      */
-    public Object getRels() {
+    public Relationships getRels() {
+        if (Assert.isNull(rels)) {
+            this.rels = new Relationships();
+        }
         return rels;
     }
 
@@ -145,17 +102,6 @@ public final class Data implements Cloneable {
      */
     public String getType() {
         return type;
-    }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "Data [type=" + type + ", id=" + id + ", attr=" + attr
-                + ", rels=" + rels + ", links=" + links + "]";
     }
 
 }

@@ -17,43 +17,26 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.entities.test;
+package org.easyJsonApi.entities;
 
-import org.easyJsonApi.annotations.Relationships;
+public interface Nullable {
 
-@Relationships
-public class EntityTestRels {
+    public static Data DATA = null;
 
-    private String age;
+    public static DataLinkage DATA_LINKAGE = null;
 
-    private String name;
+    public static Error ERROR = null;
 
-    /**
-     * @return the age
-     */
-    public String getAge() {
-        return age;
-    }
+    public static Link LINK = null;
 
-    /**
-     * @return the name
-     */
-    public String getName() {
-        return name;
-    }
+    public static LinkRelated LINK_RELATED = null;
 
-    /**
-     * @param age the age to set
-     */
-    public void setAge(String age) {
-        this.age = age;
-    }
+    public static Object OBJECT = null;
 
-    /**
-     * @param name the name to set
-     */
-    public void setName(String name) {
-        this.name = name;
-    }
+    public static Relationship RELATIONSHIP = null;
+
+    public static Relationships RELATIONSHIPS = null;
+
+    public static Source SOURCE = null;
 
 }

@@ -21,9 +21,9 @@ package org.easyJsonApi.entities.test;
 
 import java.math.BigDecimal;
 
-import org.easyJsonApi.annotations.Links;
+import org.easyJsonApi.annotations.MetaRelationship;
 
-@Links
+@MetaRelationship
 public class EntityTestLink {
 
     private String attr1;

@@ -1,0 +1,16 @@
+{
+    'data': [
+        {
+            'type': 'books',
+            'id': '1',
+            'attributes': {
+            	'attr1': 'Miguel Teles',
+            	'attr2': 2000,
+            	'attr3': {
+            		'title': 'The best food',
+            		'pages': '4000'
+            	}
+            }
+        }
+    ]
+}

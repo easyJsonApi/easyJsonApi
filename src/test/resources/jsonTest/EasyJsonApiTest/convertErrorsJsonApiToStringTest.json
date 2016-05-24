@@ -1,0 +1,13 @@
+{
+    'errors': [
+        {
+            'id': '404',
+            'code': '4000',
+            'detail': 'Invalid book searched',
+            'title': 'Invalid operation',
+            'source': {
+                'pointer': '/books/attributes/tests'
+            }
+        }
+    ]
+}

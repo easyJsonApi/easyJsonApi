@@ -1,0 +1,37 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "books",
+            "attributes": {
+                "attr1": "Spring book",
+                "attr2": 100
+            },
+            "relationships": {
+                "author": {
+                    "links": {
+                        "self": "http://test.com/test",
+                        "related": {
+                            "href": "http://test.com"
+                        }
+                    },
+                    "data": [
+                        {
+                            "id": "9",
+                            "type": "books"
+                        },
+                        {
+                            "id": "1",
+                            "type": "news"
+                        }
+                    ]
+                },
+                "comments": {
+                    "links": {
+                        "self": "http://test.com/test2"
+                    }
+                }
+            }
+        }
+    ]
+}

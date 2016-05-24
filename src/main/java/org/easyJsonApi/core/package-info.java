@@ -19,7 +19,7 @@
  */
 
 /**
- * {@link org.easyJsonApi.tools} is a package with main structure which allows construct the json api specification.
+ * {@link org.easyJsonApi.core} is a package with main structure which allows construct the json api specification.
  * 
  * <h2>Main Workflows</h2>
  * <br/>
@@ -45,4 +45,4 @@
  * </p>
  * 
  */
-package org.easyJsonApi.tools;
+package org.easyJsonApi.core;
