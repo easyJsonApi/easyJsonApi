@@ -44,7 +44,7 @@ public class DataTest {
     @Test(expected = EasyJsonApiEntityException.class)
     public void invalidDataInstance() {
 
-        new Data("100", "books", new LinkedList<>(), Nullable.RELATIONSHIPS);
+        new Data("100", "books", new LinkedList<>());
 
     }
 

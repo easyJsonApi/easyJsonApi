@@ -33,7 +33,6 @@ import org.easyJsonApi.entities.Link;
 import org.easyJsonApi.entities.LinkRelated;
 import org.easyJsonApi.entities.Nullable;
 import org.easyJsonApi.entities.Relationship;
-import org.easyJsonApi.entities.Relationships;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
 import org.easyJsonApi.entities.test.EntityTestAttr2;
 import org.easyJsonApi.entities.test.EntityTestMeta;
@@ -84,11 +83,10 @@ public class EasyJsonApiSerializerTest {
         EntityTestMeta meta = new EntityTestMeta();
         meta.setMetadata("Meta test");
         Relationship rel = new Relationship("author", Nullable.LINK, meta);
-        Relationships rels = new Relationships();
-        rels.getRelationships().add(rel);
 
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("100", "books", Nullable.OBJECT, rels);
+        Data data = new Data("100", "books", Nullable.OBJECT);
+        data.getRels().getRelationships().add(rel);
         jsonApi.addData(data);
 
         serializer.serialize(jsonApi, null, serializerContext);
@@ -116,12 +114,10 @@ public class EasyJsonApiSerializerTest {
         Link linkComments = new Link(Nullable.LINK_RELATED, "http://test.com/test2");
         Relationship relComments = new Relationship("comments", linkComments, Nullable.OBJECT);
 
-        Relationships rels = new Relationships();
-        rels.getRelationships().add(relAuthor);
-        rels.getRelationships().add(relComments);
-
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("1", "books", Nullable.OBJECT, rels);
+        Data data = new Data("1", "books", Nullable.OBJECT);
+        data.getRels().getRelationships().add(relAuthor);
+        data.getRels().getRelationships().add(relComments);
         jsonApi.addData(data);
 
         String resultExpected = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "genericSerializerRelationshipTest.json");

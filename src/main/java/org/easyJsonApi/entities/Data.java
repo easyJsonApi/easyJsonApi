@@ -19,6 +19,7 @@
  */
 package org.easyJsonApi.entities;
 
+import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.asserts.Validation;
 
 import com.google.gson.annotations.SerializedName;
@@ -42,7 +43,7 @@ public final class Data implements Cloneable {
     // private final Object links;
 
     @SerializedName(value = "relationships")
-    private final Relationships rels;
+    private Relationships rels;
 
     @SerializedName(value = "type")
     private final String type;
@@ -90,6 +91,9 @@ public final class Data implements Cloneable {
      * @return the rels
      */
     public Relationships getRels() {
+        if (Assert.isNull(rels)) {
+            this.rels = new Relationships();
+        }
         return rels;
     }
 

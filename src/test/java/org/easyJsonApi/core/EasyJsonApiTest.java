@@ -25,15 +25,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.easyJsonApi.TestHelper;
-import org.easyJsonApi.core.EasyJsonApi;
-import org.easyJsonApi.core.EasyJsonApiConfig;
 import org.easyJsonApi.entities.Data;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.HttpStatus;
 import org.easyJsonApi.entities.JsonApi;
+import org.easyJsonApi.entities.Link;
 import org.easyJsonApi.entities.Nullable;
+import org.easyJsonApi.entities.Relationship;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
 import org.easyJsonApi.entities.test.EntityTestAttr2;
+import org.easyJsonApi.entities.test.EntityTestMetaRelationship;
 import org.easyJsonApi.exceptions.EasyJsonApiException;
 import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
 import org.easyJsonApi.exceptions.EasyJsonApiMalformedJsonException;
@@ -159,6 +160,61 @@ public class EasyJsonApiTest {
         Assert.assertEquals("1", cloneData.get(0).getId());
         Assert.assertEquals("books", cloneData.get(0).getType());
         Assert.assertEquals("My best book", ((EntityTestAttr2) cloneData.get(0).getAttr()).getAttr1());
+
+    }
+
+    @Test
+    public void convertDataRelationshipsJsonApiToStringTest() throws EasyJsonApiException {
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElemExpected = null;
+        JsonElement jsonElemResult = null;
+
+        EntityTestAttr1 entityTest = new EntityTestAttr1();
+        entityTest.setAttr1("EasyJsonApi api book");
+        entityTest.setAttr2(new BigDecimal(100));
+
+        Data dataRequest = new Data("1", "books", entityTest);
+        EntityTestMetaRelationship relationshipMeta = new EntityTestMetaRelationship();
+        relationshipMeta.setCount("META_COUNT");
+        Link link = new Link(Nullable.LINK_RELATED, "http://test.com");
+        Relationship relationship = new Relationship("author", link, relationshipMeta);
+
+        dataRequest.getRels().getRelationships().add(relationship);
+
+        jsonApiObject = new JsonApi();
+        jsonApiObject.addData(dataRequest);
+
+        jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject, EntityTestAttr1.class, EntityTestMetaRelationship.class);
+
+        logger.info(jsonApiStringResult);
+
+        jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertDataRelationshipsJsonApiToStringTest.json");
+
+        jsonElemExpected = jsonParser.parse(jsonApiString).getAsJsonObject();
+        jsonElemResult = jsonParser.parse(jsonApiStringResult).getAsJsonObject();
+
+        Assert.assertEquals(jsonElemExpected, jsonElemResult);
+
+    }
+
+    @Test
+    public void convertDataRelationshipsStringToJsonApiTest() throws EasyJsonApiException {
+
+        jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertDataRelationshipsStringToJsonApiTest.json");
+
+        // Check result for json with all attributes using EntityTestAttr1
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
+
+        List<Data> cloneData = jsonApiObjectResult.getData();
+
+        Assert.assertNotNull(jsonApiObjectResult);
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("books", cloneData.get(0).getType());
+        Assert.assertEquals("Spring book", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr1());
+        Assert.assertEquals("100", ((EntityTestAttr1) cloneData.get(0).getAttr()).getAttr2().toPlainString());
+        Assert.assertEquals(2, cloneData.get(0).getRels().getRelationships().size());
 
     }
 
