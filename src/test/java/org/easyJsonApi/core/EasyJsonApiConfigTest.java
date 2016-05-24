@@ -17,8 +17,9 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.tools;
+package org.easyJsonApi.core;
 
+import org.easyJsonApi.core.EasyJsonApiConfig;
 import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
 import org.junit.Assert;
 import org.junit.Ignore;

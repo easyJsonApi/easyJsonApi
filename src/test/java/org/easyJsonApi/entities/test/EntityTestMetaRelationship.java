@@ -17,29 +17,28 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.adapters;
+package org.easyJsonApi.entities.test;
 
-/**
- * Enum allows mapping type token for {@link EasyJsonApiMachine}
- * 
- * @author Nuno Bento (nbento.neves@gmail.com)
- */
-public enum EasyJsonApiTypeToken {
+import org.easyJsonApi.annotations.MetaRelationship;
 
-    TOKEN_ATTR("TOKEN_ATTR"), TOKEN_DEFAULT("TOKEN_DEFAULT"), TOKEN_LINKS("TOKEN_LINKS"), TOKEN_META("TOKEN_META"), TOKEN_META_RELATIONSHIP(
-            "TOKEN_META_RELATIONSHIP");
+@MetaRelationship
+public class EntityTestMetaRelationship {
 
-    private String key;
+    private String count;
 
-    private EasyJsonApiTypeToken(String key) {
-        this.key = key;
+    /**
+     * @return the count
+     */
+    public String getCount() {
+        return count;
     }
 
     /**
-     * @return the key
+     * @param count
+     *            the count to set
      */
-    public String getKey() {
-        return key;
+    public void setCount(String count) {
+        this.count = count;
     }
 
 }

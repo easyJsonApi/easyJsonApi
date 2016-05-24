@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.tools;
+package org.easyJsonApi.core;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -189,7 +189,10 @@ public class EasyJsonApi {
                 // Get the first object inside the data and check if has any
                 // attribute instanced
                 Data firstData = cloneData.get(BigDecimal.ZERO.intValue());
-                if (Assert.isNull(firstData.getId(), firstData.getType(), firstData.getAttr(), firstData.getRels(), firstData.getLinks())) {
+                // if (Assert.isNull(firstData.getId(), firstData.getType(), firstData.getAttr(), firstData.getRels(), firstData.getLinks())) {
+                // return null;
+                // }
+                if (Assert.isNull(firstData.getId(), firstData.getType(), firstData.getAttr())) {
                     return null;
                 }
             } else if (!cloneError.isEmpty()) {

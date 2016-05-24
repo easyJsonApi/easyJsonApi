@@ -19,21 +19,19 @@
  */
 package org.easyJsonApi.entities;
 
-import java.util.Map;
-
-import org.easyJsonApi.annotations.Meta;
-import org.easyJsonApi.asserts.Assert;
+import org.easyJsonApi.asserts.Validation;
 
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Entity represents Error resource object in json api specification
+ * Entity represents error resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link JsonApi}
+ * @see {@link Source}
+ * @see {@link HttpStatus}
  */
 public final class Error implements Cloneable {
-
-    public final static Object NULLABLE = null;
 
     @SerializedName(value = "code")
     private final String code;
@@ -56,9 +54,8 @@ public final class Error implements Cloneable {
     @SerializedName(value = "title")
     private final String title;
 
-    public Error(String id, String title, HttpStatus status, Object meta,
-            Source source) {
-        checkValidData(meta);
+    public Error(String id, String title, HttpStatus status, Object meta, Source source) {
+        Validation.checkValidObject(meta);
         this.code = null;
         this.detail = null;
         this.id = id;
@@ -68,9 +65,8 @@ public final class Error implements Cloneable {
         this.title = title;
     }
 
-    public Error(String id, String title, HttpStatus status, String code,
-            String detail, Object meta, Source source) {
-        checkValidData(meta);
+    public Error(String id, String title, HttpStatus status, String code, String detail, Object meta, Source source) {
+        Validation.checkValidObject(meta);
         this.code = code;
         this.detail = detail;
         this.id = id;
@@ -80,37 +76,8 @@ public final class Error implements Cloneable {
         this.title = title;
     }
 
-    /**
-     * Check if object is valid. One object is valid when has one of the rules
-     * below:
-     * - is null
-     * - is an instance of {@link Map}
-     * - has the annotation {@link Meta}
-     * 
-     * @param objectAnnotated the object needs validate
-     */
-    private void checkValidData(Object objectAnnotated) {
-
-        boolean notAnnotated = true;
-
-        if (Assert.isNull(objectAnnotated)) {
-            notAnnotated = false;
-        } else if (objectAnnotated instanceof Map) {
-            notAnnotated = false;
-        } else if (Assert.notNull(
-                objectAnnotated.getClass().getAnnotation(Meta.class))) {
-            notAnnotated = false;
-        }
-
-        if (notAnnotated) {
-            throw new IllegalAccessError("Invalid object inserted!");
-        }
-
-    }
-
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#clone()
      */
     @Override
@@ -169,14 +136,12 @@ public final class Error implements Cloneable {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public String toString() {
-        return "JsonApiError [id=" + id + ", status=" + status + ", code="
-                + code + ", title=" + title + ", detail=" + detail + ", source="
-                + source + ", meta=" + meta + "]";
+        return "JsonApiError [id=" + id + ", status=" + status + ", code=" + code + ", title=" + title + ", detail=" + detail + ", source=" + source
+                + ", meta=" + meta + "]";
     }
 
 }

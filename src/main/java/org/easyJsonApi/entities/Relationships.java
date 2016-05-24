@@ -17,18 +17,27 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.annotations;
+package org.easyJsonApi.entities;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Metadata annotation represents the relationships resource object
+ * Entity represents relationships resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link Data}
+ * @see {@link Relationship}
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Relationships {}
+public final class Relationships {
+
+    private final Set<Relationship> relationships = new HashSet<>();
+
+    /**
+     * @return the relationships
+     */
+    public Set<Relationship> getRelationships() {
+        return relationships;
+    }
+
+}

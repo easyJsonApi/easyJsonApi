@@ -22,13 +22,12 @@ package org.easyJsonApi.entities;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Entity represents Source resource object in json api specification
+ * Entity represents source resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link Error}
  */
 public class Source {
-
-    public final static Source NULLABLE = null;
 
     @SerializedName(value = "parameter")
     private String parameter;
@@ -51,14 +50,16 @@ public class Source {
     }
 
     /**
-     * @param parameter the parameter to set
+     * @param parameter
+     *            the parameter to set
      */
     public void setParameter(String parameter) {
         this.parameter = parameter;
     }
 
     /**
-     * @param pointer the pointer to set
+     * @param pointer
+     *            the pointer to set
      */
     public void setPointer(String pointer) {
         this.pointer = pointer;
@@ -66,7 +67,6 @@ public class Source {
 
     /*
      * (non-Javadoc)
-     * 
      * @see java.lang.Object#toString()
      */
     @Override

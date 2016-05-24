@@ -21,31 +21,29 @@ package org.easyJsonApi.entities;
 
 import java.util.ArrayList;
 
+import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 import org.junit.Assert;
 import org.junit.Test;
 
 public class ErrorTest {
 
     @Test
-    public void cloneTest() throws CloneNotSupportedException {
+    public void cloneErrorTest() throws CloneNotSupportedException {
 
-        Error errorType = new Error("100", "First error!", HttpStatus.OK,
-                Error.NULLABLE, Source.NULLABLE);
+        Error errorType = new Error("100", "Invalid Operation!", HttpStatus.NOT_FOUND, Nullable.OBJECT, Nullable.SOURCE);
 
         Error errorClone = (Error) errorType.clone();
 
         Assert.assertEquals(errorType.getId(), errorClone.getId());
         Assert.assertEquals(errorType.getTitle(), errorClone.getTitle());
-        Assert.assertNotEquals(System.identityHashCode(errorType.hashCode()),
-                System.identityHashCode(errorClone.hashCode()));
+        Assert.assertNotEquals(System.identityHashCode(errorType.hashCode()), System.identityHashCode(errorClone.hashCode()));
 
     }
 
-    @Test(expected = IllegalAccessError.class)
+    @Test(expected = EasyJsonApiEntityException.class)
     public void invalidErrorInstance() {
 
-        new Error("100", "First error!", HttpStatus.OK, new ArrayList<>(),
-                Source.NULLABLE);
+        new Error("100", "Invalid Operation!", HttpStatus.NOT_FOUND, new ArrayList<>(), Nullable.SOURCE);
 
     }
 }

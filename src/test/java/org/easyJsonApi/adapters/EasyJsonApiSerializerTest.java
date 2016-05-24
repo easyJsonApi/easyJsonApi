@@ -23,28 +23,36 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import java.lang.reflect.Type;
-import java.util.List;
 
+import org.easyJsonApi.TestHelper;
+import org.easyJsonApi.core.EasyJsonApiConfig;
 import org.easyJsonApi.entities.Data;
+import org.easyJsonApi.entities.DataLinkage;
 import org.easyJsonApi.entities.JsonApi;
+import org.easyJsonApi.entities.Link;
+import org.easyJsonApi.entities.LinkRelated;
+import org.easyJsonApi.entities.Nullable;
+import org.easyJsonApi.entities.Relationship;
+import org.easyJsonApi.entities.Relationships;
 import org.easyJsonApi.entities.test.EntityTestAttr1;
 import org.easyJsonApi.entities.test.EntityTestAttr2;
-import org.easyJsonApi.entities.test.EntityTestLink;
-import org.easyJsonApi.entities.test.EntityTestRels;
+import org.easyJsonApi.entities.test.EntityTestMeta;
 import org.easyJsonApi.exceptions.EasyJsonApiCastException;
-import org.easyJsonApi.exceptions.EasyJsonApiEntityException;
 import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
-import org.easyJsonApi.tools.EasyJsonApiConfig;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import com.google.gson.JsonDeserializationContext;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSerializationContext;
 
 public class EasyJsonApiSerializerTest {
+
+    private final String JSON_TEST_FOLDER = "jsonTest/EasyJsonApiSerializerTest/";
 
     @Test(expected = EasyJsonApiCastException.class)
     public void genericSerializerCastExceptionAttrTest() throws EasyJsonApiInvalidPackageException {
@@ -54,70 +62,78 @@ public class EasyJsonApiSerializerTest {
         EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
         EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
         serializer.setConfig(config);
-        serializer.setClassesUsed(EntityTestRels.class);
+        serializer.setClassesUsed(EntityTestMeta.class);
 
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("100", "TEST", new EntityTestAttr1(), Data.NULLABLE, Data.NULLABLE);
+        Data data = new Data("100", "books", new EntityTestAttr1());
         jsonApi.addData(data);
 
         serializer.serialize(jsonApi, null, serializerContext);
     }
 
     @Test(expected = EasyJsonApiCastException.class)
-    public void genericSerializerCastExceptionLinksTest() throws EasyJsonApiInvalidPackageException {
+    public void genericSerializerCastExceptionRelationshipTest() throws EasyJsonApiInvalidPackageException {
 
         JsonSerializationContext serializerContext = mock(JsonSerializationContext.class);
 
         EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
         EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
         serializer.setConfig(config);
-        serializer.setClassesUsed(EntityTestAttr1.class);
+        serializer.setClassesUsed(EntityTestMeta.class);
+
+        EntityTestMeta meta = new EntityTestMeta();
+        meta.setMetadata("Meta test");
+        Relationship rel = new Relationship("author", Nullable.LINK, meta);
+        Relationships rels = new Relationships();
+        rels.getRelationships().add(rel);
 
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("100", "TEST", Data.NULLABLE, new EntityTestRels(), Data.NULLABLE);
+        Data data = new Data("100", "books", Nullable.OBJECT, rels);
         jsonApi.addData(data);
 
         serializer.serialize(jsonApi, null, serializerContext);
     }
 
-    @Test(expected = EasyJsonApiCastException.class)
-    public void genericSerializerCastExceptionRelsTest() throws EasyJsonApiInvalidPackageException {
-
-        JsonSerializationContext serializerContext = mock(JsonSerializationContext.class);
-
-        EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
-        EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
-        serializer.setConfig(config);
-        serializer.setClassesUsed(EntityTestAttr1.class);
-
-        JsonApi jsonApi = new JsonApi();
-        Data data = new Data("100", "TEST", Data.NULLABLE, Data.NULLABLE, new EntityTestLink());
-        jsonApi.addData(data);
-
-        serializer.serialize(jsonApi, null, serializerContext);
-    }
-
+    // Elements are not ordered because implementation using set collection
+    @Ignore
     @Test
-    public void genericSerializerTest() throws EasyJsonApiInvalidPackageException, EasyJsonApiEntityException {
+    public void genericSerializerRelationshipTest() throws EasyJsonApiInvalidPackageException {
 
-        JsonDeserializationContext deserializerContext = mock(JsonDeserializationContext.class);
+        JsonSerializationContext serializerContext = mock(JsonSerializationContext.class);
 
         EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
-        EasyJsonApiDeserializer deserializer = new EasyJsonApiDeserializer();
-        deserializer.setConfig(config);
-        deserializer.setClassesUsed(EntityTestAttr1.class);
+        EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
+        serializer.setConfig(config);
 
-        JsonParser jsonParser = new JsonParser();
-        JsonElement jsonElem = jsonParser.parse("{ 'data': [ { 'type': 'TEST', 'id': '1', 'attributes': { } } ] }").getAsJsonObject();
+        LinkRelated linkRelatedAuthor = new LinkRelated("http://test.com", Nullable.OBJECT);
+        Link linkAuthor = new Link(linkRelatedAuthor, "http://test.com/test");
+        Relationship relAuthor = new Relationship("author", linkAuthor, Nullable.OBJECT);
+        DataLinkage dataLinkNews = new DataLinkage("1", "news");
+        DataLinkage dataLinkBook = new DataLinkage("9", "books");
+        relAuthor.addDataLinkage(dataLinkNews);
+        relAuthor.addDataLinkage(dataLinkBook);
 
-        JsonApi responseJsonApi = deserializer.deserialize(jsonElem, null, deserializerContext);
+        Link linkComments = new Link(Nullable.LINK_RELATED, "http://test.com/test2");
+        Relationship relComments = new Relationship("comments", linkComments, Nullable.OBJECT);
 
-        List<Data> cloneData = responseJsonApi.getData();
+        Relationships rels = new Relationships();
+        rels.getRelationships().add(relAuthor);
+        rels.getRelationships().add(relComments);
+
+        JsonApi jsonApi = new JsonApi();
+        Data data = new Data("1", "books", Nullable.OBJECT, rels);
+        jsonApi.addData(data);
+
+        String resultExpected = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "genericSerializerRelationshipTest.json");
+
+        JsonElement responseJsonApi = serializer.serialize(jsonApi, null, serializerContext);
 
         Assert.assertNotNull(responseJsonApi);
-        Assert.assertEquals(1, cloneData.size());
-        Assert.assertEquals("TEST", cloneData.get(0).getType());
-        Assert.assertEquals("1", cloneData.get(0).getId());
+
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        String resultActual = gson.toJson(responseJsonApi);
+
+        Assert.assertEquals(resultExpected, resultActual);
 
     }
 
@@ -129,28 +145,27 @@ public class EasyJsonApiSerializerTest {
         EasyJsonApiConfig config = new EasyJsonApiConfig("org.easyJsonApi.entities.test");
         EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
         serializer.setConfig(config);
-        serializer.setClassesUsed(EntityTestAttr1.class);
         serializer.setClassesUsed(EntityTestAttr2.class);
 
         JsonParser jsonParser = new JsonParser();
-        JsonElement jsonElem = jsonParser.parse("{ 'attr1' : 'Attribute_1' }").getAsJsonObject();
+        JsonElement jsonElem = jsonParser.parse("{ 'attr1' : 'My love story' }").getAsJsonObject();
 
         // MOCK INFORMATION
         EntityTestAttr2 entityMock = new EntityTestAttr2();
-        entityMock.setAttr1("Attribute_1");
+        entityMock.setAttr1("My love story");
         when(serializerContext.serialize(Mockito.any(JsonElement.class), Mockito.any(Type.class))).thenReturn(jsonElem);
 
         JsonApi jsonApi = new JsonApi();
-        Data jsonApiData = new Data("1", "TEST", entityMock, Data.NULLABLE, Data.NULLABLE);
+        Data jsonApiData = new Data("1", "books", entityMock);
 
         jsonApi.addData(jsonApiData);
 
-        String resultExpected = "{ 'data': [ { 'id': '1', 'type': 'TEST', 'attributes': { 'attr1' : 'Attribute_1' } } ] }";
+        String resultExpected = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "serializerSetClassesUsedTest.json").replace(" ", "").replace("\n", "");
 
         JsonElement responseJsonApi = serializer.serialize(jsonApi, null, serializerContext);
 
         Assert.assertNotNull(responseJsonApi);
-        Assert.assertEquals(resultExpected.replace(" ", ""), responseJsonApi.toString().replace(" ", "").replace("\"", "'"));
+        Assert.assertEquals(resultExpected, responseJsonApi.toString().replace(" ", "").replace("\"", "'"));
 
     }
 

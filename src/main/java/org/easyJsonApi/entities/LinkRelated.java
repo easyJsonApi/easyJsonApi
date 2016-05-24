@@ -17,29 +17,45 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.adapters;
+package org.easyJsonApi.entities;
+
+import org.easyJsonApi.asserts.Validation;
+
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Enum allows mapping type token for {@link EasyJsonApiMachine}
+ * Entity represents related resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link Link}
  */
-public enum EasyJsonApiTypeToken {
+public final class LinkRelated {
 
-    TOKEN_ATTR("TOKEN_ATTR"), TOKEN_DEFAULT("TOKEN_DEFAULT"), TOKEN_LINKS("TOKEN_LINKS"), TOKEN_META("TOKEN_META"), TOKEN_META_RELATIONSHIP(
-            "TOKEN_META_RELATIONSHIP");
+    @SerializedName(value = "href")
+    private final String href;
 
-    private String key;
+    @SerializedName(value = "meta")
+    private final Object meta;
 
-    private EasyJsonApiTypeToken(String key) {
-        this.key = key;
+    public LinkRelated(String href, Object meta) {
+        super();
+        Validation.checkValidObject(meta);
+        this.href = href;
+        this.meta = meta;
     }
 
     /**
-     * @return the key
+     * @return the href
      */
-    public String getKey() {
-        return key;
+    public String getHref() {
+        return href;
+    }
+
+    /**
+     * @return the meta
+     */
+    public Object getMeta() {
+        return meta;
     }
 
 }

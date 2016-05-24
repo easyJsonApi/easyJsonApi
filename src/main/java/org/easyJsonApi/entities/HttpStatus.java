@@ -20,9 +20,10 @@
 package org.easyJsonApi.entities;
 
 /**
- * Enum with http status code for {@link Error}
+ * Enum with http status code
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link Error}
  */
 public enum HttpStatus {
 
@@ -162,7 +163,8 @@ public enum HttpStatus {
     /**
      * Get status using the http code status
      * 
-     * @param code the http code status
+     * @param code
+     *            the http code status
      * @return the http status complete
      */
     public static HttpStatus

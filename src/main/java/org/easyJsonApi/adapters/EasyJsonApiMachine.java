@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.easyJsonApi.tools.EasyJsonApiConfig;
+import org.easyJsonApi.core.EasyJsonApiConfig;
 
 import com.google.gson.reflect.TypeToken;
 

@@ -17,18 +17,42 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.annotations;
+package org.easyJsonApi.entities;
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import com.google.gson.annotations.SerializedName;
 
 /**
- * Metadata annotation represents the links resource object
+ * Entity represents data relationship resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
+ * @see {@link Relationship}
  */
-@Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.TYPE)
-public @interface Links {}
+public final class DataLinkage {
+
+    @SerializedName(value = "id")
+    private final String id;
+
+    @SerializedName(value = "type")
+    private final String type;
+
+    public DataLinkage(String id, String type) {
+        super();
+        this.id = id;
+        this.type = type;
+    }
+
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+}

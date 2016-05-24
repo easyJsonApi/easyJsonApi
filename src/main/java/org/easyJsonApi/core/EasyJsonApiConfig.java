@@ -17,7 +17,7 @@
  * limitations under the License.
  * #L%
  */
-package org.easyJsonApi.tools;
+package org.easyJsonApi.core;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ import java.util.Map;
 import org.easyJsonApi.adapters.EasyJsonApiTypeToken;
 import org.easyJsonApi.annotations.Attributes;
 import org.easyJsonApi.annotations.Meta;
-import org.easyJsonApi.annotations.Relationships;
+import org.easyJsonApi.annotations.MetaRelationship;
 import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.exceptions.EasyJsonApiInvalidPackageException;
 
@@ -56,7 +56,8 @@ public class EasyJsonApiConfig {
     /**
      * The constructor with packages attributes
      * 
-     * @param packages the packages needs to be search and parsing
+     * @param packages
+     *            the packages needs to be search and parsing
      * @throws EasyJsonApiInvalidPackageException
      */
     public EasyJsonApiConfig(String... packages) throws EasyJsonApiInvalidPackageException {
@@ -84,7 +85,8 @@ public class EasyJsonApiConfig {
     /**
      * Set the packages to search
      * 
-     * @param packages the packages needs to be search and parsing
+     * @param packages
+     *            the packages needs to be search and parsing
      * @throws EasyJsonApiInvalidPackageException
      */
     public void setPackagesToSearch(String... packages) throws EasyJsonApiInvalidPackageException {
@@ -96,8 +98,8 @@ public class EasyJsonApiConfig {
                 ClassPath classpath = ClassPath.from(getClass().getClassLoader());
 
                 List<Class<?>> attrClasses = new ArrayList<>();
-                List<Class<?>> relsClasses = new ArrayList<>();
                 List<Class<?>> metaClasses = new ArrayList<>();
+                List<Class<?>> metaRelationshipsClasses = new ArrayList<>();
 
                 for (ClassPath.ClassInfo classInfo : classpath.getTopLevelClasses(packageToSearch)) {
 
@@ -105,16 +107,16 @@ public class EasyJsonApiConfig {
 
                     if (Assert.notNull(clazz.getAnnotation(Attributes.class))) {
                         attrClasses.add(clazz);
-                    } else if (Assert.notNull(clazz.getAnnotation(Relationships.class))) {
-                        relsClasses.add(clazz);
                     } else if (Assert.notNull(clazz.getAnnotation(Meta.class))) {
                         metaClasses.add(clazz);
+                    } else if (Assert.notNull(clazz.getAnnotation(MetaRelationship.class))) {
+                        metaRelationshipsClasses.add(clazz);
                     }
                 }
 
                 this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_ATTR, attrClasses);
-                this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_RELS, relsClasses);
                 this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_META, metaClasses);
+                this.classesParsed.put(EasyJsonApiTypeToken.TOKEN_META_RELATIONSHIP, metaRelationshipsClasses);
 
             } catch (IOException ex) {
                 throw new EasyJsonApiInvalidPackageException("Invalid packages inserted!", ex);

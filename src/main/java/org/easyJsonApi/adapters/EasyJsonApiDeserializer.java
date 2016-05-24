@@ -20,14 +20,22 @@
 package org.easyJsonApi.adapters;
 
 import java.lang.reflect.Type;
+import java.util.Map.Entry;
 
 import org.easyJsonApi.asserts.Assert;
 import org.easyJsonApi.entities.Data;
+import org.easyJsonApi.entities.DataLinkage;
 import org.easyJsonApi.entities.Error;
 import org.easyJsonApi.entities.HttpStatus;
 import org.easyJsonApi.entities.JsonApi;
+import org.easyJsonApi.entities.Link;
+import org.easyJsonApi.entities.LinkRelated;
+import org.easyJsonApi.entities.Nullable;
+import org.easyJsonApi.entities.Relationship;
+import org.easyJsonApi.entities.Relationships;
 import org.easyJsonApi.entities.Source;
 import org.easyJsonApi.exceptions.EasyJsonApiCastException;
+import org.easyJsonApi.tools.JsonTools;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonDeserializationContext;
@@ -52,7 +60,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
             boolean existJsonFormat = jsonElem.getAsJsonObject().isJsonNull();
             if (!existJsonFormat) {
                 if (Assert.notNull(jsonElem.getAsJsonObject().get("data"))) {
-                    request = deserializerGeneric(jsonElem, jsonContext);
+                    request = deserializerData(jsonElem, jsonContext);
                 } else if (Assert.notNull(jsonElem.getAsJsonObject().get("errors"))) {
                     request = deserializerError(jsonElem, jsonContext);
                 }
@@ -60,6 +68,148 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
         }
 
         return request;
+    }
+
+    /**
+     * Deserializer when occur an success
+     * 
+     * @param jsonElem
+     *            the json element
+     * @param jsonContext
+     *            the json context
+     * @return the json api object with values created
+     */
+    private JsonApi deserializerData(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
+
+        JsonApi request = new JsonApi();
+
+        // FIXME: Find solution for this validation
+        if (this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_ATTR) || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_META)
+                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_DEFAULT)
+                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_META_RELATIONSHIP)) {
+
+            // Parse the attribute data
+            JsonArray jsonArrayData = jsonElem.getAsJsonObject().get("data").getAsJsonArray();
+
+            // Iterate the data list
+            for (int index = 0; index < jsonArrayData.size(); index++) {
+
+                JsonObject jsonData = jsonArrayData.get(index).getAsJsonObject();
+
+                Relationships dataRels = Nullable.RELATIONSHIPS;
+                Object dataAttr = Nullable.OBJECT;
+
+                String dataId = JsonTools.getStringInsideJson("id", jsonData);
+                String dataType = JsonTools.getStringInsideJson("type", jsonData);
+
+                // Get the attributes json
+                if (Assert.notNull(jsonData.get("attributes"))) {
+                    dataAttr = deserializerDataAttributes(jsonData, jsonContext);
+                }
+
+                // Get the relationship json
+                if (Assert.notNull(jsonData.get("relationships"))) {
+                    dataRels = deserializerDataRelationship(jsonData, jsonContext);
+                }
+
+                Data jsonApiData = new Data(dataId, dataType, dataAttr, dataRels);
+                request.addData(jsonApiData);
+            }
+        }
+
+        return request;
+    }
+
+    /**
+     * Deserializer attributes json object
+     * 
+     * @param jsonAttributes
+     *            the attributes json object
+     * @param jsonContext
+     *            the json context
+     * @return one instance of {@link Object}
+     */
+    private Object deserializerDataAttributes(JsonObject json, JsonDeserializationContext jsonContext) {
+
+        return deserializerObject("attributes", json, EasyJsonApiTypeToken.TOKEN_ATTR, jsonContext);
+
+    }
+
+    /**
+     * Deserializer relationships json object
+     * 
+     * @param jsonRelationships
+     *            the relationship json object
+     * @param jsonContext
+     *            the json context
+     * @return one instance of {@link Relationships}
+     */
+    private Relationships deserializerDataRelationship(JsonObject json, JsonDeserializationContext jsonContext) {
+
+        Relationships relationships = new Relationships();
+        Link link = Nullable.LINK;
+        LinkRelated linkRelated = Nullable.LINK_RELATED;
+        Object metaRelated = Nullable.OBJECT;
+
+        JsonObject jsonRels = json.get("relationships").getAsJsonObject();
+
+        for (Entry<String, JsonElement> jsonRelationship : jsonRels.entrySet()) {
+
+            Relationship relationship = Nullable.RELATIONSHIP;
+
+            JsonObject jsonRelationshipValue = jsonRelationship.getValue().getAsJsonObject();
+
+            String jsonRelationshipKey = Assert.isNull(jsonRelationship.getKey()) ? null : jsonRelationship.getKey();
+
+            if (Assert.notNull(jsonRelationshipValue)) {
+
+                if (Assert.notEmpty(jsonRelationshipKey) && jsonRelationshipKey.toLowerCase().equals("meta")) {
+
+                    metaRelated = deserializerObject("meta", jsonRelationshipValue, EasyJsonApiTypeToken.TOKEN_META, jsonContext);
+
+                }
+
+                JsonObject relsLinks = Assert.isNull(jsonRelationshipValue.get("links")) ? null
+                        : jsonRelationshipValue.get("links").getAsJsonObject();
+                JsonArray relsData = Assert.isNull(jsonRelationshipValue.get("data")) ? null : jsonRelationshipValue.get("data").getAsJsonArray();
+
+                if (Assert.notNull(relsLinks)) {
+
+                    String self = JsonTools.getStringInsideJson("self", relsLinks);
+                    JsonObject related = Assert.isNull(relsLinks.get("related")) ? null : relsLinks.get("related").getAsJsonObject();
+
+                    if (Assert.notNull(related)) {
+
+                        String href = JsonTools.getStringInsideJson("href", related);
+
+                        Object metaLinkRelated = deserializerObject("meta", related, EasyJsonApiTypeToken.TOKEN_META_RELATIONSHIP, jsonContext);
+
+                        linkRelated = new LinkRelated(href, metaLinkRelated);
+
+                    }
+
+                    link = new Link(linkRelated, self);
+                }
+
+                relationship = new Relationship(jsonRelationshipKey, link, metaRelated);
+
+                if (Assert.notNull(relsData) && Assert.notNull(relationships)) {
+
+                    for (JsonElement data : relsData) {
+                        JsonObject dataRels = data.getAsJsonObject();
+
+                        String id = JsonTools.getStringInsideJson("id", dataRels);
+                        String type = JsonTools.getStringInsideJson("type", dataRels);
+
+                        relationship.addDataLinkage(new DataLinkage(id, type));
+                    }
+                }
+
+                relationships.getRelationships().add(relationship);
+            }
+        }
+
+        return relationships;
     }
 
     /**
@@ -75,18 +225,17 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
         JsonApi request = new JsonApi();
 
-        // Parse the attribute data
         JsonArray jsonArrayErrors = jsonElem.getAsJsonObject().get("errors").getAsJsonArray();
 
-        // Iterate the data list
+        // Iterate the errors list
         for (int index = 0; index < jsonArrayErrors.size(); index++) {
 
             JsonObject jsonError = jsonArrayErrors.get(index).getAsJsonObject();
 
-            String jsonApiErrorDetail = Assert.isNull(jsonError.get("detail")) ? null : jsonError.get("detail").getAsString();
-            String jsonApiErrorCode = Assert.isNull(jsonError.get("code")) ? null : jsonError.get("code").getAsString();
-            String jsonApiErrorTitle = Assert.isNull(jsonError.get("title")) ? null : jsonError.get("title").getAsString();
-            String jsonApiErrorId = Assert.isNull(jsonError.get("id")) ? null : jsonError.get("id").getAsString();
+            String jsonApiErrorDetail = JsonTools.getStringInsideJson("detail", jsonError);
+            String jsonApiErrorCode = JsonTools.getStringInsideJson("code", jsonError);
+            String jsonApiErrorTitle = JsonTools.getStringInsideJson("title", jsonError);
+            String jsonApiErrorId = JsonTools.getStringInsideJson("id", jsonError);
 
             Source jsonApiErrorSource = null;
             HttpStatus jsonApiErrorStatus = null;
@@ -103,14 +252,8 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                 jsonApiErrorStatus = HttpStatus.getStatus(Integer.valueOf(jsonErrorStatus.getAsString()));
             }
 
-            // Get the links json
-            // if (Assert.notNull(jsonError.get("links"))) {
-            // JsonObject jsonAttr = jsonError.get("links").getAsJsonObject();
-            // Link objAttr = jsonContext.deserialize(jsonAttr, Link.class);
-            // }
-
             Error jsonApiError = new Error(jsonApiErrorId, jsonApiErrorTitle, jsonApiErrorStatus, jsonApiErrorCode, jsonApiErrorDetail,
-                    Error.NULLABLE, jsonApiErrorSource);
+                    Nullable.OBJECT, jsonApiErrorSource);
 
             request.addError(jsonApiError);
         }
@@ -119,89 +262,37 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
     }
 
     /**
-     * Deserializer when occur an success
+     * Deserializer object json for {@link EasyJsonApiTypeToken} sent to method
      * 
-     * @param jsonElem
-     *            the json element
+     * @param name
+     *            the name of json element need extract
+     * @param json
+     *            the json object
+     * @param typeToken
+     *            the type token to convert json
      * @param jsonContext
      *            the json context
-     * @return the json api object with values created
+     * @return one instance of typeToken sent
      */
-    private JsonApi deserializerGeneric(JsonElement jsonElem, JsonDeserializationContext jsonContext) {
+    private Object deserializerObject(String name, JsonObject json, EasyJsonApiTypeToken typeToken, JsonDeserializationContext jsonContext) {
 
-        JsonApi request = new JsonApi();
+        Object objDeserialized = Nullable.OBJECT;
 
-        // FIXME: Find solution for this validation
-        if (this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_ATTR) || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_RELS)
-                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_META)
-                || this.tokenTypesToUse.containsKey(EasyJsonApiTypeToken.TOKEN_DEFAULT)) {
+        if (Assert.notNull(json.get(name))) {
+            JsonObject jsonObject = json.get(name).getAsJsonObject();
 
-            // Parse the attribute data
-            JsonArray jsonArrayData = jsonElem.getAsJsonObject().get("data").getAsJsonArray();
+            Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
+                    ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT) : this.tokenTypesToUse.get(typeToken);
 
-            // Iterate the data list
-            for (int index = 0; index < jsonArrayData.size(); index++) {
-
-                JsonObject jsonData = jsonArrayData.get(index).getAsJsonObject();
-
-                Object dataAttr = null;
-                Object dataRels = null;
-                Object dataLinks = null;
-
-                String dataId = Assert.isNull(jsonData.get("id")) ? null : jsonData.get("id").getAsString();
-                String dataType = Assert.isNull(jsonData.get("type")) ? null : jsonData.get("type").getAsString();
-
-                // Get the attributes json
-                if (Assert.notNull(jsonData.get("attributes"))) {
-                    JsonObject jsonAttr = jsonData.get("attributes").getAsJsonObject();
-
-                    Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
-                            ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
-                            : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_ATTR);
-
-                    if (Assert.isNull(type)) {
-                        throw new EasyJsonApiCastException("Doesn't find token for attributes resource object!");
-                    }
-
-                    dataAttr = jsonContext.deserialize(jsonAttr, type);
-                }
-
-                // Get the relationships json
-                if (Assert.notNull(jsonData.get("relationships"))) {
-                    JsonObject jsonRels = jsonData.get("relationships").getAsJsonObject();
-
-                    Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
-                            ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
-                            : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_RELS);
-
-                    if (Assert.isNull(type)) {
-                        throw new EasyJsonApiCastException("Doesn't find token for relationships resource object!");
-                    }
-
-                    dataRels = jsonContext.deserialize(jsonRels, type);
-                }
-
-                // Get the links json
-                if (Assert.notNull(jsonData.get("links"))) {
-                    JsonObject jsonLinks = jsonData.get("links").getAsJsonObject();
-
-                    Type type = Assert.notNull(this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT))
-                            ? this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_DEFAULT)
-                            : this.tokenTypesToUse.get(EasyJsonApiTypeToken.TOKEN_LINKS);
-
-                    if (Assert.isNull(type)) {
-                        throw new EasyJsonApiCastException("Doesn't find token for links resource object!");
-                    }
-
-                    dataLinks = jsonContext.deserialize(jsonLinks, type);
-                }
-
-                Data jsonApiData = new Data(dataId, dataType, dataAttr, dataRels, dataLinks);
-                request.addData(jsonApiData);
+            if (Assert.isNull(type)) {
+                throw new EasyJsonApiCastException("Doesn't find token for " + name + " resource object inside json!");
             }
+
+            objDeserialized = jsonContext.deserialize(jsonObject, type);
         }
 
-        return request;
+        return objDeserialized;
+
     }
 
 }
