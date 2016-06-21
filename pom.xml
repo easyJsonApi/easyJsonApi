@@ -10,8 +10,7 @@
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
-	<description>EasyJsonApi improve the way how you create the structure and mapping the 
-	objects for json api, it will try to make easy, funny and practice your implementation.</description>
+	<description>EasyJsonApi improve the way how you create the structure and mapping the objects for json api, it will try to make easy, funny and practice your implementation.</description>
 	<inceptionYear>2016</inceptionYear>
 	<url>https://github.com/easyJsonApi/easyJsonApi</url>
 
