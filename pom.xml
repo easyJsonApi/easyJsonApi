@@ -3,17 +3,16 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>org.easyJsonApi</groupId>
+	<groupId>com.github.easyjsonapi</groupId>
 	<artifactId>easyJsonApi</artifactId>
-	<version>1.0.0-BUILD-SNAPSHOT</version>
+	<version>1.0.0</version>
 
 	<packaging>jar</packaging>
 
-	<name>EasyJsonApi</name>
-
-	<description></description>
-
+	<name>${project.groupId}:${project.artifactId}</name>
+	<description>EasyJsonApi improve the way how you create the structure and mapping the objects for json api, it will try to make easy, funny and practice your implementation.</description>
 	<inceptionYear>2016</inceptionYear>
+	<url>https://github.com/easyJsonApi/easyJsonApi</url>
 
 	<organization>
 		<name>EasyJsonApi</name>
@@ -24,26 +23,41 @@
 		<license>
 			<name>Apache License, Version 2.0</name>
 			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<issueManagement>
+		<system>Jira</system>
+		<url>https://easyjsonapi.atlassian.net/secure/Dashboard.jspa</url>
+	</issueManagement>
 
 	<developers>
 		<developer>
 			<name>Nuno Bento</name>
 			<email>nbento.neves@gmail.com</email>
+			<organization>EasyJsonApi</organization>
 			<roles>
 				<role>Lead Developer</role>
 			</roles>
 		</developer>
 	</developers>
 
+	<scm>
+		<url>git@github.com:easyJsonApi/easyJsonApi.git</url>
+		<connection>scm:git:git@github.com:easyJsonApi/easyJsonApi.git</connection>
+		<developerConnection>scm:git:git@github.com:easyJsonApi/easyJsonApi.git</developerConnection>
+	</scm>
+
 	<distributionManagement>
-		<site>
-			<id>github</id>
-			<name>EasyJsonApi</name>
-			<url>https://github.com/easyJsonApi/easyJsonApi.git</url>
-		</site>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+		</repository>
 	</distributionManagement>
 
 	<properties>
@@ -86,6 +100,10 @@
 		<coveralls.plugin.version>4.1.0</coveralls.plugin.version>
 		<license.plugin.verion>1.8</license.plugin.verion>
 		<plantuml.plugin.version>7954</plantuml.plugin.version>
+		<sonatype.plugin.version>1.6.3</sonatype.plugin.version>
+		<javadoc.plugin.version>2.10.3</javadoc.plugin.version>
+		<source.plugin.version>2.2.1</source.plugin.version>
+		<gpg.plugin.version>1.5</gpg.plugin.version>
 
 		<!-- License -->
 		<license.licenseName>apache_v2</license.licenseName>
@@ -217,6 +235,30 @@
 					<groupId>com.github.jeluard</groupId>
 					<artifactId>plantuml-maven-plugin</artifactId>
 					<version>${plantuml.plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<version>${sonatype.plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>${source.plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>${javadoc.plugin.version}</version>
+				</plugin>
+
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>${gpg.plugin.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
@@ -379,6 +421,81 @@
 				</dependencies>
 			</plugin>
 
+			<!-- Deploy OSSRH Nexus Repository Manager -->
+			<plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
+
+	<profiles>
+		<!-- Javadoc and source Profile -->
+		<profile>
+			<id>buid-extras</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Source plugin -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-source-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-sources</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+
+					<!-- Javadoc plugin -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>	
+				</plugins>
+			</build>
+		</profile>
+
+		<!-- Signed Profile -->
+		<profile>
+			<id>sign</id>
+			<build>
+				<plugins>
+					<!-- GPG Signed Component -->
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>

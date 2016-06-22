@@ -2,6 +2,7 @@
 [![Build Status](https://travis-ci.org/easyJsonApi/easyJsonApi.svg?branch=master)](https://travis-ci.org/easyJsonApi/easyJsonApi)
 [![License](https://img.shields.io/badge/licence-Apache-blue.svg?style=flat)](https://opensource.org/licenses/Apache-2.0)
 [![Hipchat](https://img.shields.io/badge/chat-Hipchat-green.svg?style=flat)](https://easy-json-api.hipchat.com)
+[![Jira](https://img.shields.io/badge/issues-Jira-blue.svg?style=flat)](https://easyjsonapi.atlassian.net/secure/Dashboard.jspa)
 
 ###*EasyJsonApi*
 
