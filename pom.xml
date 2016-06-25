@@ -438,7 +438,7 @@
 	<profiles>
 		<!-- Javadoc and source Profile -->
 		<profile>
-			<id>buid-extras</id>
+			<id>build-extras</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
