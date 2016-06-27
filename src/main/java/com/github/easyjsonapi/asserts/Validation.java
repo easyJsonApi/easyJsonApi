@@ -26,6 +26,11 @@ import com.github.easyjsonapi.annotations.Meta;
 import com.github.easyjsonapi.annotations.MetaRelationship;
 import com.github.easyjsonapi.exceptions.EasyJsonApiEntityException;
 
+/**
+ * Class for create generic validations, normally with generic business logic because you shoudn't repeat code.
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
 public class Validation {
 
     /**

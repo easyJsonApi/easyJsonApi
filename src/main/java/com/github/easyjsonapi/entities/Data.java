@@ -27,8 +27,6 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents data resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link JsonApi}
- * @see {@link Relationships}
  */
 public final class Data implements Cloneable {
 

@@ -18,7 +18,7 @@
  * #L%
  */
 /**
- * {@link com.github.easyjsonapi.exceptions} is a package with all exceptions available to EasyJsonApi.
+ * This is a package with all exceptions available to EasyJsonApi.
  * This package allows have runtime exceptions.
  * 
  * <br/>

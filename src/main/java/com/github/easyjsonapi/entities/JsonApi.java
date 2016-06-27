@@ -29,8 +29,6 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents the contract object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link Data}
- * @see {@link Error}
  */
 public class JsonApi {
 

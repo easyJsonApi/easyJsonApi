@@ -25,8 +25,6 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents Link resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link Relationship}
- * @see {@link LinkRelated}
  */
 public final class Link {
 
