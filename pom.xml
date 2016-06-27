@@ -103,7 +103,7 @@
 		<sonatype.plugin.version>1.6.3</sonatype.plugin.version>
 		<javadoc.plugin.version>2.10.3</javadoc.plugin.version>
 		<source.plugin.version>2.2.1</source.plugin.version>
-		<gpg.plugin.version>1.5</gpg.plugin.version>
+		<gpg.plugin.version>1.6</gpg.plugin.version>
 
 		<!-- License -->
 		<license.licenseName>apache_v2</license.licenseName>
@@ -438,7 +438,7 @@
 	<profiles>
 		<!-- Javadoc and source Profile -->
 		<profile>
-			<id>buid-extras</id>
+			<id>build-extras</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 			</activation>
