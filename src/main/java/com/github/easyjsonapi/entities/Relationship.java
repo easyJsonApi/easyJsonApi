@@ -30,9 +30,6 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents relationship resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link Relationships}
- * @see {@link DataLinkage}
- * @see {@link Link}
  */
 public class Relationship {
 

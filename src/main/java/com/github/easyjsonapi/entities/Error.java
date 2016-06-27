@@ -26,9 +26,6 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents error resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link JsonApi}
- * @see {@link Source}
- * @see {@link HttpStatus}
  */
 public final class Error implements Cloneable {
 

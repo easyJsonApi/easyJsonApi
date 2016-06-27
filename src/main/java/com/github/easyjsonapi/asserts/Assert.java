@@ -24,11 +24,15 @@ package com.github.easyjsonapi.asserts;
  * do. You have a various number static methods give the opportunity to keep the
  * code simple and clean.
  * 
+ * <br/>
+ * 
+ * <pre>
  * e.g:
  * -isEmpty: validate if string is null or empty
  * -isNull: validate if object is null
  * -notEmpty: the opposite of isEmpty
  * -notNull: the opposite of notNull
+ * </pre>
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
@@ -37,7 +41,8 @@ public class Assert {
     /**
      * Check if string is null or empty
      * 
-     * @param value the string value
+     * @param value
+     *            the string value
      * @return true if string is null or empty and false when occur the opposite
      */
     public static boolean isEmpty(String value) {
@@ -51,7 +56,8 @@ public class Assert {
     /**
      * Check if object is null
      * 
-     * @param value the object value
+     * @param value
+     *            the object value
      * @return true if object is null and false when occur the opposite
      */
     public static boolean isNull(Object value) {
@@ -65,7 +71,8 @@ public class Assert {
     /**
      * Check if list of objects are null
      * 
-     * @param values the list with objects
+     * @param values
+     *            the list with objects
      * @return true if list with objects are null and false when occur the
      *         opposite
      */
@@ -88,7 +95,8 @@ public class Assert {
     /**
      * Check if string is not null or empty
      * 
-     * @param value the string value
+     * @param value
+     *            the string value
      * @return true if string has value and false when string is null or empty
      */
     public static boolean notEmpty(String value) {
@@ -98,7 +106,8 @@ public class Assert {
     /**
      * Check if object is null
      * 
-     * @param value the object value
+     * @param value
+     *            the object value
      * @return true if object has value and false when object is null
      */
     public static boolean notNull(Object value) {

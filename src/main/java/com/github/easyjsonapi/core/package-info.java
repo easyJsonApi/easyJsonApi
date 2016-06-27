@@ -19,7 +19,7 @@
  */
 
 /**
- * {@link com.github.easyjsonapi.core} is a package with main structure which allows construct the json api specification.
+ * This is a package with main structure which allows construct the json api specification.
  * 
  * <h2>Main Workflows</h2>
  * <br/>

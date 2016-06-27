@@ -1,6 +1,6 @@
 /*
  * #%L
- * EasyJsonApi
+ * com.github.easyjsonapi:easyJsonApi
  * %%
  * Copyright (C) 2016 EasyJsonApi
  * %%
@@ -17,25 +17,9 @@
  * limitations under the License.
  * #L%
  */
-package com.github.easyjsonapi.entities;
-
-import java.util.HashSet;
-import java.util.Set;
-
 /**
- * Entity represents relationships resource object in json api specification
- * 
- * @author Nuno Bento (nbento.neves@gmail.com)
+ * This is a package with all annotations allows in json api structure.
+ *
  */
-public final class Relationships {
 
-    private final Set<Relationship> relationships = new HashSet<>();
-
-    /**
-     * @return the relationships
-     */
-    public Set<Relationship> getRelationships() {
-        return relationships;
-    }
-
-}
+package com.github.easyjsonapi.annotations;

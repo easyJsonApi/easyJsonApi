@@ -25,7 +25,6 @@ import com.google.gson.annotations.SerializedName;
  * Entity represents source resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link Error}
  */
 public class Source {
 

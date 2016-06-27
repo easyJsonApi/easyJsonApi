@@ -23,7 +23,6 @@ package com.github.easyjsonapi.entities;
  * Enum with http status code
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
- * @see {@link Error}
  */
 public enum HttpStatus {
 
