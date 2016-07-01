@@ -16,10 +16,8 @@
 			</activation>
 			<properties>
 				<gpg.executable>gpg</gpg.executable>
-<!-- 				<gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname> -->
-<!-- 				<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase> -->
-				<gpg.keyname>611D0269</gpg.keyname>
-				<gpg.passphrase>EasyJsonApi?</gpg.passphrase>
+				<gpg.keyname>${env.GPG_KEY_NAME}</gpg.keyname>
+				<gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
 			</properties>
 		</profile>
 	</profiles>
