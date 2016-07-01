@@ -31,8 +31,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.easyjsonapi.TestHelper;
-import com.github.easyjsonapi.core.EasyJsonApi;
-import com.github.easyjsonapi.core.EasyJsonApiConfig;
 import com.github.easyjsonapi.entities.Data;
 import com.github.easyjsonapi.entities.Error;
 import com.github.easyjsonapi.entities.HttpStatus;
@@ -67,23 +65,17 @@ public class EasyJsonApiTest {
 
     private final Logger logger = LoggerFactory.getLogger(EasyJsonApiTest.class);
 
+    /**
+     * Convert data with attributes object to string
+     * 
+     * @throws EasyJsonApiException
+     */
     @Test
     public void convertDataAttributesJsonApiToStringTest() throws EasyJsonApiException {
 
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonElemExpected = null;
         JsonElement jsonElemResult = null;
-
-        // Check result for empty object
-        jsonApiObject = new JsonApi();
-        jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject, EntityTestAttr1.class);
-
-        logger.info(jsonApiStringResult);
-
-        jsonElemExpected = jsonParser.parse("{ }").getAsJsonObject();
-        jsonElemResult = jsonParser.parse(jsonApiStringResult).getAsJsonObject();
-
-        Assert.assertEquals(jsonElemExpected, jsonElemResult);
 
         // Check result for object with all attributes using EntityTestAttr1
         jsonApiObject = new JsonApi();
@@ -92,7 +84,6 @@ public class EasyJsonApiTest {
         entityTest.setAttr1("EasyJsonApi api book");
         entityTest.setAttr2(new BigDecimal(100));
 
-        // Data dataRequest = new Data("Test", "REQUEST_JSON_API", entityTest, Data.NULLABLE, Data.NULLABLE);
         Data dataRequest = new Data("1", "books", entityTest);
         jsonApiObject.addData(dataRequest);
 
@@ -109,20 +100,13 @@ public class EasyJsonApiTest {
 
     }
 
+    /**
+     * Convert data with attributes object to java object
+     * 
+     * @throws EasyJsonApiException
+     */
     @Test
     public void convertDataAttributesStringToJsonApiTest() throws EasyJsonApiException {
-
-        // Check result for json with data empty
-        jsonApiString = "{ 'data': [ ] }";
-        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
-
-        Assert.assertNull(jsonApiObjectResult);
-
-        // Check result for json with data empty but array has one instance
-        jsonApiString = "{ 'data': [ { } ] }";
-        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
-
-        Assert.assertNull(jsonApiObjectResult);
 
         // Check result for json with attributes empty
         jsonApiString = "{ 'data': [ { 'type': 'books', 'id': '1', 'attributes': { } } ] }";
@@ -162,6 +146,133 @@ public class EasyJsonApiTest {
         Assert.assertEquals("1", cloneData.get(0).getId());
         Assert.assertEquals("books", cloneData.get(0).getType());
         Assert.assertEquals("My best book", ((EntityTestAttr2) cloneData.get(0).getAttr()).getAttr1());
+
+    }
+
+    @Test
+    public void convertDataAttributesWithNullableValues() throws EasyJsonApiException {
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElemExpected = null;
+        JsonElement jsonElemResult = null;
+
+        // Check result for empty object
+        jsonApiObject = new JsonApi();
+        jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject, EntityTestAttr1.class);
+
+        logger.info(jsonApiStringResult);
+
+        jsonElemExpected = jsonParser.parse("{ }").getAsJsonObject();
+        jsonElemResult = jsonParser.parse(jsonApiStringResult).getAsJsonObject();
+
+        Assert.assertEquals(jsonElemExpected, jsonElemResult);
+
+        // Check result for json with data empty
+        jsonApiString = "{ 'data': [ ] }";
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
+
+        Assert.assertNull(jsonApiObjectResult);
+
+        // Check result for json with data empty but array has one instance
+        jsonApiString = "{ 'data': [ { } ] }";
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
+
+        Assert.assertNull(jsonApiObjectResult);
+
+    }
+
+    /**
+     * Convert data with generic attributes to string
+     * 
+     * @throws EasyJsonApiException
+     */
+    @Test
+    public void convertDataGenericAttributesJsonApiToStringTest() throws EasyJsonApiException {
+
+        // Reset the configuration
+        jsonMaker.setConfig();
+
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElemExpected = null;
+        JsonElement jsonElemResult = null;
+
+        // Check result for object with all attributes using EntityTestAttr1
+        jsonApiObject = new JsonApi();
+
+        Map<String, String> attrMap = new HashMap<>();
+        attrMap.put("attr1", "EasyJsonApi api book");
+        attrMap.put("attr2", "100");
+
+        Data dataRequest = new Data("1", "books", attrMap);
+        jsonApiObject.addData(dataRequest);
+
+        jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject);
+
+        logger.info(jsonApiStringResult);
+
+        jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertDataAttributesJsonApiToStringTest.json");
+
+        jsonElemExpected = jsonParser.parse(jsonApiString).getAsJsonObject();
+        jsonElemResult = jsonParser.parse(jsonApiStringResult).getAsJsonObject();
+
+        Assert.assertEquals(jsonElemExpected, jsonElemResult);
+
+    }
+
+    /**
+     * Convert data with generic attributes to java objects
+     * 
+     * @throws EasyJsonApiException
+     */
+    @SuppressWarnings({ "unchecked", "rawtypes" })
+    @Test
+    public void convertDataGenericAttributesStringToJsonApiTest() throws EasyJsonApiException {
+
+        // Reset the configuration
+        jsonMaker.setConfig();
+
+        // Check result for json with attributes empty
+        jsonApiString = "{ 'data': [ { 'type': 'books', 'id': '1', 'attributes': { } } ] }";
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
+
+        List<Data> cloneData = jsonApiObjectResult.getData();
+
+        Assert.assertNotNull(jsonApiObjectResult);
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("books", cloneData.get(0).getType());
+
+        jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertDataAttributesStringToJsonApiTest.json");
+
+        // Check result for json with all attributes using EntityTestAttr1
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
+
+        cloneData = jsonApiObjectResult.getData();
+
+        Assert.assertNotNull(jsonApiObjectResult);
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("books", cloneData.get(0).getType());
+        Assert.assertEquals("Spring book", ((Map<String, String>) cloneData.get(0).getAttr()).get("attr1"));
+        Assert.assertEquals(100D, ((Map<String, String>) cloneData.get(0).getAttr()).get("attr2"));
+
+        Map<String, Map> attr3Map = ((Map<String, Map>) cloneData.get(0).getAttr()).get("attr3");
+        Map<String, Map> attrFinalMap = attr3Map.get("attr");
+
+        Assert.assertEquals("David", attrFinalMap.get("author"));
+
+        jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertDataAttributesStringToJsonApiTest2.json");
+
+        // Check result for json with all attributes using EntityTestAttr2
+        jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
+
+        cloneData = jsonApiObjectResult.getData();
+
+        Assert.assertNotNull(jsonApiObjectResult);
+        Assert.assertNotNull(cloneData.get(0));
+        Assert.assertEquals("1", cloneData.get(0).getId());
+        Assert.assertEquals("books", cloneData.get(0).getType());
+        Assert.assertEquals("My best book", ((Map<String, String>) cloneData.get(0).getAttr()).get("attr1"));
 
     }
 
@@ -357,6 +468,7 @@ public class EasyJsonApiTest {
     }
 
     @Test
+    @Deprecated
     public void convertWithDefaultConfigurationJsonApiToStringTest() throws EasyJsonApiException {
 
         JsonParser jsonParser = new JsonParser();
@@ -388,6 +500,7 @@ public class EasyJsonApiTest {
     }
 
     @Test
+    @Deprecated
     public void convertWithDefaultConfigurationStringToJsonApiTest() throws EasyJsonApiException {
 
         jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertWithDefaultConfigurationStringToJsonApiTest.json");
