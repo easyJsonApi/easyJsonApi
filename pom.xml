@@ -312,6 +312,13 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<!-- Exclude exceptions and pojos -->
+					<excludes>
+						<exclude>**/entities/*.class</exclude>
+						<exclude>**/exceptions/*.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<!-- Prepares the property pointing to the JaCoCo runtime agent which 
 						is passed as VM argument when Maven the Surefire plugin is executed. -->
@@ -436,6 +443,7 @@
 	</build>
 
 	<profiles>
+
 		<!-- Javadoc and source Profile -->
 		<profile>
 			<id>build-extras</id>
@@ -470,7 +478,7 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>	
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

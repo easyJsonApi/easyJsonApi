@@ -210,6 +210,13 @@ public class EasyJsonApi {
     }
 
     /**
+     * Set the configuration of EasyJsonApi with generic config
+     */
+    public void setConfig() {
+        setConfigDefault();
+    }
+
+    /**
      * Set the configuration of EasyJsonApi
      * 
      * @param config
