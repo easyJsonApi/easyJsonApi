@@ -1,0 +1,24 @@
+{
+    "data": [
+        {
+            "id": "1",
+            "type": "books",
+            "attributes": {
+                "attr1": "EasyJsonApi api book",
+                "attr2": 100
+            },
+            "relationships": {
+                "author": {
+                    "links": {
+                        "self": "http://test.com"
+                    }
+                },
+                "company": {
+                    "links": {
+                        "self": "http://test.com"
+                    }
+                }
+            }
+        }
+    ]
+}
