@@ -19,39 +19,41 @@
  */
 package com.github.easyjsonapi.entities;
 
+import com.github.easyjsonapi.asserts.Validation;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Entity represents data relationship resource object in json api specification
+ * Entity represents related resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public final class DataLinkage {
+public final class EJALinkRelated {
 
-    @SerializedName(value = "id")
-    private final String id;
+    @SerializedName(value = "href")
+    private final String href;
 
-    @SerializedName(value = "type")
-    private final String type;
+    @SerializedName(value = "meta")
+    private final Object meta;
 
-    public DataLinkage(String id, String type) {
+    public EJALinkRelated(String href, Object meta) {
         super();
-        this.id = id;
-        this.type = type;
+        Validation.checkValidObject(meta);
+        this.href = href;
+        this.meta = meta;
     }
 
     /**
-     * @return the id
+     * @return the href
      */
-    public String getId() {
-        return id;
+    public String getHref() {
+        return href;
     }
 
     /**
-     * @return the type
+     * @return the meta
      */
-    public String getType() {
-        return type;
+    public Object getMeta() {
+        return meta;
     }
 
 }

@@ -23,17 +23,17 @@ import java.lang.reflect.Type;
 import java.util.Map.Entry;
 
 import com.github.easyjsonapi.asserts.Assert;
-import com.github.easyjsonapi.entities.Data;
-import com.github.easyjsonapi.entities.DataLinkage;
-import com.github.easyjsonapi.entities.Error;
-import com.github.easyjsonapi.entities.HttpStatus;
+import com.github.easyjsonapi.entities.EJAData;
+import com.github.easyjsonapi.entities.EJADataLinkage;
+import com.github.easyjsonapi.entities.EJAError;
+import com.github.easyjsonapi.entities.EJAHttpStatus;
 import com.github.easyjsonapi.entities.JsonApi;
-import com.github.easyjsonapi.entities.Link;
-import com.github.easyjsonapi.entities.LinkRelated;
-import com.github.easyjsonapi.entities.Nullable;
-import com.github.easyjsonapi.entities.Relationship;
-import com.github.easyjsonapi.entities.Relationships;
-import com.github.easyjsonapi.entities.Source;
+import com.github.easyjsonapi.entities.EJALink;
+import com.github.easyjsonapi.entities.EJALinkRelated;
+import com.github.easyjsonapi.entities.EJANullable;
+import com.github.easyjsonapi.entities.EJARelationship;
+import com.github.easyjsonapi.entities.EJARelationships;
+import com.github.easyjsonapi.entities.EJASource;
 import com.github.easyjsonapi.exceptions.EasyJsonApiCastException;
 import com.github.easyjsonapi.tools.JsonTools;
 import com.google.gson.JsonArray;
@@ -95,8 +95,8 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
                 JsonObject jsonData = jsonArrayData.get(index).getAsJsonObject();
 
-                Relationships dataRels = Nullable.RELATIONSHIPS;
-                Object dataAttr = Nullable.OBJECT;
+                EJARelationships dataRels = EJANullable.RELATIONSHIPS;
+                Object dataAttr = EJANullable.OBJECT;
 
                 String dataId = JsonTools.getStringInsideJson("id", jsonData);
                 String dataType = JsonTools.getStringInsideJson("type", jsonData);
@@ -111,7 +111,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                     dataRels = deserializerDataRelationship(jsonData, jsonContext);
                 }
 
-                Data jsonApiData = new Data(dataId, dataType, dataAttr, dataRels);
+                EJAData jsonApiData = new EJAData(dataId, dataType, dataAttr, dataRels);
                 request.addData(jsonApiData);
             }
         }
@@ -141,20 +141,20 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
      *            the relationship json object
      * @param jsonContext
      *            the json context
-     * @return one instance of {@link Relationships}
+     * @return one instance of {@link EJARelationships}
      */
-    private Relationships deserializerDataRelationship(JsonObject json, JsonDeserializationContext jsonContext) {
+    private EJARelationships deserializerDataRelationship(JsonObject json, JsonDeserializationContext jsonContext) {
 
-        Relationships relationships = new Relationships();
-        Link link = Nullable.LINK;
-        LinkRelated linkRelated = Nullable.LINK_RELATED;
-        Object metaRelated = Nullable.OBJECT;
+        EJARelationships relationships = new EJARelationships();
+        EJALink link = EJANullable.LINK;
+        EJALinkRelated linkRelated = EJANullable.LINK_RELATED;
+        Object metaRelated = EJANullable.OBJECT;
 
         JsonObject jsonRels = json.get("relationships").getAsJsonObject();
 
         for (Entry<String, JsonElement> jsonRelationship : jsonRels.entrySet()) {
 
-            Relationship relationship = Nullable.RELATIONSHIP;
+            EJARelationship relationship = EJANullable.RELATIONSHIP;
 
             JsonObject jsonRelationshipValue = jsonRelationship.getValue().getAsJsonObject();
 
@@ -183,14 +183,14 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
 
                         Object metaLinkRelated = deserializerObject("meta", related, EasyJsonApiTypeToken.TOKEN_META_RELATIONSHIP, jsonContext);
 
-                        linkRelated = new LinkRelated(href, metaLinkRelated);
+                        linkRelated = new EJALinkRelated(href, metaLinkRelated);
 
                     }
 
-                    link = new Link(linkRelated, self);
+                    link = new EJALink(linkRelated, self);
                 }
 
-                relationship = new Relationship(jsonRelationshipKey, link, metaRelated);
+                relationship = new EJARelationship(jsonRelationshipKey, link, metaRelated);
 
                 if (Assert.notNull(relsData) && Assert.notNull(relationships)) {
 
@@ -200,7 +200,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
                         String id = JsonTools.getStringInsideJson("id", dataRels);
                         String type = JsonTools.getStringInsideJson("type", dataRels);
 
-                        relationship.addDataLinkage(new DataLinkage(id, type));
+                        relationship.addDataLinkage(new EJADataLinkage(id, type));
                     }
                 }
 
@@ -236,23 +236,23 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
             String jsonApiErrorTitle = JsonTools.getStringInsideJson("title", jsonError);
             String jsonApiErrorId = JsonTools.getStringInsideJson("id", jsonError);
 
-            Source jsonApiErrorSource = null;
-            HttpStatus jsonApiErrorStatus = null;
+            EJASource jsonApiErrorSource = null;
+            EJAHttpStatus jsonApiErrorStatus = null;
 
             // Get the source json
             if (Assert.notNull(jsonError.get("source"))) {
                 JsonObject jsonErrorSource = jsonError.get("source").getAsJsonObject();
-                jsonApiErrorSource = jsonContext.deserialize(jsonErrorSource, Source.class);
+                jsonApiErrorSource = jsonContext.deserialize(jsonErrorSource, EJASource.class);
             }
 
             // Get the http status json
             if (Assert.notNull(jsonError.get("status"))) {
                 JsonObject jsonErrorStatus = jsonError.get("status").getAsJsonObject();
-                jsonApiErrorStatus = HttpStatus.getStatus(Integer.valueOf(jsonErrorStatus.getAsString()));
+                jsonApiErrorStatus = EJAHttpStatus.getStatus(Integer.valueOf(jsonErrorStatus.getAsString()));
             }
 
-            Error jsonApiError = new Error(jsonApiErrorId, jsonApiErrorTitle, jsonApiErrorStatus, jsonApiErrorCode, jsonApiErrorDetail,
-                    Nullable.OBJECT, jsonApiErrorSource);
+            EJAError jsonApiError = new EJAError(jsonApiErrorId, jsonApiErrorTitle, jsonApiErrorStatus, jsonApiErrorCode, jsonApiErrorDetail,
+                    EJANullable.OBJECT, jsonApiErrorSource);
 
             request.addError(jsonApiError);
         }
@@ -275,7 +275,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
      */
     private Object deserializerObject(String name, JsonObject json, EasyJsonApiTypeToken typeToken, JsonDeserializationContext jsonContext) {
 
-        Object objDeserialized = Nullable.OBJECT;
+        Object objDeserialized = EJANullable.OBJECT;
 
         if (Assert.notNull(json.get(name))) {
             JsonObject jsonObject = json.get(name).getAsJsonObject();

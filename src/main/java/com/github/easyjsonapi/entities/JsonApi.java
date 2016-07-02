@@ -33,18 +33,18 @@ import com.google.gson.annotations.SerializedName;
 public class JsonApi {
 
     @SerializedName(value = "data")
-    private List<Data> data;
+    private List<EJAData> data;
 
     @SerializedName(value = "errors")
-    private List<Error> errors;
+    private List<EJAError> errors;
 
     /**
-     * Add {@link Data} inside the data list objects inside {@link JsonApi}
+     * Add {@link EJAData} inside the data list objects inside {@link JsonApi}
      * 
      * @param data
      *            the data to insert into {@link JsonApi}
      */
-    public void addData(Data data) {
+    public void addData(EJAData data) {
 
         if (Assert.isNull(this.data)) {
             this.data = new ArrayList<>();
@@ -55,12 +55,12 @@ public class JsonApi {
     }
 
     /**
-     * Add {@link Error} inside the errors list objects inside {@link JsonApi}
+     * Add {@link EJAError} inside the errors list objects inside {@link JsonApi}
      * 
      * @param error
      *            the error to insert into {@link JsonApi}
      */
-    public void addError(Error error) {
+    public void addError(EJAError error) {
 
         if (Assert.isNull(this.errors)) {
             this.errors = new ArrayList<>();
@@ -75,13 +75,13 @@ public class JsonApi {
      * 
      * @return the data inside {@link JsonApi}
      */
-    public List<Data> getData() {
+    public List<EJAData> getData() {
 
         if (Assert.isNull(data)) {
             data = new ArrayList<>();
         }
 
-        List<Data> cloneData = new ArrayList<>(this.data);
+        List<EJAData> cloneData = new ArrayList<>(this.data);
 
         return cloneData;
     }
@@ -91,13 +91,13 @@ public class JsonApi {
      * 
      * @return the errors inside {@link JsonApi}
      */
-    public List<Error> getErrors() {
+    public List<EJAError> getErrors() {
 
         if (Assert.isNull(errors)) {
             errors = new ArrayList<>();
         }
 
-        List<Error> cloneErrors = new ArrayList<>(this.errors);
+        List<EJAError> cloneErrors = new ArrayList<>(this.errors);
 
         return cloneErrors;
     }

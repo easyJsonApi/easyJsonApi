@@ -23,12 +23,12 @@ import java.lang.reflect.Type;
 import java.util.List;
 
 import com.github.easyjsonapi.asserts.Assert;
-import com.github.easyjsonapi.entities.Data;
-import com.github.easyjsonapi.entities.DataLinkage;
-import com.github.easyjsonapi.entities.Error;
+import com.github.easyjsonapi.entities.EJAData;
+import com.github.easyjsonapi.entities.EJADataLinkage;
+import com.github.easyjsonapi.entities.EJAError;
 import com.github.easyjsonapi.entities.JsonApi;
-import com.github.easyjsonapi.entities.Relationship;
-import com.github.easyjsonapi.entities.Relationships;
+import com.github.easyjsonapi.entities.EJARelationship;
+import com.github.easyjsonapi.entities.EJARelationships;
 import com.github.easyjsonapi.exceptions.EasyJsonApiCastException;
 import com.github.easyjsonapi.tools.JsonTools;
 import com.google.gson.JsonArray;
@@ -49,8 +49,8 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
         JsonObject jsonElem = new JsonObject();
 
-        List<Data> cloneData = null;
-        List<Error> cloneError = null;
+        List<EJAData> cloneData = null;
+        List<EJAError> cloneError = null;
 
         if (Assert.notNull(jsonApi)) {
 
@@ -84,13 +84,13 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
      *            the json context
      * @return the json api object with values created
      */
-    private JsonElement serializerData(List<Data> cloneData, JsonApi jsonapi, JsonSerializationContext jsonContext) {
+    private JsonElement serializerData(List<EJAData> cloneData, JsonApi jsonapi, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 
         JsonArray jsonArrayData = new JsonArray();
 
-        for (Data jsonApiData : cloneData) {
+        for (EJAData jsonApiData : cloneData) {
 
             JsonObject jsonData = new JsonObject();
 
@@ -150,7 +150,7 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
      *            the json context
      * @return one instance of json
      */
-    private JsonElement serializerDataRels(Relationships rels, JsonSerializationContext jsonContext) {
+    private JsonElement serializerDataRels(EJARelationships rels, JsonSerializationContext jsonContext) {
 
         JsonObject jsonRels = new JsonObject();
 
@@ -158,7 +158,7 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
             return null;
         }
 
-        for (Relationship jsonApiRels : rels.getRelationships()) {
+        for (EJARelationship jsonApiRels : rels.getRelationships()) {
 
             if (Assert.notEmpty(jsonApiRels.getName())) {
 
@@ -197,7 +197,7 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
 
                     jsonRelData = new JsonArray();
 
-                    for (DataLinkage dataLinkage : jsonApiRels.getDataLinkage()) {
+                    for (EJADataLinkage dataLinkage : jsonApiRels.getDataLinkage()) {
                         JsonObject jsonData = new JsonObject();
                         jsonData.addProperty("id", dataLinkage.getId());
                         jsonData.addProperty("type", dataLinkage.getType());
@@ -238,13 +238,13 @@ public class EasyJsonApiSerializer extends EasyJsonApiMachine implements JsonSer
      *            the json context
      * @return the json api object with values created
      */
-    private JsonElement serializerError(List<Error> cloneError, JsonApi jsonApi, JsonSerializationContext jsonContext) {
+    private JsonElement serializerError(List<EJAError> cloneError, JsonApi jsonApi, JsonSerializationContext jsonContext) {
 
         JsonObject jsonElem = new JsonObject();
 
         JsonArray jsonArrayErrors = new JsonArray();
 
-        for (Error jsonApiError : cloneError) {
+        for (EJAError jsonApiError : cloneError) {
 
             JsonObject jsonError = new JsonObject();
 

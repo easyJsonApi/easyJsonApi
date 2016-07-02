@@ -28,7 +28,7 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public final class Data implements Cloneable {
+public final class EJAData implements Cloneable {
 
     @SerializedName(value = "attributes")
     private final Object attr;
@@ -40,12 +40,12 @@ public final class Data implements Cloneable {
     // private final Object links;
 
     @SerializedName(value = "relationships")
-    private Relationships rels;
+    private EJARelationships rels;
 
     @SerializedName(value = "type")
     private final String type;
 
-    public Data(String id, String type, Object attr) {
+    public EJAData(String id, String type, Object attr) {
         Validation.checkValidObject(attr);
         this.id = id;
         this.type = type;
@@ -53,7 +53,7 @@ public final class Data implements Cloneable {
         this.rels = null;
     }
 
-    public Data(String id, String type, Object attr, Relationships rels) {
+    public EJAData(String id, String type, Object attr, EJARelationships rels) {
         Validation.checkValidObject(attr);
         this.id = id;
         this.type = type;
@@ -87,9 +87,9 @@ public final class Data implements Cloneable {
     /**
      * @return the rels
      */
-    public Relationships getRels() {
+    public EJARelationships getRels() {
         if (Assert.isNull(rels)) {
-            this.rels = new Relationships();
+            this.rels = new EJARelationships();
         }
         return rels;
     }

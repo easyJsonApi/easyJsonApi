@@ -32,13 +32,13 @@ import org.mockito.Mockito;
 import com.github.easyjsonapi.TestHelper;
 import com.github.easyjsonapi.adapters.EasyJsonApiSerializer;
 import com.github.easyjsonapi.core.EasyJsonApiConfig;
-import com.github.easyjsonapi.entities.Data;
-import com.github.easyjsonapi.entities.DataLinkage;
+import com.github.easyjsonapi.entities.EJAData;
+import com.github.easyjsonapi.entities.EJADataLinkage;
 import com.github.easyjsonapi.entities.JsonApi;
-import com.github.easyjsonapi.entities.Link;
-import com.github.easyjsonapi.entities.LinkRelated;
-import com.github.easyjsonapi.entities.Nullable;
-import com.github.easyjsonapi.entities.Relationship;
+import com.github.easyjsonapi.entities.EJALink;
+import com.github.easyjsonapi.entities.EJALinkRelated;
+import com.github.easyjsonapi.entities.EJANullable;
+import com.github.easyjsonapi.entities.EJARelationship;
 import com.github.easyjsonapi.entities.test.EntityTestAttr1;
 import com.github.easyjsonapi.entities.test.EntityTestAttr2;
 import com.github.easyjsonapi.entities.test.EntityTestMeta;
@@ -65,7 +65,7 @@ public class EasyJsonApiSerializerTest {
         serializer.setClassesUsed(EntityTestMeta.class);
 
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("100", "books", new EntityTestAttr1());
+        EJAData data = new EJAData("100", "books", new EntityTestAttr1());
         jsonApi.addData(data);
 
         serializer.serialize(jsonApi, null, serializerContext);
@@ -83,10 +83,10 @@ public class EasyJsonApiSerializerTest {
 
         EntityTestMeta meta = new EntityTestMeta();
         meta.setMetadata("Meta test");
-        Relationship rel = new Relationship("author", Nullable.LINK, meta);
+        EJARelationship rel = new EJARelationship("author", EJANullable.LINK, meta);
 
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("100", "books", Nullable.OBJECT);
+        EJAData data = new EJAData("100", "books", EJANullable.OBJECT);
         data.getRels().getRelationships().add(rel);
         jsonApi.addData(data);
 
@@ -104,19 +104,19 @@ public class EasyJsonApiSerializerTest {
         EasyJsonApiSerializer serializer = new EasyJsonApiSerializer();
         serializer.setConfig(config);
 
-        LinkRelated linkRelatedAuthor = new LinkRelated("http://test.com", Nullable.OBJECT);
-        Link linkAuthor = new Link(linkRelatedAuthor, "http://test.com/test");
-        Relationship relAuthor = new Relationship("author", linkAuthor, Nullable.OBJECT);
-        DataLinkage dataLinkNews = new DataLinkage("1", "news");
-        DataLinkage dataLinkBook = new DataLinkage("9", "books");
+        EJALinkRelated linkRelatedAuthor = new EJALinkRelated("http://test.com", EJANullable.OBJECT);
+        EJALink linkAuthor = new EJALink(linkRelatedAuthor, "http://test.com/test");
+        EJARelationship relAuthor = new EJARelationship("author", linkAuthor, EJANullable.OBJECT);
+        EJADataLinkage dataLinkNews = new EJADataLinkage("1", "news");
+        EJADataLinkage dataLinkBook = new EJADataLinkage("9", "books");
         relAuthor.addDataLinkage(dataLinkNews);
         relAuthor.addDataLinkage(dataLinkBook);
 
-        Link linkComments = new Link(Nullable.LINK_RELATED, "http://test.com/test2");
-        Relationship relComments = new Relationship("comments", linkComments, Nullable.OBJECT);
+        EJALink linkComments = new EJALink(EJANullable.LINK_RELATED, "http://test.com/test2");
+        EJARelationship relComments = new EJARelationship("comments", linkComments, EJANullable.OBJECT);
 
         JsonApi jsonApi = new JsonApi();
-        Data data = new Data("1", "books", Nullable.OBJECT);
+        EJAData data = new EJAData("1", "books", EJANullable.OBJECT);
         data.getRels().getRelationships().add(relAuthor);
         data.getRels().getRelationships().add(relComments);
         jsonApi.addData(data);
@@ -153,7 +153,7 @@ public class EasyJsonApiSerializerTest {
         when(serializerContext.serialize(Mockito.any(JsonElement.class), Mockito.any(Type.class))).thenReturn(jsonElem);
 
         JsonApi jsonApi = new JsonApi();
-        Data jsonApiData = new Data("1", "books", entityMock);
+        EJAData jsonApiData = new EJAData("1", "books", entityMock);
 
         jsonApi.addData(jsonApiData);
 

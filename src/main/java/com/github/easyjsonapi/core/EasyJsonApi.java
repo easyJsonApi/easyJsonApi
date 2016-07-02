@@ -25,8 +25,8 @@ import java.util.List;
 import com.github.easyjsonapi.adapters.EasyJsonApiDeserializer;
 import com.github.easyjsonapi.adapters.EasyJsonApiSerializer;
 import com.github.easyjsonapi.asserts.Assert;
-import com.github.easyjsonapi.entities.Data;
-import com.github.easyjsonapi.entities.Error;
+import com.github.easyjsonapi.entities.EJAData;
+import com.github.easyjsonapi.entities.EJAError;
 import com.github.easyjsonapi.entities.JsonApi;
 import com.github.easyjsonapi.exceptions.EasyJsonApiException;
 import com.github.easyjsonapi.exceptions.EasyJsonApiMalformedJsonException;
@@ -178,8 +178,8 @@ public class EasyJsonApi {
 
         if (Assert.notNull(jsonApi)) {
 
-            List<Data> cloneData = jsonApi.getData();
-            List<Error> cloneError = jsonApi.getErrors();
+            List<EJAData> cloneData = jsonApi.getData();
+            List<EJAError> cloneError = jsonApi.getErrors();
 
             // Return null when doesn't exist errors and data
             if (cloneError.isEmpty() && cloneData.isEmpty()) {
@@ -187,7 +187,7 @@ public class EasyJsonApi {
             } else if (!cloneData.isEmpty()) {
                 // Get the first object inside the data and check if has any
                 // attribute instanced
-                Data firstData = cloneData.get(BigDecimal.ZERO.intValue());
+                EJAData firstData = cloneData.get(BigDecimal.ZERO.intValue());
                 // if (Assert.isNull(firstData.getId(), firstData.getType(), firstData.getAttr(), firstData.getRels(), firstData.getLinks())) {
                 // return null;
                 // }
@@ -197,7 +197,7 @@ public class EasyJsonApi {
             } else if (!cloneError.isEmpty()) {
                 // Get the first object inside the errors and check if has any
                 // error instanced
-                Error firstError = cloneError.get(BigDecimal.ZERO.intValue());
+                EJAError firstError = cloneError.get(BigDecimal.ZERO.intValue());
                 if (Assert.isNull(firstError.getId(), firstError.getTitle(), firstError.getDetail(), firstError.getCode(), firstError.getMeta(),
                         firstError.getSource(), firstError.getStatus())) {
                     return null;

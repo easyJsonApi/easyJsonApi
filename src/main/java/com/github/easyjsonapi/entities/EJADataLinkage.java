@@ -22,36 +22,36 @@ package com.github.easyjsonapi.entities;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Entity represents Link resource object in json api specification
+ * Entity represents data relationship resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public final class Link {
+public final class EJADataLinkage {
 
-    @SerializedName(value = "related")
-    private final LinkRelated linkRelated;
+    @SerializedName(value = "id")
+    private final String id;
 
-    @SerializedName(value = "self")
-    private final String self;
+    @SerializedName(value = "type")
+    private final String type;
 
-    public Link(LinkRelated linkRelated, String self) {
+    public EJADataLinkage(String id, String type) {
         super();
-        this.linkRelated = linkRelated;
-        this.self = self;
+        this.id = id;
+        this.type = type;
     }
 
     /**
-     * @return the linkRelated
+     * @return the id
      */
-    public LinkRelated getLinkRelated() {
-        return linkRelated;
+    public String getId() {
+        return id;
     }
 
     /**
-     * @return the self
+     * @return the type
      */
-    public String getSelf() {
-        return self;
+    public String getType() {
+        return type;
     }
 
 }

@@ -33,7 +33,7 @@ import org.mockito.Mockito;
 import com.github.easyjsonapi.TestHelper;
 import com.github.easyjsonapi.adapters.EasyJsonApiDeserializer;
 import com.github.easyjsonapi.core.EasyJsonApiConfig;
-import com.github.easyjsonapi.entities.Data;
+import com.github.easyjsonapi.entities.EJAData;
 import com.github.easyjsonapi.entities.JsonApi;
 import com.github.easyjsonapi.entities.test.EntityDependencyTest;
 import com.github.easyjsonapi.entities.test.EntityTestAttr1;
@@ -77,9 +77,9 @@ public class EasyJsonApiDeserializerTest {
 
         JsonApi responseJsonApi = deserializer.deserialize(jsonElem, null, deserializerContext);
 
-        List<Data> cloneData = responseJsonApi.getData();
+        List<EJAData> cloneData = responseJsonApi.getData();
 
-        Data firstData = cloneData.get(0);
+        EJAData firstData = cloneData.get(0);
 
         Assert.assertNotNull(responseJsonApi);
         Assert.assertEquals(1, cloneData.size());
@@ -149,9 +149,9 @@ public class EasyJsonApiDeserializerTest {
 
         JsonApi responseJsonApi = deserializer.deserialize(jsonElem, null, deserializerContext);
 
-        List<Data> cloneData = responseJsonApi.getData();
+        List<EJAData> cloneData = responseJsonApi.getData();
 
-        Data firstData = cloneData.get(0);
+        EJAData firstData = cloneData.get(0);
 
         Assert.assertNotNull(responseJsonApi);
         Assert.assertEquals(1, cloneData.size());
@@ -183,7 +183,7 @@ public class EasyJsonApiDeserializerTest {
 
         JsonApi responseJsonApi = deserializer.deserialize(jsonElem, null, deserializerContext);
 
-        List<Data> cloneData = responseJsonApi.getData();
+        List<EJAData> cloneData = responseJsonApi.getData();
 
         Assert.assertNotNull(responseJsonApi);
         Assert.assertEquals(1, cloneData.size());

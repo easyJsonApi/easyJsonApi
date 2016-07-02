@@ -19,24 +19,24 @@
  */
 package com.github.easyjsonapi.entities;
 
-public interface Nullable {
+public interface EJANullable {
 
-    public static Data DATA = null;
+    public static EJAData DATA = null;
 
-    public static DataLinkage DATA_LINKAGE = null;
+    public static EJADataLinkage DATA_LINKAGE = null;
 
-    public static Error ERROR = null;
+    public static EJAError ERROR = null;
 
-    public static Link LINK = null;
+    public static EJALink LINK = null;
 
-    public static LinkRelated LINK_RELATED = null;
+    public static EJALinkRelated LINK_RELATED = null;
 
     public static Object OBJECT = null;
 
-    public static Relationship RELATIONSHIP = null;
+    public static EJARelationship RELATIONSHIP = null;
 
-    public static Relationships RELATIONSHIPS = null;
+    public static EJARelationships RELATIONSHIPS = null;
 
-    public static Source SOURCE = null;
+    public static EJASource SOURCE = null;
 
 }

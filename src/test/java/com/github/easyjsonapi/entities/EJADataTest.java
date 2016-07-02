@@ -25,18 +25,18 @@ import java.util.LinkedList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.easyjsonapi.entities.Data;
-import com.github.easyjsonapi.entities.Nullable;
+import com.github.easyjsonapi.entities.EJAData;
+import com.github.easyjsonapi.entities.EJANullable;
 import com.github.easyjsonapi.exceptions.EasyJsonApiEntityException;
 
-public class DataTest {
+public class EJADataTest {
 
     @Test
     public void closeDataTest() throws CloneNotSupportedException {
 
-        Data dataType = new Data("1", "books", Nullable.OBJECT);
+        EJAData dataType = new EJAData("1", "books", EJANullable.OBJECT);
 
-        Data dataClone = (Data) dataType.clone();
+        EJAData dataClone = (EJAData) dataType.clone();
 
         Assert.assertEquals(dataType.getId(), dataClone.getId());
         Assert.assertEquals(dataType.getType(), dataClone.getType());
@@ -47,14 +47,14 @@ public class DataTest {
     @Test(expected = EasyJsonApiEntityException.class)
     public void invalidDataInstance() {
 
-        new Data("100", "books", new LinkedList<>());
+        new EJAData("100", "books", new LinkedList<>());
 
     }
 
     @Test(expected = EasyJsonApiEntityException.class)
     public void invalidDataInstanceAttrTest() {
 
-        new Data("200", "books", new ArrayList<>());
+        new EJAData("200", "books", new ArrayList<>());
 
     }
 

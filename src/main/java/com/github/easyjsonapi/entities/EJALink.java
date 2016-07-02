@@ -19,41 +19,39 @@
  */
 package com.github.easyjsonapi.entities;
 
-import com.github.easyjsonapi.asserts.Validation;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * Entity represents related resource object in json api specification
+ * Entity represents Link resource object in json api specification
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public final class LinkRelated {
+public final class EJALink {
 
-    @SerializedName(value = "href")
-    private final String href;
+    @SerializedName(value = "related")
+    private final EJALinkRelated linkRelated;
 
-    @SerializedName(value = "meta")
-    private final Object meta;
+    @SerializedName(value = "self")
+    private final String self;
 
-    public LinkRelated(String href, Object meta) {
+    public EJALink(EJALinkRelated linkRelated, String self) {
         super();
-        Validation.checkValidObject(meta);
-        this.href = href;
-        this.meta = meta;
+        this.linkRelated = linkRelated;
+        this.self = self;
     }
 
     /**
-     * @return the href
+     * @return the linkRelated
      */
-    public String getHref() {
-        return href;
+    public EJALinkRelated getLinkRelated() {
+        return linkRelated;
     }
 
     /**
-     * @return the meta
+     * @return the self
      */
-    public Object getMeta() {
-        return meta;
+    public String getSelf() {
+        return self;
     }
 
 }

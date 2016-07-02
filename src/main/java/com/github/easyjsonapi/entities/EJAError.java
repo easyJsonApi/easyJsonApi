@@ -27,7 +27,7 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public final class Error implements Cloneable {
+public final class EJAError implements Cloneable {
 
     @SerializedName(value = "code")
     private final String code;
@@ -42,15 +42,15 @@ public final class Error implements Cloneable {
     private final Object meta;
 
     @SerializedName(value = "source")
-    private final Source source;
+    private final EJASource source;
 
     @SerializedName(value = "status")
-    private final HttpStatus status;
+    private final EJAHttpStatus status;
 
     @SerializedName(value = "title")
     private final String title;
 
-    public Error(String id, String title, HttpStatus status, Object meta, Source source) {
+    public EJAError(String id, String title, EJAHttpStatus status, Object meta, EJASource source) {
         Validation.checkValidObject(meta);
         this.code = null;
         this.detail = null;
@@ -61,7 +61,7 @@ public final class Error implements Cloneable {
         this.title = title;
     }
 
-    public Error(String id, String title, HttpStatus status, String code, String detail, Object meta, Source source) {
+    public EJAError(String id, String title, EJAHttpStatus status, String code, String detail, Object meta, EJASource source) {
         Validation.checkValidObject(meta);
         this.code = code;
         this.detail = detail;
@@ -112,14 +112,14 @@ public final class Error implements Cloneable {
     /**
      * @return the source
      */
-    public Source getSource() {
+    public EJASource getSource() {
         return source;
     }
 
     /**
      * @return the status
      */
-    public HttpStatus getStatus() {
+    public EJAHttpStatus getStatus() {
         return status;
     }
 
