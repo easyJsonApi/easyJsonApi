@@ -37,9 +37,11 @@ public class Validation {
      * Check if object is valid. One object is valid when has one of the rules
      * below:
      *
+     * <pre>
      * - is an instance of {@link Map}
      * - has the annotation {@link Attributes}
      * - has the annotation {@link Meta}
+     * </pre>
      * 
      * @param objectAnnotated
      *            the object needs validate
