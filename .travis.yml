@@ -24,8 +24,9 @@ branches:
     - developer
     - /^release-.*$/  
 
-install: mvn install -P !build-extras -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-script: mvn test -P !build-extras -B
+
+install: mvn install -P !build-extras -Dmaven.test.skip=true -Dmaven.javadoc.skip=true -B -V
+script: mvn test jacoco:report coveralls:report -P !build-extras -B
     
 after_success:
   - ./scripts/deploy.sh
