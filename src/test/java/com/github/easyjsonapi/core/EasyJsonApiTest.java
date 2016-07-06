@@ -239,7 +239,7 @@ public class EasyJsonApiTest {
         Assert.assertEquals(100D, ((Map<String, String>) cloneData.get(0).getAttr()).get("attr2"));
 
         Map<String, Map> attr3Map = ((Map<String, Map>) cloneData.get(0).getAttr()).get("attr3");
-        Map<String, Map> attrFinalMap = attr3Map.get("attr");
+        Map<String, String> attrFinalMap = attr3Map.get("attr");
 
         Assert.assertEquals("David", attrFinalMap.get("author"));
 
@@ -543,7 +543,7 @@ public class EasyJsonApiTest {
         request.addData(dataRequest);
 
         // Set the configuration to null for using default map type
-        jsonMaker.setConfig(null);
+        jsonMaker.setEasyJsonApiConfig(null);
         jsonApiStringResult = jsonMaker.convertJsonApiToString(request);
 
         jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertWithDefaultConfigurationJsonApiToStringTest.json");
@@ -562,7 +562,7 @@ public class EasyJsonApiTest {
 
         jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertWithDefaultConfigurationStringToJsonApiTest.json");
 
-        jsonMaker.setConfig(null);
+        jsonMaker.setEasyJsonApiConfig(null);
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
 
         List<Data> cloneData = jsonApiObjectResult.getData();
@@ -578,7 +578,7 @@ public class EasyJsonApiTest {
     public void setUp() throws EasyJsonApiInvalidPackageException {
         jsonMakerConfig = new EasyJsonApiConfig("com.github.easyjsonapi.entities.test");
         jsonMaker = EasyJsonApi.getInstance();
-        jsonMaker.setConfig(jsonMakerConfig);
+        jsonMaker.setEasyJsonApiConfig(jsonMakerConfig);
 
         jsonApiString = "";
     }

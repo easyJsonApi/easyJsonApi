@@ -248,7 +248,7 @@ public class EasyJsonApiDeserializer extends EasyJsonApiMachine implements JsonD
             // Get the http status json
             if (Assert.notNull(jsonError.get("status"))) {
                 JsonObject jsonErrorStatus = jsonError.get("status").getAsJsonObject();
-                jsonApiErrorStatus = HttpStatus.getStatus(Integer.valueOf(jsonErrorStatus.getAsString()));
+                jsonApiErrorStatus = HttpStatus.getStatus(Integer.parseInt(jsonErrorStatus.getAsString()));
             }
 
             Error jsonApiError = new Error(jsonApiErrorId, jsonApiErrorTitle, jsonApiErrorStatus, jsonApiErrorCode, jsonApiErrorDetail,

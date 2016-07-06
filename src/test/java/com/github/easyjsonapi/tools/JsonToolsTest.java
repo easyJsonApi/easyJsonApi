@@ -23,7 +23,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.github.easyjsonapi.exceptions.EasyJsonApiRuntimeException;
-import com.github.easyjsonapi.tools.JsonTools;
 import com.google.gson.JsonObject;
 
 public class JsonToolsTest {
@@ -49,7 +48,7 @@ public class JsonToolsTest {
         JsonObject objTestActual = new JsonObject();
         objTestActual.addProperty("Type", "Books");
 
-        JsonTools.insertObject(objTestActual, "Transports", new Integer(20));
+        JsonTools.insertObject(objTestActual, "Transports", Integer.valueOf(20));
 
     }
 
@@ -62,7 +61,7 @@ public class JsonToolsTest {
         JsonObject objTestActual = new JsonObject();
         objTestActual.addProperty("Type", "Books");
 
-        JsonTools.insertObject(null, "Car", new String());
+        JsonTools.insertObject(null, "Car", "");
         Assert.assertEquals(objTestExpected, objTestActual);
 
         JsonTools.insertObject(objTestActual, "Car", null);
@@ -80,7 +79,7 @@ public class JsonToolsTest {
         JsonTools.insertObject(objTestActual, "Transports", jsonElemActual);
         Assert.assertNotEquals(objTestExpected, objTestActual);
 
-        JsonTools.insertObject(objTestActual, "Transports", new String("NOT_AVAILABLE"));
+        JsonTools.insertObject(objTestActual, "Transports", "NOT_AVAILABLE");
         Assert.assertNotEquals(objTestExpected, objTestActual);
 
     }

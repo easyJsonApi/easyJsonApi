@@ -30,6 +30,7 @@ import com.github.easyjsonapi.entities.Error;
 import com.github.easyjsonapi.entities.JsonApi;
 import com.github.easyjsonapi.exceptions.EasyJsonApiException;
 import com.github.easyjsonapi.exceptions.EasyJsonApiMalformedJsonException;
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
@@ -210,20 +211,20 @@ public class EasyJsonApi {
     }
 
     /**
+     * Return instance of {@link EasyJsonApiConfig}
+     * 
+     * @return the easyJsonApiConfig instance
+     */
+    @VisibleForTesting
+    protected EasyJsonApiConfig getEasyJsonApiConfig() {
+        return easyJsonApiConfig;
+    }
+
+    /**
      * Set the configuration of EasyJsonApi with generic config
      */
     public void setConfig() {
         setConfigDefault();
-    }
-
-    /**
-     * Set the configuration of EasyJsonApi
-     * 
-     * @param config
-     *            the configuration of EasyJsonApi
-     */
-    public void setConfig(EasyJsonApiConfig config) {
-        this.easyJsonApiConfig = config;
     }
 
     /**
@@ -234,6 +235,16 @@ public class EasyJsonApi {
         EasyJsonApiConfig configuration = new EasyJsonApiConfig();
         this.easyJsonApiConfig = configuration;
 
+    }
+
+    /**
+     * Set the configuration of EasyJsonApi
+     * 
+     * @param config
+     *            the configuration of EasyJsonApi
+     */
+    public void setEasyJsonApiConfig(EasyJsonApiConfig config) {
+        this.easyJsonApiConfig = config;
     }
 
 }
