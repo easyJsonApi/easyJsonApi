@@ -19,39 +19,24 @@
  */
 package com.github.easyjsonapi.entities;
 
-import com.google.gson.annotations.SerializedName;
+public interface NullableEJA {
 
-/**
- * Entity represents data relationship resource object in json api specification
- * 
- * @author Nuno Bento (nbento.neves@gmail.com)
- */
-public final class EJADataLinkage {
+    public static DataEJA DATA = null;
 
-    @SerializedName(value = "id")
-    private final String id;
+    public static DataLinkageEJA DATA_LINKAGE = null;
 
-    @SerializedName(value = "type")
-    private final String type;
+    public static ErrorEJA ERROR = null;
 
-    public EJADataLinkage(String id, String type) {
-        super();
-        this.id = id;
-        this.type = type;
-    }
+    public static LinkEJA LINK = null;
 
-    /**
-     * @return the id
-     */
-    public String getId() {
-        return id;
-    }
+    public static LinkRelatedEJA LINK_RELATED = null;
 
-    /**
-     * @return the type
-     */
-    public String getType() {
-        return type;
-    }
+    public static Object OBJECT = null;
+
+    public static RelationshipEJA RELATIONSHIP = null;
+
+    public static RelationshipsEJA RELATIONSHIPS = null;
+
+    public static SourceEJA SOURCE = null;
 
 }

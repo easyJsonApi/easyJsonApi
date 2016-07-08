@@ -24,19 +24,19 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.easyjsonapi.entities.EJAError;
-import com.github.easyjsonapi.entities.EJAHttpStatus;
-import com.github.easyjsonapi.entities.EJANullable;
+import com.github.easyjsonapi.entities.ErrorEJA;
+import com.github.easyjsonapi.entities.HttpStatusEJA;
+import com.github.easyjsonapi.entities.NullableEJA;
 import com.github.easyjsonapi.exceptions.EasyJsonApiEntityException;
 
-public class EJAErrorTest {
+public class ErrorEJATest {
 
     @Test
     public void cloneErrorTest() throws CloneNotSupportedException {
 
-        EJAError errorType = new EJAError("100", "Invalid Operation!", EJAHttpStatus.NOT_FOUND, EJANullable.OBJECT, EJANullable.SOURCE);
+        ErrorEJA errorType = new ErrorEJA("100", "Invalid Operation!", HttpStatusEJA.NOT_FOUND, NullableEJA.OBJECT, NullableEJA.SOURCE);
 
-        EJAError errorClone = (EJAError) errorType.clone();
+        ErrorEJA errorClone = (ErrorEJA) errorType.clone();
 
         Assert.assertEquals(errorType.getId(), errorClone.getId());
         Assert.assertEquals(errorType.getTitle(), errorClone.getTitle());
@@ -47,7 +47,7 @@ public class EJAErrorTest {
     @Test(expected = EasyJsonApiEntityException.class)
     public void invalidErrorInstance() {
 
-        new EJAError("100", "Invalid Operation!", EJAHttpStatus.NOT_FOUND, new ArrayList<>(), EJANullable.SOURCE);
+        new ErrorEJA("100", "Invalid Operation!", HttpStatusEJA.NOT_FOUND, new ArrayList<>(), NullableEJA.SOURCE);
 
     }
 }

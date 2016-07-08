@@ -27,14 +27,14 @@ import java.util.Set;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public final class EJARelationships {
+public final class RelationshipsEJA {
 
-    private final Set<EJARelationship> relationships = new HashSet<>();
+    private final Set<RelationshipEJA> relationships = new HashSet<>();
 
     /**
      * @return the relationships
      */
-    public Set<EJARelationship> getRelationships() {
+    public Set<RelationshipEJA> getRelationships() {
         return relationships;
     }
 

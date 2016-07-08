@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class EJASource {
+public class SourceEJA {
 
     @SerializedName(value = "parameter")
     private String parameter;

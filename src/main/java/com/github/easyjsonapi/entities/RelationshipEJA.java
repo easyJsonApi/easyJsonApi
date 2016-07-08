@@ -31,20 +31,20 @@ import com.google.gson.annotations.SerializedName;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public class EJARelationship {
+public class RelationshipEJA {
 
     @SerializedName(value = "data")
-    private final Set<EJADataLinkage> dataLinkage;
+    private final Set<DataLinkageEJA> dataLinkage;
 
     @SerializedName(value = "links")
-    private final EJALink links;
+    private final LinkEJA links;
 
     @SerializedName(value = "meta")
     private final Object meta;
 
     private final String name;
 
-    public EJARelationship(String name, EJALink links, Object meta) {
+    public RelationshipEJA(String name, LinkEJA links, Object meta) {
         super();
         Validation.checkValidObject(meta);
         this.dataLinkage = new HashSet<>();
@@ -54,12 +54,12 @@ public class EJARelationship {
     }
 
     /**
-     * Add one {@link EJADataLinkage}
+     * Add one {@link DataLinkageEJA}
      * 
      * @param dataLinkage
      *            the data linkage
      */
-    public void addDataLinkage(EJADataLinkage dataLinkage) {
+    public void addDataLinkage(DataLinkageEJA dataLinkage) {
         if (Assert.notNull(this.dataLinkage)) {
             this.dataLinkage.add(dataLinkage);
         }
@@ -68,14 +68,14 @@ public class EJARelationship {
     /**
      * @return the dataLinkage
      */
-    public Set<EJADataLinkage> getDataLinkage() {
+    public Set<DataLinkageEJA> getDataLinkage() {
         return dataLinkage;
     }
 
     /**
      * @return the links
      */
-    public EJALink getLinks() {
+    public LinkEJA getLinks() {
         return links;
     }
 

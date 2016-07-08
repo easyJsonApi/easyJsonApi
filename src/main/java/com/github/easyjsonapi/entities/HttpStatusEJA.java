@@ -24,7 +24,7 @@ package com.github.easyjsonapi.entities;
  * 
  * @author Nuno Bento (nbento.neves@gmail.com)
  */
-public enum EJAHttpStatus {
+public enum HttpStatusEJA {
 
     /**
      * 202 Accepted, see {@link <a href=
@@ -166,11 +166,11 @@ public enum EJAHttpStatus {
      *            the http code status
      * @return the http status complete
      */
-    public static EJAHttpStatus
+    public static HttpStatusEJA
 
             getStatus(int code) {
 
-        for (EJAHttpStatus status : values()) {
+        for (HttpStatusEJA status : values()) {
             if (status.code == code) {
                 return status;
             }
@@ -184,7 +184,7 @@ public enum EJAHttpStatus {
 
     private final String reason;
 
-    private EJAHttpStatus(int code, String reason) {
+    private HttpStatusEJA(int code, String reason) {
         this.code = code;
         this.reason = reason;
     }

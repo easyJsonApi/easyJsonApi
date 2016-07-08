@@ -25,11 +25,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.github.easyjsonapi.entities.EJAData;
-import com.github.easyjsonapi.entities.EJAError;
-import com.github.easyjsonapi.entities.EJAHttpStatus;
+import com.github.easyjsonapi.entities.DataEJA;
+import com.github.easyjsonapi.entities.ErrorEJA;
+import com.github.easyjsonapi.entities.HttpStatusEJA;
 import com.github.easyjsonapi.entities.JsonApi;
-import com.github.easyjsonapi.entities.EJANullable;
+import com.github.easyjsonapi.entities.NullableEJA;
 import com.github.easyjsonapi.entities.test.EntityDependencyTest;
 import com.github.easyjsonapi.entities.test.EntityTestAttr1;
 
@@ -40,9 +40,9 @@ public class JsonApiTest {
 
         JsonApi jsonApi = new JsonApi();
 
-        jsonApi.addData(new EJAData("100", "books", EJANullable.OBJECT));
+        jsonApi.addData(new DataEJA("100", "books", NullableEJA.OBJECT));
 
-        List<EJAData> dataList = jsonApi.getData();
+        List<DataEJA> dataList = jsonApi.getData();
 
         Assert.assertEquals(1, dataList.size());
 
@@ -53,9 +53,9 @@ public class JsonApiTest {
 
         JsonApi jsonApi = new JsonApi();
 
-        jsonApi.addError(new EJAError("100", "books", EJAHttpStatus.ACCEPTED, EJANullable.OBJECT, EJANullable.SOURCE));
+        jsonApi.addError(new ErrorEJA("100", "books", HttpStatusEJA.ACCEPTED, NullableEJA.OBJECT, NullableEJA.SOURCE));
 
-        List<EJAError> errorList = jsonApi.getErrors();
+        List<ErrorEJA> errorList = jsonApi.getErrors();
 
         Assert.assertEquals(1, errorList.size());
 
@@ -76,11 +76,11 @@ public class JsonApiTest {
         testEntity.setAttr3(testDependency);
 
         // Data dataJsonApi = new Data("1", "TEST", testEntity, Data.NULLABLE, Data.NULLABLE);
-        EJAData dataJsonApi = new EJAData("1", "TEST", testEntity);
+        DataEJA dataJsonApi = new DataEJA("1", "TEST", testEntity);
 
         jsonApi.addData(dataJsonApi);
 
-        List<EJAData> dataCloned = jsonApi.getData();
+        List<DataEJA> dataCloned = jsonApi.getData();
 
         Assert.assertEquals(1, dataCloned.size());
         Assert.assertEquals("1", dataCloned.get(0).getId());
@@ -92,8 +92,8 @@ public class JsonApiTest {
 
         Assert.assertEquals(0, dataCloned.size());
 
-        List<EJAData> dataClonedFirst = jsonApi.getData();
-        List<EJAData> dataClonedSecond = jsonApi.getData();
+        List<DataEJA> dataClonedFirst = jsonApi.getData();
+        List<DataEJA> dataClonedSecond = jsonApi.getData();
 
         Assert.assertNotEquals(System.identityHashCode(dataClonedFirst), System.identityHashCode(dataClonedSecond));
         // Assert.assertNotEquals(System.identityHashCode(dataClonedFirst.get(0).getAttr()),

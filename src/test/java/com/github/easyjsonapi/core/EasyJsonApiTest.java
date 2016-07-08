@@ -32,13 +32,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.github.easyjsonapi.TestHelper;
-import com.github.easyjsonapi.entities.EJAData;
-import com.github.easyjsonapi.entities.EJAError;
-import com.github.easyjsonapi.entities.EJAHttpStatus;
+import com.github.easyjsonapi.entities.DataEJA;
+import com.github.easyjsonapi.entities.ErrorEJA;
+import com.github.easyjsonapi.entities.HttpStatusEJA;
 import com.github.easyjsonapi.entities.JsonApi;
-import com.github.easyjsonapi.entities.EJALink;
-import com.github.easyjsonapi.entities.EJANullable;
-import com.github.easyjsonapi.entities.EJARelationship;
+import com.github.easyjsonapi.entities.LinkEJA;
+import com.github.easyjsonapi.entities.NullableEJA;
+import com.github.easyjsonapi.entities.RelationshipEJA;
 import com.github.easyjsonapi.entities.test.EntityTestAttr1;
 import com.github.easyjsonapi.entities.test.EntityTestAttr2;
 import com.github.easyjsonapi.entities.test.EntityTestMetaRelationship;
@@ -80,7 +80,7 @@ public class EasyJsonApiTest {
         entityTest.setAttr1("EasyJsonApi api book");
         entityTest.setAttr2(new BigDecimal(100));
 
-        EJAData dataRequest = new EJAData("1", "books", entityTest);
+        DataEJA dataRequest = new DataEJA("1", "books", entityTest);
         jsonApiObject.addData(dataRequest);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject, EntityTestAttr1.class);
@@ -103,7 +103,7 @@ public class EasyJsonApiTest {
         jsonApiString = "{ 'data': [ { 'type': 'books', 'id': '1', 'attributes': { } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
-        List<EJAData> cloneData = jsonApiObjectResult.getData();
+        List<DataEJA> cloneData = jsonApiObjectResult.getData();
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertNotNull(cloneData.get(0));
@@ -190,7 +190,7 @@ public class EasyJsonApiTest {
         attrMap.put("attr1", "EasyJsonApi api book");
         attrMap.put("attr2", "100");
 
-        EJAData dataRequest = new EJAData("1", "books", attrMap);
+        DataEJA dataRequest = new DataEJA("1", "books", attrMap);
         jsonApiObject.addData(dataRequest);
 
         jsonApiStringResult = jsonMaker.convertJsonApiToString(jsonApiObject);
@@ -217,7 +217,7 @@ public class EasyJsonApiTest {
         jsonApiString = "{ 'data': [ { 'type': 'books', 'id': '1', 'attributes': { } } ] }";
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
 
-        List<EJAData> cloneData = jsonApiObjectResult.getData();
+        List<DataEJA> cloneData = jsonApiObjectResult.getData();
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertNotNull(cloneData.get(0));
@@ -269,12 +269,12 @@ public class EasyJsonApiTest {
         entityTest.setAttr1("EasyJsonApi api book");
         entityTest.setAttr2(new BigDecimal(100));
 
-        EJAData dataRequest = new EJAData("1", "books", entityTest);
+        DataEJA dataRequest = new DataEJA("1", "books", entityTest);
 
-        EJALink link = new EJALink(EJANullable.LINK_RELATED, "http://test.com");
-        EJARelationship fistRelationship = new EJARelationship("author", link, EJANullable.OBJECT);
+        LinkEJA link = new LinkEJA(NullableEJA.LINK_RELATED, "http://test.com");
+        RelationshipEJA fistRelationship = new RelationshipEJA("author", link, NullableEJA.OBJECT);
 
-        EJARelationship secondRelationship = new EJARelationship("company", link, EJANullable.OBJECT);
+        RelationshipEJA secondRelationship = new RelationshipEJA("company", link, NullableEJA.OBJECT);
 
         dataRequest.getRels().getRelationships().add(fistRelationship);
         dataRequest.getRels().getRelationships().add(secondRelationship);
@@ -301,7 +301,7 @@ public class EasyJsonApiTest {
         // Check result for json with all attributes using EntityTestAttr1
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
-        List<EJAData> cloneData = jsonApiObjectResult.getData();
+        List<DataEJA> cloneData = jsonApiObjectResult.getData();
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertNotNull(cloneData.get(0));
@@ -322,11 +322,11 @@ public class EasyJsonApiTest {
         entityTest.setAttr1("EasyJsonApi api book");
         entityTest.setAttr2(new BigDecimal(100));
 
-        EJAData dataRequest = new EJAData("1", "books", entityTest);
+        DataEJA dataRequest = new DataEJA("1", "books", entityTest);
         EntityTestMetaRelationship relationshipMeta = new EntityTestMetaRelationship();
         relationshipMeta.setCount("META_COUNT");
-        EJALink link = new EJALink(EJANullable.LINK_RELATED, "http://test.com");
-        EJARelationship relationship = new EJARelationship("author", link, relationshipMeta);
+        LinkEJA link = new LinkEJA(NullableEJA.LINK_RELATED, "http://test.com");
+        RelationshipEJA relationship = new RelationshipEJA("author", link, relationshipMeta);
 
         dataRequest.getRels().getRelationships().add(relationship);
 
@@ -354,7 +354,7 @@ public class EasyJsonApiTest {
         // Check result for json with all attributes using EntityTestAttr1
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
-        List<EJAData> cloneData = jsonApiObjectResult.getData();
+        List<DataEJA> cloneData = jsonApiObjectResult.getData();
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertNotNull(cloneData.get(0));
@@ -375,8 +375,8 @@ public class EasyJsonApiTest {
 
         jsonApiObject = new JsonApi();
 
-        EJAError error = new EJAError("1", "Invalid operation", EJAHttpStatus.NOT_ACCEPTABLE, "4000", "Not acceptable operation!", EJANullable.OBJECT,
-                EJANullable.SOURCE);
+        ErrorEJA error = new ErrorEJA("1", "Invalid operation", HttpStatusEJA.NOT_ACCEPTABLE, "4000", "Not acceptable operation!", NullableEJA.OBJECT,
+                NullableEJA.SOURCE);
 
         jsonApiObject.addError(error);
 
@@ -398,7 +398,7 @@ public class EasyJsonApiTest {
         jsonApiString = TestHelper.retriveJsonFile(JSON_TEST_FOLDER + "convertErrorsJsonApiToStringTest.json");
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString, EntityTestAttr1.class);
 
-        List<EJAError> cloneError = jsonApiObjectResult.getErrors();
+        List<ErrorEJA> cloneError = jsonApiObjectResult.getErrors();
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertNotNull(cloneError.get(0));
@@ -478,9 +478,9 @@ public class EasyJsonApiTest {
         // Check result for object with multiple errors
         jsonApiObject = new JsonApi();
 
-        EJAError error = new EJAError("1", "Invalid operation", EJAHttpStatus.NOT_ACCEPTABLE, "4000", "Not acceptable operation!", EJANullable.OBJECT,
-                EJANullable.SOURCE);
-        EJAError errorSecond = new EJAError("2", "Invalid user", EJAHttpStatus.BAD_REQUEST, "4000", "Bad request!", EJANullable.OBJECT, EJANullable.SOURCE);
+        ErrorEJA error = new ErrorEJA("1", "Invalid operation", HttpStatusEJA.NOT_ACCEPTABLE, "4000", "Not acceptable operation!", NullableEJA.OBJECT,
+                NullableEJA.SOURCE);
+        ErrorEJA errorSecond = new ErrorEJA("2", "Invalid user", HttpStatusEJA.BAD_REQUEST, "4000", "Bad request!", NullableEJA.OBJECT, NullableEJA.SOURCE);
 
         jsonApiObject.addError(error);
         jsonApiObject.addError(errorSecond);
@@ -538,7 +538,7 @@ public class EasyJsonApiTest {
         attrMap.put("name", "Miguel");
         attrMap.put("age", "20");
 
-        EJAData dataRequest = new EJAData("1", "books", attrMap);
+        DataEJA dataRequest = new DataEJA("1", "books", attrMap);
 
         request.addData(dataRequest);
 
@@ -565,7 +565,7 @@ public class EasyJsonApiTest {
         jsonMaker.setConfig(null);
         jsonApiObjectResult = jsonMaker.convertStringToJsonApi(jsonApiString);
 
-        List<EJAData> cloneData = jsonApiObjectResult.getData();
+        List<DataEJA> cloneData = jsonApiObjectResult.getData();
 
         Assert.assertNotNull(jsonApiObjectResult);
         Assert.assertEquals("books", cloneData.get(0).getType());

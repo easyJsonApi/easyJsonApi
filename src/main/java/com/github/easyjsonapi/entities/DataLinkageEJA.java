@@ -19,24 +19,39 @@
  */
 package com.github.easyjsonapi.entities;
 
-public interface EJANullable {
+import com.google.gson.annotations.SerializedName;
 
-    public static EJAData DATA = null;
+/**
+ * Entity represents data relationship resource object in json api specification
+ * 
+ * @author Nuno Bento (nbento.neves@gmail.com)
+ */
+public final class DataLinkageEJA {
 
-    public static EJADataLinkage DATA_LINKAGE = null;
+    @SerializedName(value = "id")
+    private final String id;
 
-    public static EJAError ERROR = null;
+    @SerializedName(value = "type")
+    private final String type;
 
-    public static EJALink LINK = null;
+    public DataLinkageEJA(String id, String type) {
+        super();
+        this.id = id;
+        this.type = type;
+    }
 
-    public static EJALinkRelated LINK_RELATED = null;
+    /**
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
 
-    public static Object OBJECT = null;
-
-    public static EJARelationship RELATIONSHIP = null;
-
-    public static EJARelationships RELATIONSHIPS = null;
-
-    public static EJASource SOURCE = null;
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
 
 }
