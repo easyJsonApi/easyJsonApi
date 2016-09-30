@@ -56,7 +56,7 @@
 
 		<repository>
 			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2</url>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
 		</repository>
 	</distributionManagement>
 
@@ -420,18 +420,6 @@
 					</dependency>
 				</dependencies>
 			</plugin>
-
-			<!-- Deploy OSSRH Nexus Repository Manager -->
-			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<extensions>true</extensions>
-				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -486,6 +474,12 @@
 				<gpg.publicKeyring>${env.GPG_DIR}/pubring.gpg</gpg.publicKeyring>
 				<gpg.secretKeyring>${env.GPG_DIR}/secring.gpg</gpg.secretKeyring>
 			</properties>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
 			<build>
 				<plugins>
 					<!-- GPG Signed Component -->
@@ -501,6 +495,17 @@
 								</goals>
 							</execution>
 						</executions>
+					</plugin>
+					<!-- Deploy OSSRH Nexus Repository Manager -->
+					<plugin>
+						<groupId>org.sonatype.plugins</groupId>
+						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<extensions>true</extensions>
+						<configuration>
+							<serverId>ossrh</serverId>
+							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
+							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+						</configuration>
 					</plugin>
 				</plugins>
 			</build>
